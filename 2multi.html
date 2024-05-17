@@ -1,11 +1,11 @@
 ---
-title: 2. Multi-file
+title: 2. Multi-file Pet Classifier
 layout: page
 ---
 <input id="photos" type="file" multiple="">
 <script>
   async function loaded(reader) {
-    const response = await fetch('https://bashaar-weasel-stoat-marten-classifier.hf.space/api/predict', {
+    const response = await fetch('https://bashaar-petclass.hf.space/api/predict', {
       method: "POST", body: JSON.stringify({ "data": [reader.result] }),
       headers: { "Content-Type": "application/json" }
     });
