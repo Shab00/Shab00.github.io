@@ -2,3 +2,21 @@
 title: 4. Yelp Reviews Auto Complete
 layout: page
 ---
+<script>
+fetch("https://krushna-imdb-auto-complete.hf.space/run/predict", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      data: [
+        "hello world",
+        1,
+        0.5,
+      ]
+    })})
+  .then(r => r.json())
+  .then(
+    r => {
+      let data = r.data;
+    }
+  )
+</script>
