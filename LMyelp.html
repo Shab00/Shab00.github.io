@@ -3,20 +3,15 @@ title: 4. Yelp Reviews Auto Complete
 layout: page
 ---
 <script>
-fetch("https://krushna-imdb-auto-complete.hf.space/run/predict", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      data: [
-        "hello world",
-        1,
-        0.5,
-      ]
-    })})
-  .then(r => r.json())
-  .then(
-    r => {
-      let data = r.data;
-    }
-  )
+import { Client } from "@gradio/client";
+
+const client = await Client.connect("bashaar/yelpLM");
+const result = await client.predict("/predict", { 		
+		text: "Hello!!", 		
+		number_of_words: 3, 		
+		temperature: 0.1, 
+});
+
+console.log(result.data);
+
 </script>
