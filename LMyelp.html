@@ -4,13 +4,13 @@ layout: page
 ---
 <div class="container">
 	<p>text:</p>
-	<input id="myInput" type="text">
+	<input id="text" type="text">
 	<p>number_of_words:</p>
 	<input type="number" id="number_of_words" name="quantity" min="1" max="40">
 	<p>temperature:</p>
 	<input type="range" min="1" max="100" value="50" class="slider" id="temperature">
 	<input id="output" type="text" readonly/>
-	<button onClick=onclick="document.getElementById('myInput').value = ''">clear</button>
+	<button onClick=onclick="document.getElementsByTagName('input').value = ''">clear</button>
 	<button onClick="">submit</button>
 </div>
 <script>
