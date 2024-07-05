@@ -16,12 +16,19 @@ layout: page
 	<input id="output" type="text" readonly/>
 	<button onclick="document.getElementById('text').value = ''">clear</button>
 	<button onclick="pre()">submit</button>
-
-	<script>
-		import { Client } from "@gradio/client";
-
-		const app = Client.connect("abidlabs/en2fr"); // a Space that translates from English to French
-	</script>
-	
 </div>
+
+<script>
+	import { Client } from "@gradio/client";
+
+	const client = await Client.connect("bashaar/yelpLM");
+	const result = await client.predict("/predict", { 		
+			text: "Hello!!", 		
+			number_of_words: 3, 		
+			temperature: 0.1, 
+	});
+
+	console.log(result.data);
+
+</script>
 
