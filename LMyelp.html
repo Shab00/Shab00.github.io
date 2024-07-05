@@ -16,4 +16,12 @@ layout: page
 	<input id="output" type="text" readonly/>
 	<button onclick="document.getElementById('text').value = ''">clear</button>
 	<button onclick="pre()">submit</button>
+
+	<script>
+		import { Client } from "@gradio/client";
+
+		const app = Client.connect("abidlabs/en2fr"); // a Space that translates from English to French
+	</script>
+	
 </div>
+
