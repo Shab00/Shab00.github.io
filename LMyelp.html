@@ -9,6 +9,8 @@ layout: page
 	<input type="number" id="number_of_words" name="quantity" min="1" max="40">
 	<p>temperature:</p>
 	<input type="range" min="1" max="100" value="50" class="slider" id="temperature">
+	<button onClick=onclick="document.getElementById('text').value = ''">clear</button>
+	<button onClick="calculateArea()">submit</button>
 </div>
 <script>
 import { Client } from "@gradio/client";
