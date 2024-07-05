@@ -15,9 +15,9 @@ import { Client } from "@gradio/client";
 
 const client = await Client.connect("bashaar/yelpLM");
 const result = await client.predict("/predict", { 		
-		text: "Hello!!", 		
-		number_of_words: 3, 		
-		temperature: 0.1, 
+		text: "write a review... ", 		
+		number_of_words: 0, 		
+		temperature: 50, 
 });
 
 console.log(result.data);
