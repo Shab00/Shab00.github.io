@@ -14,15 +14,16 @@ layout: page
 	<button onClick="">submit</button>
 </div>
 <script>
-import { Client } from "@gradio/client";
+	function pre(){		
+		import { Client } from "@gradio/client";
 
-const client = await Client.connect("bashaar/yelpLM");
-const result = await client.predict("/predict", { 		
-		text: "write a review... ", 		
-		number_of_words: 0, 		
-		temperature: 50, 
-});
+		const client = await Client.connect("bashaar/yelpLM");
+		const result = await client.predict("/predict", { 		
+				text: "write a review... ", 		
+				number_of_words: 0, 		
+				temperature: 50, 
+		});
 
-console.log(result.data);
-
+		console.log(result.data);
+	}
 </script>
