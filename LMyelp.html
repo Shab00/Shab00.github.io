@@ -3,8 +3,25 @@ title: 4. Yelp Reviews Auto Complete
 layout: page
 ---
 
-<script src="https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js"></script>
+<script type="module">
+    import { Client } from "@gradio/client";
 
+    async function pre() {
+        const client = await Client.connect("https://bashaar-yelplm.hf.space");
+
+        const text = document.getElementById('text').value;
+        const numberOfWords = document.getElementById('number_of_words').value;
+        const temperature = document.getElementById('temperature').value;
+
+        const output = await client.predict({
+            "text": text,
+            "number_of_words": parseInt(numberOfWords, 10),
+            "temperature": parseFloat(temperature)
+        });
+
+        document.getElementById('output').value = output;
+    }
+</script>
 <div class="container">
 	<p>text:</p>
 	<input id="text" type="text">
@@ -23,18 +40,4 @@ layout: page
 	width="850"
 	height="450"
 ></iframe>
-<script>
-    function pre(){
-        import { Client } from "@gradio/client";
-
-        const client = await Client.connect("bashaar/yelpLM");
-        const result = await client.predict("/predict", { 		
-                text: "Hello!!", 		
-                number_of_words: 3, 		
-                temperature: 0.1, 
-        });
-
-        console.log(result.data);
-    }
-</script>
 
