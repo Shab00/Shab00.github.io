@@ -7,19 +7,25 @@ layout: page
     import { Client } from "@gradio/client";
 
     async function pre() {
+        // Connect to the Gradio client using the correct API endpoint
         const client = await Client.connect("https://huggingface.co/spaces/bashaar/yelpLM");
 
+        // Get input values from the form elements
         const text = document.getElementById('text').value;
         const numberOfWords = document.getElementById('number_of_words').value;
         const temperature = document.getElementById('temperature').value;
 
-        const output = await client.predict({
-            "text": text,
-            "number_of_words": parseInt(numberOfWords, 10),
-            "temperature": parseFloat(temperature)
+        // Make the prediction request with the input values
+        const output = await client.predict("/predict", {
+            text: text,
+            number_of_words: parseInt(numberOfWords, 10),
+            temperature: parseFloat(temperature)
         });
 
-        document.getElementById('output').value = output;
+        // Display the output string in the "output" Textbox component
+        // Assuming the API response structure matches the documentation,
+        // and the output string is directly accessible
+        document.getElementById('output').value = output.data;
     }
 </script>
 <div class="container">
