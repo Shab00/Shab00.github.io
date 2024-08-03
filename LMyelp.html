@@ -2,11 +2,25 @@
 title: 4. Yelp Reviews Auto Complete
 layout: page
 ---
+<form id="predictionForm">
+    <p>text:</p>
+    <input id="text" type="text">
+    <p>number_of_words:</p>
+    <input type="number" id="number_of_words" name="quantity" min="1" max="40">
+    <p>temperature:</p>
+    <input type="range" min="0.1" max="1.0" step="0.001" value="0.5" class="slider" id="temperature">
+    <output for="temperature">0.5</output>
+    <br>
+    <button type="submit">Submit</button>
+</form>
+<div id="output"></div> <!-- Assuming you want to display the output in a div -->
 
 <script type="module">
     import { Client } from "@gradio/client";
 
-    async function pre() {
+    document.getElementById('predictionForm').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevent the default form submission
+
         // Connect to the Gradio client using the correct API endpoint
         const client = await Client.connect("https://huggingface.co/spaces/bashaar/yelpLM");
 
@@ -22,33 +36,10 @@ layout: page
             temperature: parseFloat(temperature)
         });
 
-        // Display the output string in the "output" Textbox component
-        // Assuming the API response structure matches the documentation,
-        // and the output string is directly accessible
-        document.getElementById('output').value = output.data;
-    }
+        // Display the output string in the "output" div or another component
+        document.getElementById('output').innerText = output.data;
+    });
 </script>
-<div class="container">
-	<p>text:</p>
-	<input id="text" type="text">
-	<p>number_of_words:</p>
-	<input type="number" id="number_of_words" name="quantity" min="1" max="40">
-	<p>temperature:</p>
-	<input type="range" min="0.1" max="1.0" step="0.001" value="0.5" class="slider" id="temperature" oninput="this.nextElementSibling.value = this.value">
-	<output>0.5</output>
-	<input id="output" type="text" readonly/>
-	<button onclick="clearForm()">clear</button>
-<script>
-function clearForm() {
-    document.getElementById('text').value = '';
-    document.getElementById('number_of_words').value = ''; // Set to default or empty
-    document.getElementById('temperature').value = 0.5; // Reset to default
-    document.querySelector('output').value = '0.5'; // Reset the output next to the slider
-    document.getElementById('output').value = ''; // Clear the output field
-}
-</script>
-	<button onclick="pre()">submit</button>
-</div>
 <iframe
 	src="https://bashaar-yelplm.hf.space"
 	frameborder="0"
