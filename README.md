@@ -1,2 +1,2 @@
 
-Minimal JS interface to an image classifer
+site for creating apps from my github repo
