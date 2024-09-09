@@ -22,4 +22,14 @@ layout: page
     reader.readAsDataURL(file);
   }
   photos.addEventListener('input', () => { [...photos.files].map(read) });
-</script>
+  // Function to load a sample image for testing
+  async function loadSampleImage() {
+    const sampleImageUrl = 'https://via.placeholder.com/300'; // Replace with any sample image URL
+    const response = await fetch(sampleImageUrl);
+    const blob = await response.blob();
+    const file = new File([blob], "sample.jpg", { type: "image/jpeg" });
+    read(file);
+  }
+
+  document.getElementById('testButton').addEventListener('click', loadSampleImage);
+  </script>
