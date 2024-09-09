@@ -3,5 +3,5 @@ title: Home
 layout: page
 ---
 
-# GitHub Ptrojects Apps 
+# GitHub Projects Apps 
 
