@@ -2,6 +2,9 @@
 title: Yelp Reviews Auto Complete
 layout: page
 ---
+<h2>Instructions</h2>
+<p>Enter the initial text, select the number of words you want to predict, and adjust the temperature slider. Click "Submit" to get the predicted text.</p>
+
 <form id="predictionForm">
     <p>text:</p>
     <input id="text" type="text">
@@ -13,37 +16,35 @@ layout: page
     <br>
     <button type="submit">Submit</button>
 </form>
-<div id="output"></div> <!-- Assuming you want to display the output in a div -->
+<div id="output"></div>
 
 <script type="module">
     import { Client } from "@gradio/client";
-
-    document.getElementById('predictionForm').addEventListener('submit', async (event) => {
+    
+    document.getElementById('predictionForm').addEventListener('submit', async function(event) {
         event.preventDefault(); // Prevent the default form submission
-
-        // Connect to the Gradio client using the correct API endpoint
-        const client = await Client.connect("https://huggingface.co/spaces/bashaar/yelpLM");
-
-        // Get input values from the form elements
+    
+        // Collect input values
         const text = document.getElementById('text').value;
         const numberOfWords = document.getElementById('number_of_words').value;
         const temperature = document.getElementById('temperature').value;
-
-        // Make the prediction request with the input values
-        const output = await client.predict("/predict", {
-            text: text,
-            number_of_words: parseInt(numberOfWords, 10),
-            temperature: parseFloat(temperature)
-        });
-
-        // Display the output string in the "output" div or another component
-        document.getElementById('output').innerText = output.data;
+    
+        // Connect to the Hugging Face Spaces API
+        const client = await Client.connect("bashaar/yelpLM");
+    
+        try {
+            // Send a request to the API
+            const result = await client.predict("/predict", { 		
+                text: text, 		
+                number_of_words: numberOfWords, 		
+                temperature: temperature 
+            });
+    
+            // Display the prediction result
+            document.getElementById('output').innerText = result.data;
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('output').innerText = 'An error occurred while fetching the prediction.';
+        }
     });
-</script>
-<iframe
-	src="https://bashaar-yelplm.hf.space"
-	frameborder="0"
-	width="850"
-	height="450"
-></iframe>
-
+    </script>
