@@ -2,13 +2,12 @@
 title: 2. Multi-file Pet Classifier
 layout: page
 ---
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1single.html</title>
+  <title>102 Oxford.html</title>
   <style>
     /* CSS to resize sample images */
     .sample-image {
@@ -19,11 +18,15 @@ layout: page
     }
     /* CSS to highlight selected image */
     .highlighted {
-      border: 2px solid greenyellow; /* Highlight border */
+      border: 2px solid blue; /* Highlight border */
     }
   </style>
 </head>
 <body>
+  <div id="flower-list">
+    <h3>List of breeds:</h3>
+    <p id="pet-class-paragraph"></p>
+  </div>
   <h8>images will take ~1min to load</h8>
   <form>
     <!-- Label for file input -->
@@ -34,11 +37,11 @@ layout: page
   <!-- Sample Images -->
   <div id="sample-images">
     <h3>Sample Images:</h3>
-    <img src="img/" alt="Sample Image 1" class="sample-image" />
-    <img src="img/" alt="Sample Image 2" class="sample-image" />
-    <img src="img/" alt="Sample Image 3" class="sample-image" />
-    <img src="img/" alt="Sample Image 4" class="sample-image" />
-    <img src="img/" alt="Sample Image 5" class="sample-image" />
+    <img src="img/birds.jpg" alt="Sample Image 1" class="sample-image" />
+    <img src="img/cantbells.webp" alt="Sample Image 2" class="sample-image" />
+    <img src="img/harv.webp" alt="Sample Image 3" class="sample-image" />
+    <img src="img/peru.jpg" alt="Sample Image 4" class="sample-image" />
+    <img src="img/pink.webp" alt="Sample Image 5" class="sample-image" />
   </div>
 
   <script>
@@ -91,6 +94,16 @@ layout: page
         loadSampleImage(img.src);
       });
     });
+
+    // List of pet classes
+    const petClasses = [
+      "Abyssinian", "Bengal", "Birman", "Bombay", "British Shorthair", "Egyptian Mau", "Maine Coon", "Persian", "Ragdoll", "Russian Blue", "Siamese", "Sphynx",
+      "American Bulldog", "American Pit Bull Terrier", "Basset Hound", "Beagle", "Boxer", "Chihuahua", "English Cocker Spaniel", "English Setter", "German Shorthaired", "Great Pyrenees", "Havanese", "Japanese Chin", "Keeshond", "Leonberger", "Miniature Pinscher", "Newfoundland", "Pomeranian", "Pug", "Saint Bernard", "Samoyed", "Scottish Terrier", "Shiba Inu", "Staffordshire Bull Terrier", "Wheaten Terrier", "Yorkshire Terrier"
+    ];
+
+    // Convert the list of pet classes to a single paragraph separated by slashes
+    const petClassParagraph = document.getElementById('pet-class-paragraph');
+    petClassParagraph.textContent = petClasses.join(' / ');
   </script>
 </body>
 </html>
