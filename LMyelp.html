@@ -19,32 +19,36 @@ layout: page
 <div id="output"></div>
 
 <script type="module">
-    import { Client } from "@gradio/client";
-    
-    document.getElementById('predictionForm').addEventListener('submit', async function(event) {
-        event.preventDefault(); // Prevent the default form submission
-    
-        // Collect input values
-        const text = document.getElementById('text').value;
-        const numberOfWords = document.getElementById('number_of_words').value;
-        const temperature = document.getElementById('temperature').value;
-    
-        // Connect to the Hugging Face Spaces API
-        const client = await Client.connect("bashaar/yelpLM");
-    
-        try {
-            // Send a request to the API
-            const result = await client.predict("/predict", { 		
-                text: text, 		
-                number_of_words: numberOfWords, 		
-                temperature: temperature 
-            });
-    
-            // Display the prediction result
-            document.getElementById('output').innerText = result.data;
-        } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('output').innerText = 'An error occurred while fetching the prediction.';
-        }
-    });
-    </script>
+import { Client } from "@gradio/client";
+
+document.getElementById('predictionForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Collect input values
+    const text = document.getElementById('text').value;
+    const numberOfWords = document.getElementById('number_of_words').value;
+    const temperature = document.getElementById('temperature').value;
+
+    console.log("Form submitted with values:", { text, numberOfWords, temperature });
+
+    // Connect to the Hugging Face Spaces API
+    const client = await Client.connect("bashaar/yelpLM");
+
+    try {
+        // Send a request to the API
+        const result = await client.predict("/predict", { 		
+            text: text, 		
+            number_of_words: numberOfWords, 		
+            temperature: temperature 
+        });
+
+        console.log("API response:", result);
+
+        // Display the prediction result
+        document.getElementById('output').innerText = result.data;
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('output').innerText = 'An error occurred while fetching the prediction.';
+    }
+});
+</script>
