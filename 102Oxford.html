@@ -7,7 +7,7 @@ layout: page
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>102Oxford.html</title>
+  <title>102 Oxford.html</title>
   <style>
     /* CSS to resize sample images */
     .sample-image {
@@ -23,12 +23,11 @@ layout: page
   </style>
 </head>
 <body>
-  <h1>102 Oxford Flowers</h1>
   <div id="flower-list">
     <h3>List of Flowers:</h3>
     <p id="flower-list-paragraph"></p>
   </div>
-
+  <h8>images will take ~1min to load</h8>
   <form>
     <!-- Label for file input -->
     <label for="photos">Upload Photos:</label>
@@ -47,7 +46,7 @@ layout: page
 
   <script>
     async function loaded(reader) {
-      const response = await fetch('https://bashaar-lc25000.hf.space/api/predict', {
+      const response = await fetch('https://bashaar-flower102.hf.space/api/predict', {
         method: "POST",
         body: JSON.stringify({ "data": [reader.result] }),
         headers: { "Content-Type": "application/json" }
