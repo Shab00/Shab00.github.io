@@ -2,34 +2,53 @@
 title: Yelp Reviews Auto Complete
 layout: page
 ---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yelp Reviews Auto Complete</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        p {
+            margin: 5px 0;
+        }
+        input, button {
+            margin-bottom: 10px;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
     <h2>Instructions</h2>
     <p>Enter the initial text, select the number of words you want to predict, and adjust the temperature slider. Click "Submit" to get the predicted text.</p>
 
     <form id="predictionForm">
-        <p>text:</p>
-        <input id="text" type="text">
-        <p>number_of_words:</p>
-        <input type="number" id="number_of_words" name="quantity" min="1" max="40">
-        <p>temperature:</p>
+        <p>Text:</p>
+        <input id="text" type="text" required>
+        <p>Number of Words:</p>
+        <input type="number" id="number_of_words" name="quantity" min="1" max="40" required>
+        <p>Temperature:</p>
         <input type="range" min="0.1" max="1.0" step="0.001" value="0.5" class="slider" id="temperature">
-        <output for="temperature">0.5</output>
+        <output for="temperature" id="temperatureOutput">0.5</output>
         <br>
         <button type="submit">Submit</button>
     </form>
     <div id="output"></div>
 
-    <!-- Include the CDN for @gradio/client -->
-    <script type="module">
-    import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
-
+    <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         const form = document.getElementById('predictionForm');
         if (!form) {
@@ -37,13 +56,12 @@ layout: page
             return;
         }
 
-        const button = form.querySelector('button[type="submit"]');
-        if (!button) {
-            console.error('Button element not found');
-            return;
-        }
-
-        console.log('Button element:', button);
+        // Update the output value of the temperature slider
+        const temperatureSlider = document.getElementById('temperature');
+        const temperatureOutput = document.getElementById('temperatureOutput');
+        temperatureSlider.addEventListener('input', function() {
+            temperatureOutput.value = temperatureSlider.value;
+        });
 
         form.addEventListener('submit', async function(event) {
             event.preventDefault(); // Prevent the default form submission
@@ -55,17 +73,28 @@ layout: page
 
             console.log("Form submitted with values:", { text, numberOfWords, temperature });
 
-            // Connect to the Hugging Face Spaces API
-            const client = await Client.connect("bashaar/yelpLM");
+            // Prepare the request payload
+            const payload = {
+                text: text,
+                number_of_words: numberOfWords,
+                temperature: temperature
+            };
 
             try {
-                // Send a request to the API
-                const result = await client.predict("/predict", { 		
-                    text: text, 		
-                    number_of_words: numberOfWords, 		
-                    temperature: temperature 
+                // Send a request to the Hugging Face Spaces API
+                const response = await fetch("https://hf.space/embed/bashaar/yelpLM/api/predict", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
                 });
 
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
                 console.log("API response:", result);
 
                 // Display the prediction result
@@ -73,9 +102,6 @@ layout: page
             } catch (error) {
                 console.error('Error:', error);
                 document.getElementById('output').innerText = `An error occurred while fetching the prediction: ${error.message || 'Unknown error'}`;
-                if (error.response) {
-                    console.error('Error response:', error.response);
-                }
             }
         });
     });
