@@ -32,10 +32,8 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
 
     console.log("Form submitted with values:", { text, numberOfWords, temperature });
 
-    // Connect to the Hugging Face Spaces API with token
-    const client = await Client.connect("bashaar/yelpLM", {
-        hf_token: "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"
-    });
+    // Connect to the Hugging Face Spaces API
+    const client = await Client.connect("bashaar/yelpLM");
 
     try {
         // Send a request to the API
@@ -51,7 +49,7 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
         document.getElementById('output').innerText = result.data;
     } catch (error) {
         console.error('Error:', error);
-        document.getElementById('output').innerText = `An error occurred while fetching the prediction: ${error.message}`;
+        document.getElementById('output').innerText = `An error occurred while fetching the prediction: ${error.message || 'Unknown error'}`;
     }
 });
 </script>
