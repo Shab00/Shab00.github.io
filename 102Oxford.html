@@ -1,5 +1,5 @@
 ---
-title: 3. Oxford 102 Flower Classification
+title: 102 Oxford Flowers
 layout: page
 ---
 <!DOCTYPE html>
@@ -7,7 +7,7 @@ layout: page
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1single.html</title>
+  <title>102Oxford.html</title>
   <style>
     /* CSS to resize sample images */
     .sample-image {
@@ -18,12 +18,11 @@ layout: page
     }
     /* CSS to highlight selected image */
     .highlighted {
-      border: 2px solid greenyellow; /* Highlight border */
+      border: 2px solid blue; /* Highlight border */
     }
   </style>
 </head>
 <body>
-  <h8>images will take ~1min to load</h8>
   <form>
     <!-- Label for file input -->
     <label for="photos">Upload Photos:</label>
@@ -40,117 +39,14 @@ layout: page
     <img src="img/pink.webp" alt="Sample Image 5" class="sample-image" />
   </div>
 
-  <div id="flower-list"></div>
+  <div id="flower-list">
     <h3>List of Flowers:</h3>
-    <ul>
-      <li>Pink Primrose</li>
-      <li>Hard-leaved Pocket Orchid</li>
-      <li>Canterbury Bells</li>
-      <li>Sweet Pea</li>
-      <li>English Marigold</li>
-      <li>Tiger Lily</li>
-      <li>Moon Orchid</li>
-      <li>Bird of Paradise</li>
-      <li>Monkshood</li>
-      <li>Globe Thistle</li>
-      <li>Snapdragon</li>
-      <li>Colt's Foot</li>
-      <li>King Protea</li>
-      <li>Spear Thistle</li>
-      <li>Yellow Iris</li>
-      <li>Globe-flower</li>
-      <li>Purple Coneflower</li>
-      <li>Peruvian Lily</li>
-      <li>Balloon Flower</li>
-      <li>Giant White Arum Lily</li>
-      <li>Fire Lily</li>
-      <li>Pincushion Flower</li>
-      <li>Fritillary</li>
-      <li>Red Ginger</li>
-      <li>Grape Hyacinth</li>
-      <li>Corn Poppy</li>
-      <li>Prince of Wales Feathers</li>
-      <li>Stemless Gentian</li>
-      <li>Artichoke</li>
-      <li>Sweet William</li>
-      <li>Carnation</li>
-      <li>Garden Phlox</li>
-      <li>Love in the Mist</li>
-      <li>Mexican Aster</li>
-      <li>Alpine Sea Holly</li>
-      <li>Ruby-lipped Cattleya</li>
-      <li>Cape Flower</li>
-      <li>Great Masterwort</li>
-      <li>Siam Tulip</li>
-      <li>Lenten Rose</li>
-      <li>Barbeton Daisy</li>
-      <li>Daffodil</li>
-      <li>Sword Lily</li>
-      <li>Poinsettia</li>
-      <li>Bolero Deep Blue</li>
-      <li>Wallflower</li>
-      <li>Marigold</li>
-      <li>Buttercup</li>
-      <li>Oxeye Daisy</li>
-      <li>Common Dandelion</li>
-      <li>Petunia</li>
-      <li>Wild Pansy</li>
-      <li>Primula</li>
-      <li>Sunflower</li>
-      <li>Pelargonium</li>
-      <li>Bishop of Llandaff</li>
-      <li>Gaura</li>
-      <li>Geranium</li>
-      <li>Orange Dahlia</li>
-      <li>Pink-yellow Dahlia</li>
-      <li>Cautleya Spicata</li>
-      <li>Japanese Anemone</li>
-      <li>Black-eyed Susan</li>
-      <li>Silverbush</li>
-      <li>Californian Poppy</li>
-      <li>Osteospermum</li>
-      <li>Spring Crocus</li>
-      <li>Bearded Iris</li>
-      <li>Windflower</li>
-      <li>Tree Poppy</li>
-      <li>Gazania</li>
-      <li>Azalea</li>
-      <li>Water Lily</li>
-      <li>Rose</li>
-      <li>Thorn Apple</li>
-      <li>Morning Glory</li>
-      <li>Passion Flower</li>
-      <li>Lotus Lotus</li>
-      <li>Toad Lily</li>
-      <li>Anthurium</li>
-      <li>Frangipani</li>
-      <li>Clematis</li>
-      <li>Hibiscus</li>
-      <li>Columbine</li>
-      <li>Desert-rose</li>
-      <li>Tree Mallow</li>
-      <li>Magnolia</li>
-      <li>Cyclamen</li>
-      <li>Watercress</li>
-      <li>Canna Lily</li>
-      <li>Hippeastrum</li>
-      <li>Bee Balm</li>
-      <li>Ball Moss</li>
-      <li>Foxglove</li>
-      <li>Bougainvillea</li>
-      <li>Camellia</li>
-      <li>Mallow</li>
-      <li>Mexican Petunia</li>
-      <li>Bromelia</li>
-      <li>Blanket Flower</li>
-      <li>Trumpet Creeper</li>
-      <li>Blackberry Lily</li>
-    </ul>
+    <p id="flower-list-paragraph"></p>
   </div>
 
   <script>
     async function loaded(reader) {
-      const response = await fetch('https://bashaar-flower102.hf.space/api/predict', {
+      const response = await fetch('https://bashaar-lc25000.hf.space/api/predict', {
         method: "POST",
         body: JSON.stringify({ "data": [reader.result] }),
         headers: { "Content-Type": "application/json" }
@@ -198,6 +94,31 @@ layout: page
         loadSampleImage(img.src);
       });
     });
+
+    // List of flower names
+    const flowerNames = [
+      "Pink Primrose", "Hard-leaved Pocket Orchid", "Canterbury Bells", "Sweet Pea", "English Marigold",
+      "Tiger Lily", "Moon Orchid", "Bird of Paradise", "Monkshood", "Globe Thistle", "Snapdragon",
+      "Colt's Foot", "King Protea", "Spear Thistle", "Yellow Iris", "Globe-flower", "Purple Coneflower",
+      "Peruvian Lily", "Balloon Flower", "Giant White Arum Lily", "Fire Lily", "Pincushion Flower",
+      "Fritillary", "Red Ginger", "Grape Hyacinth", "Corn Poppy", "Prince of Wales Feathers", "Stemless Gentian",
+      "Artichoke", "Sweet William", "Carnation", "Garden Phlox", "Love in the Mist", "Mexican Aster",
+      "Alpine Sea Holly", "Ruby-lipped Cattleya", "Cape Flower", "Great Masterwort", "Siam Tulip",
+      "Lenten Rose", "Barbeton Daisy", "Daffodil", "Sword Lily", "Poinsettia", "Bolero Deep Blue",
+      "Wallflower", "Marigold", "Buttercup", "Oxeye Daisy", "Common Dandelion", "Petunia", "Wild Pansy",
+      "Primula", "Sunflower", "Pelargonium", "Bishop of Llandaff", "Gaura", "Geranium", "Orange Dahlia",
+      "Pink-yellow Dahlia", "Cautleya Spicata", "Japanese Anemone", "Black-eyed Susan", "Silverbush",
+      "Californian Poppy", "Osteospermum", "Spring Crocus", "Bearded Iris", "Windflower", "Tree Poppy",
+      "Gazania", "Azalea", "Water Lily", "Rose", "Thorn Apple", "Morning Glory", "Passion Flower",
+      "Lotus Lotus", "Toad Lily", "Anthurium", "Frangipani", "Clematis", "Hibiscus", "Columbine",
+      "Desert-rose", "Tree Mallow", "Magnolia", "Cyclamen", "Watercress", "Canna Lily", "Hippeastrum",
+      "Bee Balm", "Ball Moss", "Foxglove", "Bougainvillea", "Camellia", "Mallow", "Mexican Petunia",
+      "Bromelia", "Blanket Flower", "Trumpet Creeper", "Blackberry Lily"
+    ];
+
+    // Convert the list of flower names to a single paragraph separated by slashes
+    const flowerListParagraph = document.getElementById('flower-list-paragraph');
+    flowerListParagraph.textContent = flowerNames.join(' / ');
   </script>
 </body>
 </html>
