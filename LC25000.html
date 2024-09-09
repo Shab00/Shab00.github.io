@@ -16,6 +16,10 @@ layout: page
       margin: 5px; /* Add some margin for spacing */
       cursor: pointer; /* Change cursor to pointer on hover */
     }
+    /* CSS to highlight selected image */
+    .highlighted {
+      border: 2px solid blue; /* Highlight border */
+    }
   </style>
 </head>
 <body>
@@ -23,7 +27,7 @@ layout: page
     <!-- Label for file input -->
     <label for="photos">Upload Photos:</label>
     <input id="photos" type="file" multiple="" />
-    <button id="testButton" type="button">Test with Sample Image</button>
+    <button id="testButton" type="button">Test with All Sample Images</button>
   </form>
 
   <!-- Sample Images -->
@@ -70,13 +74,21 @@ layout: page
 
     // Add event listeners to sample images
     document.querySelectorAll('.sample-image').forEach(img => {
-      img.addEventListener('click', () => loadSampleImage(img.src));
+      img.addEventListener('click', () => {
+        // Remove highlight from all images
+        document.querySelectorAll('.sample-image').forEach(img => img.classList.remove('highlighted'));
+        // Add highlight to the clicked image
+        img.classList.add('highlighted');
+        // Load the clicked image
+        loadSampleImage(img.src);
+      });
     });
 
-    // Add event listener to the test button
+    // Add event listener to the test button to test all sample images
     document.getElementById('testButton').addEventListener('click', () => {
-      const sampleImageUrl = document.querySelector('.sample-image').src;
-      loadSampleImage(sampleImageUrl);
+      document.querySelectorAll('.sample-image').forEach(img => {
+        loadSampleImage(img.src);
+      });
     });
   </script>
 </body>
