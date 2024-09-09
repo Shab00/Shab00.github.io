@@ -32,7 +32,17 @@ layout: page
 
     document.addEventListener('DOMContentLoaded', (event) => {
         const form = document.getElementById('predictionForm');
+        if (!form) {
+            console.error('Form element not found');
+            return;
+        }
+
         const button = form.querySelector('button[type="submit"]');
+        if (!button) {
+            console.error('Button element not found');
+            return;
+        }
+
         console.log('Button element:', button);
 
         form.addEventListener('submit', async function(event) {
