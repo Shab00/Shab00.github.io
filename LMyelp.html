@@ -32,8 +32,10 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
 
     console.log("Form submitted with values:", { text, numberOfWords, temperature });
 
-    // Connect to the Hugging Face Spaces API
-    const client = await Client.connect("bashaar/yelpLM");
+    // Connect to the Hugging Face Spaces API with token
+    const client = await Client.connect("bashaar/yelpLM", {
+        hf_token: "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"
+    });
 
     try {
         // Send a request to the API
