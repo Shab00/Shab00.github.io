@@ -49,7 +49,7 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
         document.getElementById('output').innerText = result.data;
     } catch (error) {
         console.error('Error:', error);
-        document.getElementById('output').innerText = 'An error occurred while fetching the prediction.';
+        document.getElementById('output').innerText = `An error occurred while fetching the prediction: ${error.message}`;
     }
 });
 </script>
