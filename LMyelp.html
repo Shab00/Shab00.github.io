@@ -18,8 +18,9 @@ layout: page
 </form>
 <div id="output"></div>
 
+<!-- Include the CDN for @gradio/client -->
 <script type="module">
-import { Client } from "@gradio/client";
+import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
 
 document.getElementById('predictionForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevent the default form submission
