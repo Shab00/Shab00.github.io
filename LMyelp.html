@@ -50,6 +50,9 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('output').innerText = `An error occurred while fetching the prediction: ${error.message || 'Unknown error'}`;
+        if (error.response) {
+            console.error('Error response:', error.response);
+        }
     }
 });
 </script>
