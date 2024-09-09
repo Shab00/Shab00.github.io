@@ -1,110 +1,96 @@
 ---
-title: Yelp Reviews Auto Complete
+title: LC25000
 layout: page
 ---
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yelp Reviews Auto Complete</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        p {
-            margin: 5px 0;
-        }
-        input, button {
-            margin-bottom: 10px;
-        }
-        #output {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LC25000.html</title>
+  <style>
+    /* CSS to resize sample images */
+    .sample-image {
+      width: 100px; /* Set the desired width */
+      height: auto; /* Maintain aspect ratio */
+      margin: 5px; /* Add some margin for spacing */
+      cursor: pointer; /* Change cursor to pointer on hover */
+    }
+    /* CSS to highlight selected image */
+    .highlighted {
+      border: 2px solid blue; /* Highlight border */
+    }
+  </style>
 </head>
 <body>
-    <h2>Instructions</h2>
-    <p>Enter the initial text, select the number of words you want to predict, and adjust the temperature slider. Click "Submit" to get the predicted text.</p>
+  <h8>images will take ~1min to load</h8>
+  <form>
+    <!-- Label for file input -->
+    <label for="photos">Upload Photos:</label>
+    <input id="photos" type="file" multiple="" />
+    <button id="testButton" type="button">Test with all Sample Images</button>
+  </form>
+  <!-- Sample Images -->
+  <div id="sample-images">
+    <h3>Sample Images:</h3>
+    <img src="img/colonB.jpeg" alt="Sample Image 1" class="sample-image" />
+    <img src="img/coloncA.jpeg" alt="Sample Image 2" class="sample-image" />
+    <img src="img/lungacA.jpeg" alt="Sample Image 3" class="sample-image" />
+    <img src="img/lungnB.jpeg" alt="Sample Image 4" class="sample-image" />
+    <img src="img/lungsc.jpeg" alt="Sample Image 5" class="sample-image" />
+  </div>
 
-    <form id="predictionForm">
-        <p>Text:</p>
-        <input id="text" type="text" required>
-        <p>Number of Words:</p>
-        <input type="number" id="number_of_words" name="quantity" min="1" max="40" required>
-        <p>Temperature:</p>
-        <input type="range" min="0.1" max="1.0" step="0.001" value="0.5" class="slider" id="temperature">
-        <output for="temperature" id="temperatureOutput">0.5</output>
-        <br>
-        <button type="submit">Submit</button>
-    </form>
-    <div id="output"></div>
+  <script>
+    async function loaded(reader) {
+      const response = await fetch('https://bashaar-lc25000.hf.space/api/predict', {
+        method: "POST",
+        body: JSON.stringify({ "data": [reader.result] }),
+        headers: { "Content-Type": "application/json" }
+      });
+      const json = await response.json();
+      const label = json['data'][0]['confidences'][0]['label'];
+      const div = document.createElement('div');
+      div.innerHTML = `<br/><img src="${reader.result}" width="300"> <p>${label}</p>`;
+      document.body.append(div);
+    }
 
-    <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const form = document.getElementById('predictionForm');
-        if (!form) {
-            console.error('Form element not found');
-            return;
-        }
+    function read(file) {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => loaded(reader));
+      reader.readAsDataURL(file);
+    }
 
-        // Update the output value of the temperature slider
-        const temperatureSlider = document.getElementById('temperature');
-        const temperatureOutput = document.getElementById('temperatureOutput');
-        temperatureSlider.addEventListener('input', function() {
-            temperatureOutput.value = temperatureSlider.value;
-        });
-
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Collect input values
-            const text = document.getElementById('text').value;
-            const numberOfWords = document.getElementById('number_of_words').value;
-            const temperature = document.getElementById('temperature').value;
-
-            console.log("Form submitted with values:", { text, numberOfWords, temperature });
-
-            // Prepare the request payload
-            const payload = {
-                text: text,
-                number_of_words: numberOfWords,
-                temperature: temperature
-            };
-
-            try {
-                // Send a request to the Hugging Face Spaces API
-                const response = await fetch("https://hf.space/embed/bashaar/yelpLM/api/predict", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                console.log("API response:", result);
-
-                // Display the prediction result
-                document.getElementById('output').innerText = result.data;
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('output').innerText = `An error occurred while fetching the prediction: ${error.message || 'Unknown error'}`;
-            }
-        });
+    document.getElementById('photos').addEventListener('input', () => {
+      [...document.getElementById('photos').files].map(read);
     });
-    </script>
+
+    // Function to load a sample image for testing
+    async function loadSampleImage(url) {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const file = new File([blob], "sample.jpg", { type: "image/jpeg" });
+      read(file);
+    }
+
+    // Add event listeners to sample images
+    document.querySelectorAll('.sample-image').forEach(img => {
+      img.addEventListener('click', () => {
+        // Remove highlight from all images
+        document.querySelectorAll('.sample-image').forEach(img => img.classList.remove('highlighted'));
+        // Add highlight to the clicked image
+        img.classList.add('highlighted');
+        // Load the clicked image
+        loadSampleImage(img.src);
+      });
+    });
+
+    // Add event listener to the test button to test all sample images
+    document.getElementById('testButton').addEventListener('click', () => {
+      document.querySelectorAll('.sample-image').forEach(img => {
+        loadSampleImage(img.src);
+      });
+    });
+
+  </script>
 </body>
 </html>
