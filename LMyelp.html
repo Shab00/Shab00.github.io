@@ -25,7 +25,7 @@ layout: page
             const numberOfWords = parseInt(document.getElementById('numberOfWords').value) || 20;
             const temperature = parseFloat(document.getElementById('temperature').value) || 0.5;
 
-            const client = await gradio.Client.connect("bashaar/yelpLM");
+            const client = await window.gradio.Client.connect("bashaar/yelpLM");
             const result = await client.predict("/predict", { 
                 text: input, 
                 number_of_words: numberOfWords, 
