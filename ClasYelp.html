@@ -3,49 +3,61 @@ title: Yelp Reviews Positive Or Negative
 layout: page
 ---
 
-
 <style>
-	#result {
-	  font-size: 24px;
-	  font-weight: bold;
-	  margin-top: 20px;
-	}
-	.positive {
-	  color: green;
-	}
-	.negative {
-	  color: red;
-	}
-  </style>
-  
-  <script type="module">
-	import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
-  
-	document.addEventListener("DOMContentLoaded", async () => {
-	  const client = await Client.connect("bashaar/yelpClas");
-  
-	  document.getElementById("predictButton").addEventListener("click", async () => {
-		const text = document.getElementById("reviewText").value;
-		const result = await client.predict("/predict", { text });
-		console.log(result.data); // Log the result to inspect the structure
-  
-		const output = result.data[0].label;
-		const resultElement = document.getElementById("result");
-  
-		resultElement.innerText = output;
-		if (output === "positive") {
-		  resultElement.className = "positive";
-		} else if (output === "negative") {
-		  resultElement.className = "negative";
-		} else {
-		  resultElement.className = ""; // Reset class if the output is neither positive nor negative
-		}
-	  });
-	});
-  </script>
-  
+  #result {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  .positive {
+    color: green;
+  }
+  .negative {
+    color: red;
+  }
+</style>
+
+<script type="module">
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const client = await Client.connect("bashaar/yelpClas");
+
+    document.getElementById("predictButton").addEventListener("click", async () => {
+      const text = document.getElementById("reviewText").value;
+      const result = await client.predict("/predict", { text });
+      console.log(result.data); // Log the result to inspect the structure
+
+      const output = result.data[0].label;
+      const resultElement = document.getElementById("result");
+
+      resultElement.innerText = output;
+      if (output === "positive") {
+        resultElement.className = "positive";
+      } else if (output === "negative") {
+        resultElement.className = "negative";
+      } else {
+        resultElement.className = ""; // Reset class if the output is neither positive nor negative
+      }
+    });
+
+    document.querySelectorAll(".example-button").forEach(button => {
+      button.addEventListener("click", () => {
+        document.getElementById("reviewText").value = button.dataset.example;
+      });
+    });
+  });
+</script>
+
+<div>
+  <textarea id="reviewText" placeholder="Write your text or review here..."></textarea>
+  <button id="predictButton">Predict</button>
+  <div id="result"></div>
   <div>
-	<textarea id="reviewText" placeholder="Write your text or review here..."></textarea>
-	<button id="predictButton">Predict</button>
-	<div id="result"></div>
+    <h2>Example Sentences</h2>
+    <button class="example-button" data-example="The food was amazing and the service was excellent!">Example 1</button>
+    <button class="example-button" data-example="The place was dirty and the staff was rude.">Example 2</button>
+    <button class="example-button" data-example="I had a great time and the ambiance was perfect.">Example 3</button>
+    <button class="example-button" data-example="The wait time was too long and the food was cold.">Example 4</button>
   </div>
+</div>
