@@ -62,7 +62,7 @@ layout: page
             try {
                 // Use a CORS proxy to forward the request
                 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                const targetUrl = 'https://hf.space/embed/bashaar/yelpLM/api/predict';
+                const targetUrl = 'https://bashaar-yelpclas.hf.space';
 
                 const response = await fetch(proxyUrl + targetUrl, {
                     method: "POST",
