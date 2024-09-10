@@ -19,8 +19,13 @@ layout: page
 
     document.getElementById("predictButton").addEventListener("click", async () => {
       const text = document.getElementById("reviewInput").value;
-      const numberOfWords = parseInt(document.getElementById("numberOfWords").value) || 20;
+      let numberOfWords = parseInt(document.getElementById("numberOfWords").value) || 20;
       const temperature = parseFloat(document.getElementById("temperature").value) || 0.5;
+
+      // Limit the number of words to 40
+      if (numberOfWords > 40) {
+        numberOfWords = 40;
+      }
 
       const result = await client.predict("/predict", { 
         text: text, 
@@ -38,9 +43,15 @@ layout: page
 </script>
 
 <div>
+  <label for="reviewInput">Review:</label>
   <input type="text" id="reviewInput" placeholder="Type your review here...">
-  <input type="number" id="numberOfWords" placeholder="Number of words" value="20">
+  
+  <label for="numberOfWords">Number of words (max 40):</label>
+  <input type="number" id="numberOfWords" placeholder="Number of words" value="20" max="40">
+  
+  <label for="temperature">Temperature:</label>
   <input type="number" id="temperature" placeholder="Temperature" step="0.1" min="0" max="1" value="0.5">
+  
   <button id="predictButton">Get Auto Complete</button>
   <div id="result"></div>
 </div>
