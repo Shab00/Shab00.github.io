@@ -9,25 +9,14 @@ layout: page
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yelp Reviews Auto Complete</title>
-    <script src="libs/index.js"></script>
-</head>
-<body>
-    <h1>Yelp Reviews Auto Complete</h1>
-    <input type="text" id="reviewInput" placeholder="Type your review here...">
-    <input type="number" id="numberOfWords" placeholder="Number of words" value="20">
-    <input type="number" id="temperature" placeholder="Temperature" step="0.1" min="0" max="1" value="0.5">
-    <button onclick="getAutoComplete()">Get Auto Complete</button>
-    <p id="result"></p>
-
     <script>
         // Manually define the gradio object
         window.gradio = {
             Client: {
                 connect: async function (space) {
-                    const response = await fetch(`https://hf.space/embed/${space}/api/predict`);
                     return {
                         predict: async function (endpoint, data) {
-                            const res = await fetch(response.url + endpoint, {
+                            const res = await fetch(`https://hf.space/embed/${space}${endpoint}`, {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json'
@@ -40,7 +29,17 @@ layout: page
                 }
             }
         };
+    </script>
+</head>
+<body>
+    <h1>Yelp Reviews Auto Complete</h1>
+    <input type="text" id="reviewInput" placeholder="Type your review here...">
+    <input type="number" id="numberOfWords" placeholder="Number of words" value="20">
+    <input type="number" id="temperature" placeholder="Temperature" step="0.1" min="0" max="1" value="0.5">
+    <button onclick="getAutoComplete()">Get Auto Complete</button>
+    <p id="result"></p>
 
+    <script>
         async function getAutoComplete() {
             const input = document.getElementById('reviewInput').value;
             const numberOfWords = parseInt(document.getElementById('numberOfWords').value) || 20;
