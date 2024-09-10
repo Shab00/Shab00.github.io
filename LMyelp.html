@@ -11,82 +11,30 @@ layout: page
     <title>Yelp Reviews Auto Complete</title>
 </head>
 <body>
-    <h2>Instructions</h2>
-    <p>Enter the initial text, select the number of words you want to predict, and adjust the temperature slider. Click "Submit" to get the predicted text.</p>
+    <h1>Yelp Reviews Auto Complete</h1>
+    <input type="text" id="reviewInput" placeholder="Type your review here...">
+    <input type="number" id="numberOfWords" placeholder="Number of words">
+    <input type="number" id="temperature" placeholder="Temperature" step="0.1" min="0" max="1">
+    <button onclick="getAutoComplete()">Get Auto Complete</button>
+    <p id="result"></p>
 
-    <form id="predictionForm">
-        <p>Text:</p>
-        <input id="text" type="text" required>
-        <p>Number of Words:</p>
-        <input type="number" id="number_of_words" name="quantity" min="1" max="40" required>
-        <p>Temperature:</p>
-        <input type="range" min="0.1" max="1.0" step="0.001" value="0.5" class="slider" id="temperature">
-        <output for="temperature" id="temperatureOutput">0.5</output>
-        <br>
-        <button type="submit">Submit</button>
-    </form>
-    <div id="output"></div>
+    <script type="module">
+        import { Client } from "@gradio/client";
 
-    <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const form = document.getElementById('predictionForm');
-        if (!form) {
-            console.error('Form element not found');
-            return;
+        async function getAutoComplete() {
+            const input = document.getElementById('reviewInput').value;
+            const numberOfWords = parseInt(document.getElementById('numberOfWords').value) || 3;
+            const temperature = parseFloat(document.getElementById('temperature').value) || 0.5;
+
+            const client = await Client.connect("bashaar/yelpLM");
+            const result = await client.predict("/predict", { 
+                text: input, 
+                number_of_words: numberOfWords, 
+                temperature: temperature 
+            });
+
+            document.getElementById('result').innerText = result.data;
         }
-
-        // Update the output value of the temperature slider
-        const temperatureSlider = document.getElementById('temperature');
-        const temperatureOutput = document.getElementById('temperatureOutput');
-        temperatureSlider.addEventListener('input', function() {
-            temperatureOutput.value = temperatureSlider.value;
-        });
-
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Collect input values
-            const text = document.getElementById('text').value;
-            const numberOfWords = document.getElementById('number_of_words').value;
-            const temperature = document.getElementById('temperature').value;
-
-            console.log("Form submitted with values:", { text, numberOfWords, temperature });
-
-            // Prepare the request payload
-            const payload = {
-                text: text,
-                number_of_words: numberOfWords,
-                temperature: temperature
-            };
-
-            try {
-                // Use a CORS proxy to forward the request
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-                const targetUrl = 'https://bashaar-yelpclas.hf.space';
-
-                const response = await fetch(proxyUrl + targetUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const result = await response.json();
-                console.log("API response:", result);
-
-                // Display the prediction result
-                document.getElementById('output').innerText = result.data;
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('output').innerText = `An error occurred while fetching the prediction: ${error.message || 'Unknown error'}`;
-            }
-        });
-    });
     </script>
 </body>
 </html>
