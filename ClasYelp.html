@@ -3,9 +3,29 @@ title: Yelp Reviews Positive Or Negative
 layout: page
 ---
 
+
 <script
-	type="module"
-	src="https://gradio.s3-us-west-2.amazonaws.com/4.37.2/gradio.js"
+    type="module"
+    src="https://gradio.s3-us-west-2.amazonaws.com/4.37.2/gradio.js"
 ></script>
 
-<gradio-app src="https://bashaar-yelpclas.hf.space"></gradio-app>
+<script type="module">
+  import { Client } from "@gradio/client";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const client = await Client.connect("bashaar/yelpClas");
+
+    document.getElementById("predictButton").addEventListener("click", async () => {
+      const text = document.getElementById("reviewText").value;
+      const result = await client.predict("/predict", { text });
+      document.getElementById("result").innerText = result.data;
+    });
+  });
+</script>
+
+<div>
+  <h1>Yelp Reviews Positive Or Negative</h1>
+  <textarea id="reviewText" placeholder="Write your text or review here..."></textarea>
+  <button id="predictButton">Predict</button>
+  <div id="result"></div>
+</div>
