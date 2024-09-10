@@ -3,57 +3,44 @@ title: Yelp Reviews Auto Complete
 layout: page
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yelp Reviews Auto Complete</title>
-    <script>
-        // Manually define the gradio object
-        window.gradio = {
-            Client: {
-                connect: async function (space) {
-                    return {
-                        predict: async function (endpoint, data) {
-                            const res = await fetch(`https://hf.space/embed/${space}${endpoint}`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(data)
-                            });
-                            return await res.json();
-                        }
-                    };
-                }
-            }
-        };
-    </script>
-</head>
-<body>
-    <h1>Yelp Reviews Auto Complete</h1>
-    <input type="text" id="reviewInput" placeholder="Type your review here...">
-    <input type="number" id="numberOfWords" placeholder="Number of words" value="20">
-    <input type="number" id="temperature" placeholder="Temperature" step="0.1" min="0" max="1" value="0.5">
-    <button onclick="getAutoComplete()">Get Auto Complete</button>
-    <p id="result"></p>
+<style>
+  #result {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+</style>
 
-    <script>
-        async function getAutoComplete() {
-            const input = document.getElementById('reviewInput').value;
-            const numberOfWords = parseInt(document.getElementById('numberOfWords').value) || 20;
-            const temperature = parseFloat(document.getElementById('temperature').value) || 0.5;
+<script type="module">
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
 
-            const client = await window.gradio.Client.connect("bashaar/yelpLM");
-            const result = await client.predict("/predict", { 
-                text: input, 
-                number_of_words: numberOfWords, 
-                temperature: temperature 
-            });
+  document.addEventListener("DOMContentLoaded", async () => {
+    const client = await Client.connect("bashaar/yelpLM");
 
-            document.getElementById('result').innerText = result.data;
-        }
-    </script>
-</body>
-</html>
+    document.getElementById("predictButton").addEventListener("click", async () => {
+      const text = document.getElementById("reviewInput").value;
+      const numberOfWords = parseInt(document.getElementById("numberOfWords").value) || 20;
+      const temperature = parseFloat(document.getElementById("temperature").value) || 0.5;
+
+      const result = await client.predict("/predict", { 
+        text: text, 
+        number_of_words: numberOfWords, 
+        temperature: temperature 
+      });
+      console.log(result.data); // Log the result to inspect the structure
+
+      const output = result.data;
+      const resultElement = document.getElementById("result");
+
+      resultElement.innerText = output;
+    });
+  });
+</script>
+
+<div>
+  <input type="text" id="reviewInput" placeholder="Type your review here...">
+  <input type="number" id="numberOfWords" placeholder="Number of words" value="20">
+  <input type="number" id="temperature" placeholder="Temperature" step="0.1" min="0" max="1" value="0.5">
+  <button id="predictButton">Get Auto Complete</button>
+  <div id="result"></div>
+</div>
