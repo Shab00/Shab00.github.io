@@ -20,6 +20,27 @@ layout: page
     <p id="result"></p>
 
     <script>
+        // Manually define the gradio object
+        window.gradio = {
+            Client: {
+                connect: async function (space) {
+                    const response = await fetch(`https://hf.space/embed/${space}/api/predict`);
+                    return {
+                        predict: async function (endpoint, data) {
+                            const res = await fetch(response.url + endpoint, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(data)
+                            });
+                            return await res.json();
+                        }
+                    };
+                }
+            }
+        };
+
         async function getAutoComplete() {
             const input = document.getElementById('reviewInput').value;
             const numberOfWords = parseInt(document.getElementById('numberOfWords').value) || 20;
