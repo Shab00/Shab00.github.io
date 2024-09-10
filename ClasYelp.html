@@ -12,7 +12,8 @@ layout: page
     document.getElementById("predictButton").addEventListener("click", async () => {
       const text = document.getElementById("reviewText").value;
       const result = await client.predict("/predict", { text });
-      document.getElementById("result").innerText = result.data;
+      console.log(result.data); // Log the result to inspect the structure
+      document.getElementById("result").innerText = result.data.label; // Adjust this line based on the actual property name
     });
   });
 </script>
