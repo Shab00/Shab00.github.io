@@ -3,24 +3,49 @@ title: Yelp Reviews Positive Or Negative
 layout: page
 ---
 
-<script type="module">
-  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    const client = await Client.connect("bashaar/yelpClas");
-
-    document.getElementById("predictButton").addEventListener("click", async () => {
-      const text = document.getElementById("reviewText").value;
-      const result = await client.predict("/predict", { text });
-      console.log(result.data); // Log the result to inspect the structure
-      document.getElementById("result").innerText = result.data[0].label; // Access the label from the first element of the array
-    });
-  });
-</script>
-
-<div>
-  <h1>Yelp Reviews Positive Or Negative</h1>
-  <textarea id="reviewText" placeholder="Write your text or review here..."></textarea>
-  <button id="predictButton">Predict</button>
-  <div id="result"></div>
-</div>
+<style>
+	#result {
+	  font-size: 24px;
+	  font-weight: bold;
+	  margin-top: 20px;
+	}
+	.positive {
+	  color: green;
+	}
+	.negative {
+	  color: red;
+	}
+  </style>
+  
+  <script type="module">
+	import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
+  
+	document.addEventListener("DOMContentLoaded", async () => {
+	  const client = await Client.connect("bashaar/yelpClas");
+  
+	  document.getElementById("predictButton").addEventListener("click", async () => {
+		const text = document.getElementById("reviewText").value;
+		const result = await client.predict("/predict", { text });
+		console.log(result.data); // Log the result to inspect the structure
+  
+		const output = result.data[0].label;
+		const resultElement = document.getElementById("result");
+  
+		resultElement.innerText = output;
+		if (output === "positive") {
+		  resultElement.className = "positive";
+		} else if (output === "negative") {
+		  resultElement.className = "negative";
+		} else {
+		  resultElement.className = ""; // Reset class if the output is neither positive nor negative
+		}
+	  });
+	});
+  </script>
+  
+  <div>
+	<textarea id="reviewText" placeholder="Write your text or review here..."></textarea>
+	<button id="predictButton">Predict</button>
+	<div id="result"></div>
+  </div>
