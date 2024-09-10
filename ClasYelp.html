@@ -3,14 +3,8 @@ title: Yelp Reviews Positive Or Negative
 layout: page
 ---
 
-
-<script
-    type="module"
-    src="https://gradio.s3-us-west-2.amazonaws.com/4.37.2/gradio.js"
-></script>
-
 <script type="module">
-  import { Client } from "@gradio/client";
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
 
   document.addEventListener("DOMContentLoaded", async () => {
     const client = await Client.connect("bashaar/yelpClas");
@@ -24,6 +18,7 @@ layout: page
 </script>
 
 <div>
+  <h1>Yelp Reviews Positive Or Negative</h1>
   <textarea id="reviewText" placeholder="Write your text or review here..."></textarea>
   <button id="predictButton">Predict</button>
   <div id="result"></div>
