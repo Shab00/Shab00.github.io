@@ -13,7 +13,7 @@ layout: page
       const text = document.getElementById("reviewText").value;
       const result = await client.predict("/predict", { text });
       console.log(result.data); // Log the result to inspect the structure
-      document.getElementById("result").innerText = result.data.label; // Adjust this line based on the actual property name
+      document.getElementById("result").innerText = result.data[0].label; // Access the label from the first element of the array
     });
   });
 </script>
