@@ -1,0 +1,56 @@
+---
+title: Case Law Summarizer 
+layout: page
+---
+
+<style>
+  #result {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  .positive {
+    color: green;
+  }
+  .negative {
+    color: red;
+  }
+</style>
+
+<script type="module">
+  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const client = await Client.connect("bashaar/sumApp);
+
+    document.getElementById("predictButton").addEventListener("click", async () => {
+      const text = document.getElementById("reviewText").value;
+      const result = await client.predict("/predict", { text });
+      console.log(result.data); // Log the result to inspect the structure
+
+      const output = result.data[0].label;
+      const resultElement = document.getElementById("result");
+
+      resultElement.innerText = output;
+      if (output === "positive") {
+        resultElement.className = "positive";
+      } else if (output === "negative") {
+        resultElement.className = "negative";
+      } else {
+        resultElement.className = ""; // Reset class if the output is neither positive nor negative
+      }
+    });
+
+    document.querySelectorAll(".example-button").forEach(button => {
+      button.addEventListener("click", () => {
+        document.getElementById("reviewText").value = button.dataset.example;
+      });
+    });
+  });
+</script>
+
+<div>
+  <textarea id="reviewText" placeholder="Write your text or review here..."></textarea>
+  <button id="predictButton">Predict</button>
+  <div id="result"></div>
+</div>

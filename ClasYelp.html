@@ -1,5 +1,5 @@
 ---
-title: Yelp Reviews Positive Or Negative 
+title: yelp reviews positive or negative 
 layout: page
 ---
 
@@ -18,46 +18,46 @@ layout: page
 </style>
 
 <script type="module">
-  import { Client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
+  import { client } from "https://cdn.jsdelivr.net/npm/@gradio/client@latest/dist/index.js";
 
-  document.addEventListener("DOMContentLoaded", async () => {
-    const client = await Client.connect("bashaar/yelpClas");
+  document.addeventlistener("domcontentloaded", async () => {
+    const client = await client.connect("bashaar/yelpclas");
 
-    document.getElementById("predictButton").addEventListener("click", async () => {
-      const text = document.getElementById("reviewText").value;
+    document.getelementbyid("predictbutton").addeventlistener("click", async () => {
+      const text = document.getelementbyid("reviewtext").value;
       const result = await client.predict("/predict", { text });
-      console.log(result.data); // Log the result to inspect the structure
+      console.log(result.data); // log the result to inspect the structure
 
       const output = result.data[0].label;
-      const resultElement = document.getElementById("result");
+      const resultelement = document.getelementbyid("result");
 
-      resultElement.innerText = output;
+      resultelement.innertext = output;
       if (output === "positive") {
-        resultElement.className = "positive";
+        resultelement.classname = "positive";
       } else if (output === "negative") {
-        resultElement.className = "negative";
+        resultelement.classname = "negative";
       } else {
-        resultElement.className = ""; // Reset class if the output is neither positive nor negative
+        resultelement.classname = ""; // reset class if the output is neither positive nor negative
       }
     });
 
-    document.querySelectorAll(".example-button").forEach(button => {
-      button.addEventListener("click", () => {
-        document.getElementById("reviewText").value = button.dataset.example;
+    document.queryselectorall(".example-button").foreach(button => {
+      button.addeventlistener("click", () => {
+        document.getelementbyid("reviewtext").value = button.dataset.example;
       });
     });
   });
 </script>
 
 <div>
-  <textarea id="reviewText" placeholder="Write your text or review here..."></textarea>
-  <button id="predictButton">Predict</button>
+  <textarea id="reviewtext" placeholder="write your text or review here..."></textarea>
+  <button id="predictbutton">predict</button>
   <div id="result"></div>
   <div>
-    <h2>Example Sentences</h2>
-    <button class="example-button" data-example="The food was amazing and the service was excellent!">Example 1</button>
-    <button class="example-button" data-example="The place was dirty and the staff was rude.">Example 2</button>
-    <button class="example-button" data-example="I had a great time and the ambiance was perfect.">Example 3</button>
-    <button class="example-button" data-example="The wait time was too long and the food was cold.">Example 4</button>
+    <h2>example sentences</h2>
+    <button class="example-button" data-example="the food was amazing and the service was excellent!">example 1</button>
+    <button class="example-button" data-example="the place was dirty and the staff was rude.">example 2</button>
+    <button class="example-button" data-example="i had a great time and the ambiance was perfect.">example 3</button>
+    <button class="example-button" data-example="the wait time was too long and the food was cold.">example 4</button>
   </div>
 </div>
