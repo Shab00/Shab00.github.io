@@ -1,5 +1,5 @@
 ---
-title: Case Law Summarizer 
+title: Case Law Summariser 
 layout: page
 ---
 
@@ -9,6 +9,9 @@ layout: page
     font-weight: bold;
     margin-top: 20px;
   }
+  .error {
+    color: red;
+  }
 </style>
 
 <script type="module">
@@ -17,8 +20,20 @@ layout: page
   document.addEventListener("DOMContentLoaded", async () => {
     const client = await Client.connect("bashaar/sumApp");
 
+    const wordLimit = 500;
+    const errorElement = document.getElementById("error");
+
     document.getElementById("predictButton").addEventListener("click", async () => {
       const text = document.getElementById("reviewText").value;
+      const wordCount = text.split(/\s+/).length;
+
+      if (wordCount > wordLimit) {
+        errorElement.innerText = `Input text exceeds the ${wordLimit} word limit. Please shorten your text.`;
+        return;
+      } else {
+        errorElement.innerText = ''; // Clear any previous error message
+      }
+
       const result = await client.predict("/predict", [text]);
       console.log(result.data); // Log the result to inspect the structure
 
@@ -38,6 +53,8 @@ layout: page
 
 <div>
   <textarea id="reviewText" placeholder="Write your text or review here..." rows="10" cols="50"></textarea>
-  <button id="predictButton">Summarize</button>
+  <div id="error" class="error"></div>
+  <p>Note: The input text is limited to 500 words.</p>
+  <button id="predictButton">Summarise</button>
   <textarea id="result" placeholder="The summary will appear here..." rows="10" cols="50" readonly></textarea>
 </div>
