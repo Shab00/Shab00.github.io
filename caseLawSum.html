@@ -43,6 +43,12 @@ layout: page
       resultElement.value = output; // Update the output text area with the summary
     });
 
+    document.getElementById("clearButton").addEventListener("click", () => {
+      document.getElementById("reviewText").value = '';
+      document.getElementById("result").value = '';
+      errorElement.innerText = ''; // Clear any previous error message
+    });
+
     document.querySelectorAll(".example-button").forEach(button => {
       button.addEventListener("click", () => {
         document.getElementById("reviewText").value = button.dataset.example;
@@ -55,6 +61,8 @@ layout: page
   <textarea id="reviewText" placeholder="Write your text or review here..." rows="10" cols="50"></textarea>
   <div id="error" class="error"></div>
   <p>Note: The input text is limited to 500 words.</p>
+  <p>Note: Summaries can take up to 3mins</p>
   <button id="predictButton">Summarise</button>
+  <button id="clearButton">Clear</button>
   <textarea id="result" placeholder="The summary will appear here..." rows="10" cols="50" readonly></textarea>
 </div>
