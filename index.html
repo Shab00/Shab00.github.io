@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Chess Engine Demo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cm-chessboard@8.6.2/assets/chessboard.css" />
+  <style>
+    body { background: #222; color: #eee; font-family: sans-serif; text-align: center; }
+    #board { margin: 40px auto; }
+    h1 { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>My Chess Engine Demo</h1>
+  <div id="board" style="width: 400px; height: 400px;"></div>
+  <p>
+    <b>Drag the pieces!</b><br>
+    (Soon: play against my engine right here.)
+  </p>
+  <script src="https://cdn.jsdelivr.net/npm/cm-chessboard@8.6.2/dist/cm-chessboard.min.js"></script>
+  <script>
+    const board = new Chessboard(document.getElementById("board"), {
+      position: "start", // FEN string or "start"
+      sprite: { url: "https://cdn.jsdelivr.net/npm/cm-chessboard@8.6.2/assets/chessboard-sprite.svg" },
+      style: {
+        cssClass: "default"
+      },
+      orientation: "white"
+    });
+    board.enableMoveInput(inputHandler);
+
+    function inputHandler(event) {
+      if(event.type === "moveInput") {
+        board.setPiece(event.move.to, board.getPiece(event.move.from));
+        board.setPiece(event.move.from, null);
+        event.chessboard.moveInputFinished(true);
+      }
+    }
+  </script>
+</body>
+</html>
