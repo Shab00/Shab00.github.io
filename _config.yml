@@ -1,9 +1,0 @@
-remote_theme: daviddarnes/alembic@main
-plugins:
-- jekyll-remote-theme
-
-title: Bashaar
-description: Some basic examples of client interfaces to a computer vision API
-
-author:
-  name: Bashaar Dhoot
