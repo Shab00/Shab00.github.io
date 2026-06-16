@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chess Engine WASM Demo</title>
+  <link rel="stylesheet" href="./assets/chessboard.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem;
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      margin-bottom: 1.5rem;
+      color: #555;
+      max-width: 900px;
+    }
+
+    .layout {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    #board {
+      width: 420px;
+    }
+
+    .controls {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    button {
+      padding: 0.65rem 1rem;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    button:hover:not(:disabled) {
+      background: #f0f0f0;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #sidepanel {
+      width: 420px;
+    }
+
+    #status {
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    #fen {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-family: monospace;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+
+    .note {
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background: #fff8e1;
+      border: 1px solid #ecd9a3;
+      border-radius: 6px;
+      color: #5f4b00;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    #log {
+      min-height: 260px;
+      max-height: 360px;
+      overflow: auto;
+      padding: 0.75rem;
+      background: #111;
+      color: #eee;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Chess Engine WASM Demo</h1>
+  <p class="subtitle">
+    A local browser demo connecting a chessboard UI to a WebAssembly chess engine.
+    You currently play as White, and the engine can play moves from the current position.
+  </p>
+
+  <div class="layout">
+    <div class="panel">
+      <div id="board"></div>
+
+      <div class="controls">
+        <button id="newGameBtn" disabled>New Game</button>
+        <button id="engineMoveBtn" disabled>Play Best Move</button>
+        <button id="resetBtn" disabled>Reset to Start</button>
+        <button id="clearLogBtn">Clear Log</button>
+      </div>
+    </div>
+
+    <div id="sidepanel" class="panel">
+      <div id="status">Status: Loading...</div>
+
+      <div class="note">
+        <strong>Current demo note:</strong> board rendering, WASM loading, JS/WASM integration,
+        and board/FEN syncing are working locally. Legal move validation still needs tightening
+        in the engine.
+      </div>
+
+      <div><strong>Current FEN</strong></div>
+      <div id="fen">Waiting for engine...</div>
+
+      <h3>Log</h3>
+      <div id="log"></div>
+    </div>
+  </div>
+
+  <script>
+    var engine = null;
+    var board = null;
+
+    function log(message) {
+      console.log(message);
+      const logEl = document.getElementById("log");
+      logEl.textContent += message + "\n";
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function clearLog() {
+      document.getElementById("log").textContent = "";
+      log("Log cleared.");
+    }
+
+    function setStatus(message) {
+      document.getElementById("status").textContent = "Status: " + message;
+    }
+
+    function setFenDisplay(fen) {
+      document.getElementById("fen").textContent = fen;
+    }
+
+    function getCurrentFen() {
+      const bufferSize = 128;
+      const ptr = engine._malloc(bufferSize);
+      engine._wasm_engine_get_fen(ptr, bufferSize);
+      const fen = engine.UTF8ToString(ptr);
+      engine._free(ptr);
+      return fen;
+    }
+
+    function setEngineFen(fen) {
+      const ptr = engine._malloc(fen.length + 1);
+      engine.stringToUTF8(fen, ptr, fen.length + 1);
+      engine._wasm_engine_set_fen(ptr);
+      engine._free(ptr);
+    }
+
+    function makeMove(move) {
+      const ptr = engine._malloc(move.length + 1);
+      engine.stringToUTF8(move, ptr, move.length + 1);
+      const result = engine._wasm_engine_make_move(ptr);
+      engine._free(ptr);
+      return result;
+    }
+
+    function getBestMove() {
+      const bufferSize = 16;
+      const ptr = engine._malloc(bufferSize);
+      engine._wasm_engine_get_bestmove(ptr, bufferSize);
+      const move = engine.UTF8ToString(ptr);
+      engine._free(ptr);
+      return move;
+    }
+
+    function refreshBoardFromEngine() {
+      const fen = getCurrentFen();
+      setFenDisplay(fen);
+      if (board) {
+        board.setPosition(fen);
+      }
+      return fen;
+    }
+
+    function startNewGame() {
+      if (!engine) return;
+      engine._wasm_engine_new_game();
+      const fen = refreshBoardFromEngine();
+      log("Started new game.");
+      log("FEN: " + fen);
+      setStatus("New game ready");
+    }
+
+    function resetToStart() {
+      if (!engine) return;
+      engine._wasm_engine_new_game();
+      const fen = refreshBoardFromEngine();
+      log("Reset to starting position.");
+      log("FEN: " + fen);
+      setStatus("Reset to start");
+    }
+
+    function requestEngineMove() {
+      if (!engine) return;
+
+      const move = getBestMove();
+      if (!move) {
+        log("Engine returned no move.");
+        setStatus("No engine move available");
+        return;
+      }
+
+      log("Engine best move: " + move);
+
+      const result = makeMove(move);
+      if (result === 0) {
+        const fen = refreshBoardFromEngine();
+        log("Engine played: " + move);
+        log("FEN: " + fen);
+        setStatus("Engine move played");
+      } else {
+        log("Engine move failed: " + move);
+        setStatus("Engine move failed");
+      }
+    }
+
+    function enableControls() {
+      document.getElementById("newGameBtn").disabled = false;
+      document.getElementById("engineMoveBtn").disabled = false;
+      document.getElementById("resetBtn").disabled = false;
+    }
+
+    window.startNewGame = startNewGame;
+    window.resetToStart = resetToStart;
+    window.requestEngineMove = requestEngineMove;
+    window.clearLog = clearLog;
+
+    var Module = {
+      onRuntimeInitialized: function () {
+        engine = Module;
+        log("WASM engine loaded successfully.");
+        setStatus("Engine ready");
+        startNewGame();
+        enableControls();
+      }
+    };
+  </script>
+
+  <script type="module">
+    import { Chessboard, FEN, COLOR, INPUT_EVENT_TYPE } from "./src/Chessboard.js";
+
+    board = new Chessboard(document.getElementById("board"), {
+      position: FEN.start,
+      assetsUrl: "./assets/"
+    });
+
+    board.enableMoveInput((event) => {
+      if (!engine) return false;
+
+      switch (event.type) {
+        case INPUT_EVENT_TYPE.moveInputStarted:
+          return true;
+
+        case INPUT_EVENT_TYPE.validateMoveInput: {
+          const move = event.squareFrom + event.squareTo;
+          log("Player attempted move: " + move);
+
+          const result = makeMove(move);
+          const fen = refreshBoardFromEngine();
+
+          if (result === 0) {
+            log("Player move accepted: " + move);
+            log("FEN: " + fen);
+            setStatus("Player move accepted");
+            return true;
+          } else {
+            log("Illegal move rejected: " + move);
+            log("FEN: " + fen);
+            setStatus("Illegal move rejected");
+            return false;
+          }
+        }
+
+        default:
+          return true;
+      }
+    }, COLOR.white);
+
+    document.getElementById("newGameBtn").onclick = window.startNewGame;
+    document.getElementById("engineMoveBtn").onclick = window.requestEngineMove;
+    document.getElementById("resetBtn").onclick = window.resetToStart;
+    document.getElementById("clearLogBtn").onclick = window.clearLog;
+
+    log("Board initialized. Waiting for WASM...");
+    setStatus("Waiting for WASM...");
+  </script>
+
+  <script src="./engine.js"></script>
+</body>
+</html>
