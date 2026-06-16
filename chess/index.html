@@ -90,10 +90,10 @@
     .note {
       margin-bottom: 1rem;
       padding: 0.75rem;
-      background: #fff8e1;
-      border: 1px solid #ecd9a3;
+      background: #eef6ff;
+      border: 1px solid #bdd8f7;
       border-radius: 6px;
-      color: #5f4b00;
+      color: #1f4f82;
       font-size: 0.95rem;
       line-height: 1.4;
     }
@@ -116,8 +116,8 @@
 <body>
   <h1>Chess Engine WASM Demo</h1>
   <p class="subtitle">
-    A local browser demo connecting a chessboard UI to a WebAssembly chess engine.
-    You currently play as White, and the engine can play moves from the current position.
+    A browser demo connecting a chessboard UI to a WebAssembly chess engine.
+    The player controls White, and the engine responds as Black.
   </p>
 
   <div class="layout">
@@ -126,7 +126,7 @@
 
       <div class="controls">
         <button id="newGameBtn" disabled>New Game</button>
-        <button id="engineMoveBtn" disabled>Play Best Move</button>
+        <button id="engineMoveBtn" disabled>Engine Move</button>
         <button id="resetBtn" disabled>Reset to Start</button>
         <button id="clearLogBtn">Clear Log</button>
       </div>
@@ -136,9 +136,8 @@
       <div id="status">Status: Loading...</div>
 
       <div class="note">
-        <strong>Current demo note:</strong> board rendering, WASM loading, JS/WASM integration,
-        and board/FEN syncing are working locally. Legal move validation still needs tightening
-        in the engine.
+        <strong>Current mode:</strong> the player moves White pieces only. After a legal player move,
+        the engine automatically responds as Black.
       </div>
 
       <div><strong>Current FEN</strong></div>
@@ -152,6 +151,10 @@
   <script>
     var engine = null;
     var board = null;
+    var isEngineThinking = false;
+    var gameReady = false;
+    const ENGINE_REPLY_DELAY_MS = 400;
+    const ENGINE_THINKING_DELAY_MS = 300;
 
     function log(message) {
       console.log(message);
@@ -182,13 +185,6 @@
       return fen;
     }
 
-    function setEngineFen(fen) {
-      const ptr = engine._malloc(fen.length + 1);
-      engine.stringToUTF8(fen, ptr, fen.length + 1);
-      engine._wasm_engine_set_fen(ptr);
-      engine._free(ptr);
-    }
-
     function makeMove(move) {
       const ptr = engine._malloc(move.length + 1);
       engine.stringToUTF8(move, ptr, move.length + 1);
@@ -215,52 +211,68 @@
       return fen;
     }
 
-    function startNewGame() {
-      if (!engine) return;
-      engine._wasm_engine_new_game();
-      const fen = refreshBoardFromEngine();
-      log("Started new game.");
-      log("FEN: " + fen);
-      setStatus("New game ready");
-    }
-
-    function resetToStart() {
-      if (!engine) return;
-      engine._wasm_engine_new_game();
-      const fen = refreshBoardFromEngine();
-      log("Reset to starting position.");
-      log("FEN: " + fen);
-      setStatus("Reset to start");
-    }
-
-    function requestEngineMove() {
-      if (!engine) return;
-
-      const move = getBestMove();
-      if (!move) {
-        log("Engine returned no move.");
-        setStatus("No engine move available");
-        return;
-      }
-
-      log("Engine best move: " + move);
-
-      const result = makeMove(move);
-      if (result === 0) {
-        const fen = refreshBoardFromEngine();
-        log("Engine played: " + move);
-        log("FEN: " + fen);
-        setStatus("Engine move played");
-      } else {
-        log("Engine move failed: " + move);
-        setStatus("Engine move failed");
-      }
-    }
-
     function enableControls() {
       document.getElementById("newGameBtn").disabled = false;
       document.getElementById("engineMoveBtn").disabled = false;
       document.getElementById("resetBtn").disabled = false;
+    }
+
+    function startNewGame() {
+      if (!engine) return;
+      isEngineThinking = false;
+      gameReady = true;
+      engine._wasm_engine_new_game();
+      const fen = refreshBoardFromEngine();
+      log("Started new game.");
+      log("FEN: " + fen);
+      setStatus("Your move as White");
+    }
+
+    function resetToStart() {
+      if (!engine) return;
+      isEngineThinking = false;
+      gameReady = true;
+      engine._wasm_engine_new_game();
+      const fen = refreshBoardFromEngine();
+      log("Reset to starting position.");
+      log("FEN: " + fen);
+      setStatus("Your move as White");
+    }
+
+    function requestEngineMove() {
+      if (!engine || isEngineThinking || !gameReady) return;
+
+      isEngineThinking = true;
+      setStatus("Engine thinking...");
+
+      window.setTimeout(() => {
+        const move = getBestMove();
+
+        if (!move) {
+          log("Engine returned no move.");
+          refreshBoardFromEngine();
+          setStatus("No engine move available");
+          isEngineThinking = false;
+          return;
+        }
+
+        log("Engine best move: " + move);
+
+        const result = makeMove(move);
+        const fen = refreshBoardFromEngine();
+
+        if (result === 0) {
+          log("Engine played: " + move);
+          log("FEN: " + fen);
+          setStatus("Your move as White");
+        } else {
+          log("Engine move failed: " + move);
+          log("FEN: " + fen);
+          setStatus("Engine move failed");
+        }
+
+        isEngineThinking = false;
+      }, ENGINE_THINKING_DELAY_MS);
     }
 
     window.startNewGame = startNewGame;
@@ -288,10 +300,12 @@
     });
 
     board.enableMoveInput((event) => {
-      if (!engine) return false;
+      if (!engine || !gameReady) return false;
+      if (isEngineThinking) return false;
 
       switch (event.type) {
         case INPUT_EVENT_TYPE.moveInputStarted:
+          setStatus("White to move");
           return true;
 
         case INPUT_EVENT_TYPE.validateMoveInput: {
@@ -304,7 +318,10 @@
           if (result === 0) {
             log("Player move accepted: " + move);
             log("FEN: " + fen);
-            setStatus("Player move accepted");
+            setStatus("Player move accepted. Engine thinking...");
+            window.setTimeout(() => {
+              window.requestEngineMove();
+            }, ENGINE_REPLY_DELAY_MS);
             return true;
           } else {
             log("Illegal move rejected: " + move);
