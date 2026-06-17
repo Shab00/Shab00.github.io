@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>My Chess Engine Demo</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cm-chessboard@8.6.2/assets/chessboard.css" />
-  <style>
-    body { background: #222; color: #eee; font-family: sans-serif; text-align: center; }
-    #board { margin: 40px auto; }
-    h1 { font-weight: bold; }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bashaar | Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>My Chess Engine Demo</h1>
-  <div id="board" style="width: 400px; height: 400px;"></div>
-  <p>
-    <b>Drag the pieces!</b><br>
-    (Soon: play against my engine right here.)
-  </p>
-  <script src="https://cdn.jsdelivr.net/npm/cm-chessboard@8.6.2/dist/cm-chessboard.min.js"></script>
-  <script>
-    const board = new Chessboard(document.getElementById("board"), {
-      position: "start", // FEN string or "start"
-      sprite: { url: "https://cdn.jsdelivr.net/npm/cm-chessboard@8.6.2/assets/chessboard-sprite.svg" },
-      style: {
-        cssClass: "default"
-      },
-      orientation: "white"
-    });
-    board.enableMoveInput(inputHandler);
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">Portfolio</p>
+      <h1>Hi, I’m Bashaar.</h1>
+      <p class="subtitle">
+        This site is a growing portfolio of projects I’ve completed across software, problem solving, and technical learning.
+        I’m using it to showcase finished work, live demos, and the progress I’m making over time.
+      </p>
+    </section>
 
-    function inputHandler(event) {
-      if(event.type === "moveInput") {
-        board.setPiece(event.move.to, board.getPiece(event.move.from));
-        board.setPiece(event.move.from, null);
-        event.chessboard.moveInputFinished(true);
-      }
-    }
-  </script>
+    <section class="projects">
+      <h2>Featured Work</h2>
+
+      <article class="project-card">
+        <div class="project-copy">
+          <h3>Chess Engine Demo</h3>
+          <p>
+            A browser-playable chess project with a custom engine running through WebAssembly.
+            It’s one of the first completed demos in this portfolio and reflects my work across low-level programming,
+            debugging, and shipping a live interactive project.
+          </p>
+
+          <div class="project-links">
+            <a class="button primary" href="/chess/">Open Demo</a>
+            <a class="button secondary" href="https://github.com/Shab00" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <p>More completed work, write-ups, and project links will be added here over time.</p>
+    </footer>
+  </main>
 </body>
 </html>
