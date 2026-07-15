@@ -1,0 +1,2774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premier League Home‑Win Predictions</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --button-text: #082f49;
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, rgba(56,189,248,0.12), transparent 30%),
+                  linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 0;
+    }
+    .container {
+      width: min(960px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 0.5rem;
+    }
+    .updated {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+    .predictions-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(17,24,39,0.9);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    th, td {
+      padding: 0.9rem 1.2rem;
+      text-align: left;
+      border-bottom: 1px solid var(--panel-border);
+    }
+    th {
+      background: #0f172a;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-size: 0.85rem;
+    }
+    td {
+      color: var(--text);
+    }
+    .prob-high {
+      color: #4ade80;
+      font-weight: 700;
+    }
+    .prob-mid {
+      color: #facc15;
+      font-weight: 600;
+    }
+    .prob-low {
+      color: #f87171;
+    }
+    .footer {
+      margin-top: 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚽ Premier League Home‑Win Predictions</h1>
+    <p class="updated">Last updated: 2026-07-15 13:39 UTC</p>
+    <table class="predictions-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Home</th>
+          <th>Away</th>
+          <th>P(Home Win)</th>
+          <th>Best Home Odds</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+  <td>2026-08-21</td>
+  <td>Arsenal</td>
+  <td>Coventry City</td>
+  <td class="prob-high">89.76%</td>
+  <td>1.15</td>
+</tr>
+<tr>
+  <td>2026-08-22</td>
+  <td>Hull City</td>
+  <td>Man United</td>
+  <td class="prob-low">9.78%</td>
+  <td>6.88</td>
+</tr>
+<tr>
+  <td>2026-08-22</td>
+  <td>Everton</td>
+  <td>Crystal Palace</td>
+  <td class="prob-low">27.43%</td>
+  <td>2.13</td>
+</tr>
+<tr>
+  <td>2026-08-22</td>
+  <td>Ipswich Town</td>
+  <td>Sunderland</td>
+  <td class="prob-low">9.49%</td>
+  <td>2.71</td>
+</tr>
+<tr>
+  <td>2026-08-22</td>
+  <td>Nott'm Forest</td>
+  <td>Leeds</td>
+  <td class="prob-low">12.55%</td>
+  <td>2.23</td>
+</tr>
+<tr>
+  <td>2026-08-22</td>
+  <td>Brentford</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">45.04%</td>
+  <td>2.11</td>
+</tr>
+<tr>
+  <td>2026-08-23</td>
+  <td>Brighton</td>
+  <td>Aston Villa</td>
+  <td class="prob-low">18.43%</td>
+  <td>2.24</td>
+</tr>
+<tr>
+  <td>2026-08-23</td>
+  <td>Man City</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">59.74%</td>
+  <td>1.43</td>
+</tr>
+<tr>
+  <td>2026-08-23</td>
+  <td>Newcastle</td>
+  <td>Liverpool</td>
+  <td class="prob-low">26.11%</td>
+  <td>2.96</td>
+</tr>
+<tr>
+  <td>2026-08-24</td>
+  <td>Fulham</td>
+  <td>Chelsea</td>
+  <td class="prob-low">10.34%</td>
+  <td>2.94</td>
+</tr>
+<tr>
+  <td>2026-08-28</td>
+  <td>Crystal Palace</td>
+  <td>Man City</td>
+  <td class="prob-mid">42.29%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-29</td>
+  <td>Liverpool</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">42.35%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-29</td>
+  <td>Bournemouth</td>
+  <td>Everton</td>
+  <td class="prob-mid">54.94%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-29</td>
+  <td>Coventry City</td>
+  <td>Hull City</td>
+  <td class="prob-mid">44.59%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-29</td>
+  <td>Tottenham</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">40.70%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-30</td>
+  <td>Chelsea</td>
+  <td>Brighton</td>
+  <td class="prob-mid">36.34%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-30</td>
+  <td>Leeds</td>
+  <td>Brentford</td>
+  <td class="prob-mid">45.95%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-30</td>
+  <td>Sunderland</td>
+  <td>Fulham</td>
+  <td class="prob-mid">42.28%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-30</td>
+  <td>Man United</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">40.52%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-08-31</td>
+  <td>Aston Villa</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">43.35%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-04</td>
+  <td>Ipswich Town</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">54.24%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-05</td>
+  <td>Newcastle</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">40.66%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-05</td>
+  <td>Brentford</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">40.82%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-05</td>
+  <td>Brighton</td>
+  <td>Leeds</td>
+  <td class="prob-mid">42.28%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-05</td>
+  <td>Fulham</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">53.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-05</td>
+  <td>Man City</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">42.19%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-05</td>
+  <td>Nott'm Forest</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">42.11%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-05</td>
+  <td>Hull City</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">51.10%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-06</td>
+  <td>Everton</td>
+  <td>Man United</td>
+  <td class="prob-mid">45.93%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-06</td>
+  <td>Arsenal</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">50.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-12</td>
+  <td>Aston Villa</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">38.13%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-12</td>
+  <td>Bournemouth</td>
+  <td>Brentford</td>
+  <td class="prob-mid">45.95%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-12</td>
+  <td>Chelsea</td>
+  <td>Hull City</td>
+  <td class="prob-mid">35.47%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-12</td>
+  <td>Crystal Palace</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">38.77%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-12</td>
+  <td>Liverpool</td>
+  <td>Fulham</td>
+  <td class="prob-mid">43.79%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-12</td>
+  <td>Tottenham</td>
+  <td>Everton</td>
+  <td class="prob-mid">47.88%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-12</td>
+  <td>Sunderland</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">44.46%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-13</td>
+  <td>Coventry City</td>
+  <td>Brighton</td>
+  <td class="prob-mid">44.49%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-13</td>
+  <td>Man United</td>
+  <td>Man City</td>
+  <td class="prob-mid">45.79%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-14</td>
+  <td>Leeds</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">45.95%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-18</td>
+  <td>Brentford</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">49.49%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-19</td>
+  <td>Tottenham</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">44.65%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-19</td>
+  <td>Brighton</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">48.75%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-19</td>
+  <td>Everton</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">43.22%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-19</td>
+  <td>Leeds</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">53.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-19</td>
+  <td>Man City</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">40.82%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-19</td>
+  <td>Newcastle</td>
+  <td>Hull City</td>
+  <td class="prob-mid">42.19%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-19</td>
+  <td>Nott'm Forest</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">44.03%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-20</td>
+  <td>Bournemouth</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">55.85%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-09-20</td>
+  <td>Fulham</td>
+  <td>Man United</td>
+  <td class="prob-mid">45.03%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Arsenal</td>
+  <td>Leeds</td>
+  <td class="prob-mid">42.16%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Aston Villa</td>
+  <td>Brentford</td>
+  <td class="prob-mid">41.50%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Chelsea</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">39.88%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Coventry City</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">52.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Crystal Palace</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">42.36%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Hull City</td>
+  <td>Everton</td>
+  <td class="prob-mid">59.79%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Ipswich Town</td>
+  <td>Fulham</td>
+  <td class="prob-mid">53.22%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Liverpool</td>
+  <td>Man City</td>
+  <td class="prob-mid">47.54%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Man United</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">42.87%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-10</td>
+  <td>Sunderland</td>
+  <td>Brighton</td>
+  <td class="prob-mid">39.82%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Bournemouth</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">45.26%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Brentford</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">56.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Brighton</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">54.84%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Everton</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">54.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Fulham</td>
+  <td>Hull City</td>
+  <td class="prob-mid">46.67%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Leeds</td>
+  <td>Man United</td>
+  <td class="prob-mid">47.67%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Man City</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">44.80%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Newcastle</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">52.48%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Nott'm Forest</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">51.41%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-17</td>
+  <td>Tottenham</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">39.73%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Arsenal</td>
+  <td>Everton</td>
+  <td class="prob-mid">54.82%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Aston Villa</td>
+  <td>Man City</td>
+  <td class="prob-mid">43.18%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Chelsea</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">39.51%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Coventry City</td>
+  <td>Fulham</td>
+  <td class="prob-mid">53.22%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Crystal Palace</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">43.21%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Hull City</td>
+  <td>Brentford</td>
+  <td class="prob-mid">52.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Ipswich Town</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">49.01%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Liverpool</td>
+  <td>Brighton</td>
+  <td class="prob-mid">41.30%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Man United</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">43.25%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-24</td>
+  <td>Sunderland</td>
+  <td>Leeds</td>
+  <td class="prob-mid">40.66%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Aston Villa</td>
+  <td>Fulham</td>
+  <td class="prob-mid">42.08%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Bournemouth</td>
+  <td>Leeds</td>
+  <td class="prob-mid">44.89%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Brentford</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">45.86%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Chelsea</td>
+  <td>Man United</td>
+  <td class="prob-mid">42.38%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Coventry City</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">46.54%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Hull City</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">46.06%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Liverpool</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">48.63%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Man City</td>
+  <td>Brighton</td>
+  <td class="prob-mid">42.18%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Newcastle</td>
+  <td>Everton</td>
+  <td class="prob-mid">54.00%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-10-31</td>
+  <td>Tottenham</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">49.50%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Arsenal</td>
+  <td>Hull City</td>
+  <td class="prob-mid">43.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Brighton</td>
+  <td>Brentford</td>
+  <td class="prob-mid">48.59%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Crystal Palace</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">53.10%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Everton</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">45.84%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Fulham</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">48.59%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Ipswich Town</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">46.38%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Leeds</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">44.72%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Man United</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">50.76%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Nott'm Forest</td>
+  <td>Man City</td>
+  <td class="prob-mid">50.31%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-07</td>
+  <td>Sunderland</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">49.71%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Aston Villa</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">38.29%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Bournemouth</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">47.73%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Brentford</td>
+  <td>Everton</td>
+  <td class="prob-mid">55.71%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Chelsea</td>
+  <td>Leeds</td>
+  <td class="prob-mid">38.03%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Coventry City</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">56.10%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Hull City</td>
+  <td>Brighton</td>
+  <td class="prob-mid">45.29%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Liverpool</td>
+  <td>Man United</td>
+  <td class="prob-mid">44.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Man City</td>
+  <td>Fulham</td>
+  <td class="prob-mid">47.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Newcastle</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">49.53%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-21</td>
+  <td>Tottenham</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">39.73%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Arsenal</td>
+  <td>Man City</td>
+  <td class="prob-mid">47.54%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Brighton</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">48.59%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Crystal Palace</td>
+  <td>Hull City</td>
+  <td class="prob-mid">41.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Everton</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">59.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Fulham</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">45.10%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Ipswich Town</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">56.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Leeds</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">46.67%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Man United</td>
+  <td>Brentford</td>
+  <td class="prob-mid">46.72%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Nott'm Forest</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">55.73%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-11-28</td>
+  <td>Sunderland</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">40.50%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Aston Villa</td>
+  <td>Everton</td>
+  <td class="prob-mid">50.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Bournemouth</td>
+  <td>Brighton</td>
+  <td class="prob-mid">44.02%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Brentford</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">49.53%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Chelsea</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">49.50%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Coventry City</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">46.06%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Hull City</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">49.01%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Liverpool</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">42.52%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Man City</td>
+  <td>Leeds</td>
+  <td class="prob-mid">43.04%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Newcastle</td>
+  <td>Man United</td>
+  <td class="prob-mid">45.81%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-02</td>
+  <td>Tottenham</td>
+  <td>Fulham</td>
+  <td class="prob-mid">43.87%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Aston Villa</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">49.40%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Bournemouth</td>
+  <td>Hull City</td>
+  <td class="prob-mid">46.67%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Brentford</td>
+  <td>Man City</td>
+  <td class="prob-mid">48.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Chelsea</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">53.18%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Everton</td>
+  <td>Fulham</td>
+  <td class="prob-mid">50.09%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Leeds</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">46.67%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Man United</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">43.10%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Newcastle</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">43.41%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Nott'm Forest</td>
+  <td>Brighton</td>
+  <td class="prob-mid">44.02%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-05</td>
+  <td>Tottenham</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">46.07%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Arsenal</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">42.37%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Brighton</td>
+  <td>Everton</td>
+  <td class="prob-mid">57.56%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Coventry City</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">56.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Crystal Palace</td>
+  <td>Man United</td>
+  <td class="prob-mid">42.30%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Fulham</td>
+  <td>Brentford</td>
+  <td class="prob-mid">48.59%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Hull City</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">45.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Ipswich Town</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">52.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Liverpool</td>
+  <td>Leeds</td>
+  <td class="prob-mid">42.16%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Man City</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">53.87%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-12</td>
+  <td>Sunderland</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">43.45%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Arsenal</td>
+  <td>Man United</td>
+  <td class="prob-mid">44.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Bournemouth</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">46.67%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Brentford</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">46.72%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Brighton</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">46.67%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Chelsea</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">47.29%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Leeds</td>
+  <td>Fulham</td>
+  <td class="prob-mid">49.19%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Liverpool</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">41.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Man City</td>
+  <td>Hull City</td>
+  <td class="prob-mid">44.80%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Nott'm Forest</td>
+  <td>Everton</td>
+  <td class="prob-mid">57.56%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-19</td>
+  <td>Sunderland</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">50.53%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Aston Villa</td>
+  <td>Leeds</td>
+  <td class="prob-mid">37.94%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Coventry City</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">55.29%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Crystal Palace</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">45.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Everton</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">46.16%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Fulham</td>
+  <td>Brighton</td>
+  <td class="prob-mid">44.02%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Hull City</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">59.69%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Ipswich Town</td>
+  <td>Brentford</td>
+  <td class="prob-mid">52.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Man United</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">45.86%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Newcastle</td>
+  <td>Man City</td>
+  <td class="prob-mid">48.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-26</td>
+  <td>Tottenham</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">39.88%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Aston Villa</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">53.08%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Coventry City</td>
+  <td>Brentford</td>
+  <td class="prob-mid">52.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Crystal Palace</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">39.80%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Everton</td>
+  <td>Man City</td>
+  <td class="prob-mid">51.22%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Fulham</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">51.41%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Hull City</td>
+  <td>Leeds</td>
+  <td class="prob-mid">48.90%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Ipswich Town</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">55.29%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Man United</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">43.41%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Newcastle</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">45.86%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2026-12-30</td>
+  <td>Tottenham</td>
+  <td>Brighton</td>
+  <td class="prob-mid">38.83%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Arsenal</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">35.05%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Bournemouth</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">51.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Brentford</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">50.20%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Brighton</td>
+  <td>Man United</td>
+  <td class="prob-mid">41.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Chelsea</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">40.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Leeds</td>
+  <td>Everton</td>
+  <td class="prob-mid">51.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Liverpool</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">38.08%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Man City</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">37.07%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Nott'm Forest</td>
+  <td>Fulham</td>
+  <td class="prob-mid">43.20%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-02</td>
+  <td>Sunderland</td>
+  <td>Hull City</td>
+  <td class="prob-low">34.57%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Arsenal</td>
+  <td>Brentford</td>
+  <td class="prob-mid">39.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Brighton</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">42.37%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Crystal Palace</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">42.38%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Everton</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">50.76%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Fulham</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">41.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Ipswich Town</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">39.11%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Leeds</td>
+  <td>Man City</td>
+  <td class="prob-mid">44.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Man United</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">43.97%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Nott'm Forest</td>
+  <td>Hull City</td>
+  <td class="prob-mid">40.74%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-06</td>
+  <td>Sunderland</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">46.21%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Aston Villa</td>
+  <td>Man United</td>
+  <td class="prob-mid">36.79%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Bournemouth</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">40.74%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Brentford</td>
+  <td>Brighton</td>
+  <td class="prob-mid">39.50%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Chelsea</td>
+  <td>Sunderland</td>
+  <td class="prob-low">32.86%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Coventry City</td>
+  <td>Everton</td>
+  <td class="prob-mid">48.72%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Hull City</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">46.53%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Liverpool</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">49.29%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Man City</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">39.94%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Newcastle</td>
+  <td>Fulham</td>
+  <td class="prob-mid">41.37%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-16</td>
+  <td>Tottenham</td>
+  <td>Leeds</td>
+  <td class="prob-mid">35.45%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Arsenal</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">39.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Brighton</td>
+  <td>Man City</td>
+  <td class="prob-mid">44.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Crystal Palace</td>
+  <td>Tottenham</td>
+  <td class="prob-low">34.74%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Everton</td>
+  <td>Brentford</td>
+  <td class="prob-mid">46.72%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Fulham</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">51.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Ipswich Town</td>
+  <td>Hull City</td>
+  <td class="prob-mid">39.11%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Leeds</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">50.00%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Man United</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">50.90%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Nott'm Forest</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">42.37%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-23</td>
+  <td>Sunderland</td>
+  <td>Coventry City</td>
+  <td class="prob-low">34.57%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Aston Villa</td>
+  <td>Ipswich Town</td>
+  <td class="prob-low">34.03%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Bournemouth</td>
+  <td>Fulham</td>
+  <td class="prob-mid">43.20%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Brentford</td>
+  <td>Man United</td>
+  <td class="prob-mid">40.17%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Chelsea</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">39.75%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Coventry City</td>
+  <td>Leeds</td>
+  <td class="prob-mid">41.05%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Hull City</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">48.19%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Liverpool</td>
+  <td>Everton</td>
+  <td class="prob-mid">48.80%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Man City</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">40.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Newcastle</td>
+  <td>Brighton</td>
+  <td class="prob-mid">39.50%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-01-30</td>
+  <td>Tottenham</td>
+  <td>Sunderland</td>
+  <td class="prob-low">32.86%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Arsenal</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">48.46%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Brighton</td>
+  <td>Hull City</td>
+  <td class="prob-mid">40.74%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Crystal Palace</td>
+  <td>Coventry City</td>
+  <td class="prob-low">33.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Everton</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">46.72%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Fulham</td>
+  <td>Man City</td>
+  <td class="prob-mid">44.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Ipswich Town</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">42.84%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Leeds</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">42.37%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Man United</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">46.40%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Nott'm Forest</td>
+  <td>Brentford</td>
+  <td class="prob-mid">45.83%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-06</td>
+  <td>Sunderland</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">45.03%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Aston Villa</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">37.16%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Coventry City</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">48.90%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Crystal Palace</td>
+  <td>Brentford</td>
+  <td class="prob-mid">38.35%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Everton</td>
+  <td>Leeds</td>
+  <td class="prob-mid">43.04%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Fulham</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">44.97%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Hull City</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">40.22%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Ipswich Town</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">46.53%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Man United</td>
+  <td>Brighton</td>
+  <td class="prob-mid">39.50%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Newcastle</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">46.40%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-10</td>
+  <td>Tottenham</td>
+  <td>Man City</td>
+  <td class="prob-mid">39.38%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Arsenal</td>
+  <td>Fulham</td>
+  <td class="prob-mid">37.39%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Bournemouth</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">52.07%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Brentford</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">38.94%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Brighton</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">41.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Chelsea</td>
+  <td>Ipswich Town</td>
+  <td class="prob-low">32.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Leeds</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">51.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Liverpool</td>
+  <td>Hull City</td>
+  <td class="prob-mid">38.08%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Man City</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">40.78%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Nott'm Forest</td>
+  <td>Man United</td>
+  <td class="prob-mid">41.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-20</td>
+  <td>Sunderland</td>
+  <td>Everton</td>
+  <td class="prob-mid">43.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Aston Villa</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">42.88%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Coventry City</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">43.22%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Crystal Palace</td>
+  <td>Sunderland</td>
+  <td class="prob-low">32.33%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Everton</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">45.86%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Fulham</td>
+  <td>Leeds</td>
+  <td class="prob-mid">42.16%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Hull City</td>
+  <td>Man City</td>
+  <td class="prob-mid">45.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Ipswich Town</td>
+  <td>Brighton</td>
+  <td class="prob-mid">42.15%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Man United</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">43.81%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Newcastle</td>
+  <td>Brentford</td>
+  <td class="prob-mid">43.97%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-02-27</td>
+  <td>Tottenham</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">47.43%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Arsenal</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">47.75%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Bournemouth</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">41.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Brentford</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">38.94%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Brighton</td>
+  <td>Fulham</td>
+  <td class="prob-mid">43.20%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Chelsea</td>
+  <td>Coventry City</td>
+  <td class="prob-low">32.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Leeds</td>
+  <td>Hull City</td>
+  <td class="prob-mid">40.74%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Liverpool</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">48.80%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Man City</td>
+  <td>Everton</td>
+  <td class="prob-mid">46.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Nott'm Forest</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">45.83%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-03</td>
+  <td>Sunderland</td>
+  <td>Man United</td>
+  <td class="prob-mid">35.75%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Aston Villa</td>
+  <td>Hull City</td>
+  <td class="prob-low">34.03%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Bournemouth</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">45.83%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Chelsea</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">40.43%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Coventry City</td>
+  <td>Man City</td>
+  <td class="prob-mid">45.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Crystal Palace</td>
+  <td>Fulham</td>
+  <td class="prob-mid">35.87%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Leeds</td>
+  <td>Brighton</td>
+  <td class="prob-mid">41.30%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Liverpool</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">38.08%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Man United</td>
+  <td>Everton</td>
+  <td class="prob-mid">47.98%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Sunderland</td>
+  <td>Brentford</td>
+  <td class="prob-mid">39.41%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-13</td>
+  <td>Tottenham</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">39.75%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Arsenal</td>
+  <td>Sunderland</td>
+  <td class="prob-low">33.77%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Brentford</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">40.55%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Brighton</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">40.74%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Everton</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">42.87%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Fulham</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">54.49%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Hull City</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">44.42%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Ipswich Town</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">48.19%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Man City</td>
+  <td>Man United</td>
+  <td class="prob-mid">37.07%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Newcastle</td>
+  <td>Leeds</td>
+  <td class="prob-mid">40.34%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-03-20</td>
+  <td>Nott'm Forest</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">51.58%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Aston Villa</td>
+  <td>Brighton</td>
+  <td class="prob-mid">36.66%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Bournemouth</td>
+  <td>Man City</td>
+  <td class="prob-mid">49.82%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Chelsea</td>
+  <td>Fulham</td>
+  <td class="prob-mid">43.39%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Coventry City</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">54.04%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Crystal Palace</td>
+  <td>Everton</td>
+  <td class="prob-mid">51.70%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Leeds</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">47.24%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Liverpool</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">45.34%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Man United</td>
+  <td>Hull City</td>
+  <td class="prob-mid">42.62%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Sunderland</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">41.93%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-10</td>
+  <td>Tottenham</td>
+  <td>Brentford</td>
+  <td class="prob-mid">42.81%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Arsenal</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">51.09%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Brentford</td>
+  <td>Leeds</td>
+  <td class="prob-mid">42.56%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Brighton</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">55.25%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Everton</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">45.51%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Fulham</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">44.78%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Hull City</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">46.74%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Ipswich Town</td>
+  <td>Man United</td>
+  <td class="prob-mid">50.31%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Man City</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">52.48%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Newcastle</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">42.39%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-17</td>
+  <td>Nott'm Forest</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">57.98%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Aston Villa</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">39.17%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Bournemouth</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">50.92%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Brentford</td>
+  <td>Fulham</td>
+  <td class="prob-mid">46.83%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Chelsea</td>
+  <td>Man City</td>
+  <td class="prob-mid">44.50%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Everton</td>
+  <td>Brighton</td>
+  <td class="prob-mid">44.43%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Leeds</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">59.65%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Man United</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">52.48%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Newcastle</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">44.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Nott'm Forest</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">44.78%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-04-24</td>
+  <td>Tottenham</td>
+  <td>Hull City</td>
+  <td class="prob-mid">39.27%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Arsenal</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">41.51%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Brighton</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">47.24%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Coventry City</td>
+  <td>Man United</td>
+  <td class="prob-mid">50.31%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Crystal Palace</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">48.44%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Fulham</td>
+  <td>Everton</td>
+  <td class="prob-mid">57.08%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Hull City</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">47.73%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Ipswich Town</td>
+  <td>Leeds</td>
+  <td class="prob-mid">45.51%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Liverpool</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">52.49%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Man City</td>
+  <td>Brentford</td>
+  <td class="prob-mid">46.24%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-01</td>
+  <td>Sunderland</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">43.82%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Bournemouth</td>
+  <td>Man United</td>
+  <td class="prob-mid">47.19%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Brentford</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">51.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Brighton</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">44.78%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Everton</td>
+  <td>Hull City</td>
+  <td class="prob-mid">45.36%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Fulham</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">46.18%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Leeds</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">50.92%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Man City</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">56.14%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Newcastle</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">44.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Nott'm Forest</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">54.35%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-08</td>
+  <td>Tottenham</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">48.19%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Arsenal</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">44.48%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Aston Villa</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">41.03%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Chelsea</td>
+  <td>Everton</td>
+  <td class="prob-mid">50.05%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Coventry City</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">47.34%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Crystal Palace</td>
+  <td>Brighton</td>
+  <td class="prob-mid">38.29%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Hull City</td>
+  <td>Fulham</td>
+  <td class="prob-mid">53.89%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Ipswich Town</td>
+  <td>Man City</td>
+  <td class="prob-mid">52.95%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Liverpool</td>
+  <td>Brentford</td>
+  <td class="prob-mid">45.34%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Man United</td>
+  <td>Leeds</td>
+  <td class="prob-mid">42.56%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-15</td>
+  <td>Sunderland</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">40.40%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Bournemouth</td>
+  <td>Chelsea</td>
+  <td class="prob-mid">55.25%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Brentford</td>
+  <td>Hull City</td>
+  <td class="prob-mid">44.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Brighton</td>
+  <td>Liverpool</td>
+  <td class="prob-mid">57.98%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Everton</td>
+  <td>Arsenal</td>
+  <td class="prob-mid">51.82%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Fulham</td>
+  <td>Coventry City</td>
+  <td class="prob-mid">46.18%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Leeds</td>
+  <td>Sunderland</td>
+  <td class="prob-mid">44.78%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Man City</td>
+  <td>Aston Villa</td>
+  <td class="prob-mid">51.99%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Newcastle</td>
+  <td>Crystal Palace</td>
+  <td class="prob-mid">52.48%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Nott'm Forest</td>
+  <td>Ipswich Town</td>
+  <td class="prob-mid">46.18%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-23</td>
+  <td>Tottenham</td>
+  <td>Man United</td>
+  <td class="prob-mid">41.91%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Arsenal</td>
+  <td>Brighton</td>
+  <td class="prob-mid">40.83%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Aston Villa</td>
+  <td>Tottenham</td>
+  <td class="prob-mid">37.32%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Chelsea</td>
+  <td>Brentford</td>
+  <td class="prob-mid">42.81%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Coventry City</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-mid">50.37%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Crystal Palace</td>
+  <td>Leeds</td>
+  <td class="prob-mid">39.13%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Hull City</td>
+  <td>Newcastle</td>
+  <td class="prob-mid">49.22%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Ipswich Town</td>
+  <td>Everton</td>
+  <td class="prob-mid">56.48%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Liverpool</td>
+  <td>Bournemouth</td>
+  <td class="prob-mid">41.89%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Man United</td>
+  <td>Fulham</td>
+  <td class="prob-mid">46.83%</td>
+  <td>N/A</td>
+</tr>
+<tr>
+  <td>2027-05-30</td>
+  <td>Sunderland</td>
+  <td>Man City</td>
+  <td class="prob-mid">45.52%</td>
+  <td>N/A</td>
+</tr>
+      </tbody>
+    </table>
+    <div class="footer">
+      <p>Generated by an automated ML pipeline. <a href="https://github.com/Shab00">View source</a></p>
+    </div>
+  </div>
+</body>
+</html>
