@@ -22,4 +22,4 @@ jobs:
         id: deployment
         with:
             timeout: 600000
-            error-on-bad-status: false
+            error_on_bad_status: false
