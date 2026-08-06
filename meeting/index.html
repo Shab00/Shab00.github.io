@@ -391,6 +391,11 @@
       color: var(--red);
       font-size: 0.9rem;
     }
+    .error-box.wakeup {
+      background: rgba(251,191,36,0.08);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
 
     .footer { margin-top: 3rem; color: var(--muted); font-size: 0.9rem; }
 
@@ -559,7 +564,6 @@
   let recordingSeconds = 0;
   const MAX_RECORDING_SECONDS = 720;
 
-  // helper — treat null, "null", "unknown", "" as empty
   function val(v) { return v && v !== 'null' && v !== 'unknown' && v !== '' ? v : null; }
 
   document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -708,7 +712,11 @@
       renderResults(data.analysis, data.transcript, data.language);
 
     } catch(e) {
-      showError(e.message);
+      const isWakeup = e instanceof TypeError && e.message.toLowerCase().includes('fetch');
+      const msg = isWakeup
+        ? 'The server is waking up — give it 20–30 seconds and try again.'
+        : e.message;
+      showError(msg, isWakeup);
       hideProgress();
     }
   }
@@ -727,7 +735,6 @@
 
     document.getElementById('result-summary').textContent = data.summary;
 
-    // Decisions — hide null owners
     document.getElementById('result-decisions').innerHTML = data.decisions_made.length
       ? data.decisions_made.map(d =>
           '<li>' + d.decision +
@@ -735,7 +742,6 @@
           '</li>').join('')
       : '<li style="color:var(--muted)">None recorded</li>';
 
-    // Action items — hide null owners and deadlines
     document.getElementById('result-actions').innerHTML = data.action_items.length
       ? data.action_items.map(a =>
           '<li>' + a.action +
@@ -752,7 +758,6 @@
           '<li><span class="item-label label-risk">⚠</span>' + r + '</li>').join('')
       : '<li style="color:var(--muted)">None flagged</li>';
 
-    // Follow-ups — hide "unknown"
     const followups = data.follow_up_meetings.filter(f => val(f));
     document.getElementById('result-followups').innerHTML = followups.length
       ? followups.map(f => '<li>' + f + '</li>').join('')
@@ -816,10 +821,11 @@
     }
   }
 
-  function showError(msg) {
+  function showError(msg, isWakeup = false) {
     const box = document.getElementById('error-box');
     box.style.display = 'block';
-    box.textContent = '⚠ ' + msg;
+    box.className = isWakeup ? 'error-box wakeup' : 'error-box';
+    box.textContent = (isWakeup ? '⏳ ' : '⚠ ') + msg;
   }
 
   function hideError() {
