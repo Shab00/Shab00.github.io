@@ -420,7 +420,7 @@
   <!-- Backend status banner — no API key needed -->
   <div class="backend-banner">
     <div class="backend-dot"></div>
-    <span>Powered by a Python backend — no API key required. Processing happens server-side.</span>
+    <span>Powered by a Python backend. First request may take 20–30s to wake the server — subsequent requests are fast.</span>
   </div>
 
   <div class="main-card">
@@ -443,12 +443,12 @@
         <div class="sample-card" data-url="samples/council_june_2022.mp3" data-name="Council Meeting Jun 2022">
           <div class="sample-title">Council Meeting</div>
           <div class="sample-meta">RM of Springfield · June 2022</div>
-          <span class="sample-duration">~4 min</span>
+          <span class="sample-duration">~6 min</span>
         </div>
         <div class="sample-card" data-url="samples/special_meeting.mp3" data-name="Special Meeting">
           <div class="sample-title">Special Meeting</div>
           <div class="sample-meta">RM of Springfield</div>
-          <span class="sample-duration">~3 min</span>
+          <span class="sample-duration">~8 min</span>
         </div>
       </div>
     </div>
@@ -550,8 +550,7 @@
 </div>
 
 <script>
-  // ← Paste your Render URL here once deployed, e.g. https://meeting-intelligence-api.onrender.com
-  const BACKEND_URL = "https://YOUR-RENDER-URL.onrender.com";
+  const BACKEND_URL = "https://meeting-intelligence-4qi6.onrender.com";
 
   let selectedAudio = null;
   let selectedSampleUrl = null;
