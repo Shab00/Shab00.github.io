@@ -417,7 +417,6 @@
     </p>
   </section>
 
-  <!-- Backend status banner — no API key needed -->
   <div class="backend-banner">
     <div class="backend-dot"></div>
     <span>Powered by a Python backend. First request may take 20–30s to wake the server — subsequent requests are fast.</span>
@@ -558,9 +557,11 @@
   let recordingChunks = [];
   let recordingTimer = null;
   let recordingSeconds = 0;
-  const MAX_RECORDING_SECONDS = 720; // 12 minutes
+  const MAX_RECORDING_SECONDS = 720;
 
-  // TABS
+  // helper — treat null, "null", "unknown", "" as empty
+  function val(v) { return v && v !== 'null' && v !== 'unknown' && v !== '' ? v : null; }
+
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -571,7 +572,6 @@
     });
   });
 
-  // SAMPLES
   document.querySelectorAll('.sample-card').forEach(card => {
     card.addEventListener('click', () => {
       document.querySelectorAll('.sample-card').forEach(c => c.classList.remove('selected'));
@@ -582,7 +582,6 @@
     });
   });
 
-  // UPLOAD
   const uploadZone = document.getElementById('upload-zone');
   const fileInput = document.getElementById('file-input');
   const fileSelected = document.getElementById('file-selected');
@@ -606,7 +605,6 @@
     updateProcessBtn();
   }
 
-  // RECORD
   const recordBtn = document.getElementById('record-btn');
   const recordTimer = document.getElementById('record-timer');
   const recordStatus = document.getElementById('record-status');
@@ -657,7 +655,6 @@
     recordBtn.textContent = '🎙️';
   }
 
-  // PROCESS BTN — enabled as soon as audio is selected (no key needed)
   function updateProcessBtn() {
     const hasInput = selectedAudio || selectedSampleUrl;
     document.getElementById('process-btn').disabled = !hasInput;
@@ -665,16 +662,13 @@
 
   document.getElementById('process-btn').addEventListener('click', runPipeline);
 
-  // PIPELINE — single call to your FastAPI backend
   async function runPipeline() {
     hideError();
     showProgress();
 
     try {
-      // Step 1 — get audio blob
       setStep('upload', 'active');
-      let audioBlob;
-      let filename;
+      let audioBlob, filename;
       if (selectedAudio) {
         audioBlob = selectedAudio.blob;
         filename = selectedAudio.name;
@@ -685,12 +679,9 @@
         filename = selectedSampleUrl.split('/').pop();
       }
 
-      // Build FormData to POST to backend
       const formData = new FormData();
       formData.append('file', audioBlob, filename);
       setStep('upload', 'done');
-
-      // Step 2+3+4 happen server-side — mark them active while we wait
       setStep('transcribe', 'active');
 
       const response = await fetch(BACKEND_URL + '/analyse', {
@@ -705,19 +696,15 @@
 
       setStep('transcribe', 'done');
       setStep('extract', 'active');
-
       const data = await response.json();
-
       setStep('extract', 'done');
       setStep('validate', 'active');
 
-      // Validate expected fields arrived (Pydantic already validated server-side)
       const required = ['transcript','analysis'];
       for (const f of required) {
         if (!(f in data)) throw new Error('Unexpected response shape from server');
       }
       setStep('validate', 'done');
-
       renderResults(data.analysis, data.transcript, data.language);
 
     } catch(e) {
@@ -726,7 +713,6 @@
     }
   }
 
-  // RENDER
   function renderResults(data, transcript, language) {
     hideProgress();
 
@@ -734,25 +720,27 @@
     sb.textContent = data.sentiment;
     sb.className = 'sentiment-badge sentiment-' + data.sentiment;
 
-    const langTag = language && language !== 'unknown'
+    const langTag = val(language)
       ? `<span class="lang-badge">${language}</span>` : '';
     document.getElementById('meeting-type-badge').innerHTML =
       `<div class="meeting-type-badge">${data.meeting_type}${langTag}</div>`;
 
     document.getElementById('result-summary').textContent = data.summary;
 
+    // Decisions — hide null owners
     document.getElementById('result-decisions').innerHTML = data.decisions_made.length
       ? data.decisions_made.map(d =>
           '<li>' + d.decision +
-          (d.owner ? ' <span class="item-label label-owner">' + d.owner + '</span>' : '') +
+          (val(d.owner) ? ' <span class="item-label label-owner">' + d.owner + '</span>' : '') +
           '</li>').join('')
       : '<li style="color:var(--muted)">None recorded</li>';
 
+    // Action items — hide null owners and deadlines
     document.getElementById('result-actions').innerHTML = data.action_items.length
       ? data.action_items.map(a =>
           '<li>' + a.action +
-          (a.owner ? ' <span class="item-label label-owner">' + a.owner + '</span>' : '') +
-          (a.deadline ? ' <span class="item-label label-deadline">' + a.deadline + '</span>' : '') +
+          (val(a.owner) ? ' <span class="item-label label-owner">' + a.owner + '</span>' : '') +
+          (val(a.deadline) ? ' <span class="item-label label-deadline">' + a.deadline + '</span>' : '') +
           '</li>').join('')
       : '<li style="color:var(--muted)">None recorded</li>';
 
@@ -764,8 +752,10 @@
           '<li><span class="item-label label-risk">⚠</span>' + r + '</li>').join('')
       : '<li style="color:var(--muted)">None flagged</li>';
 
-    document.getElementById('result-followups').innerHTML = data.follow_up_meetings.length
-      ? data.follow_up_meetings.map(f => '<li>' + f + '</li>').join('')
+    // Follow-ups — hide "unknown"
+    const followups = data.follow_up_meetings.filter(f => val(f));
+    document.getElementById('result-followups').innerHTML = followups.length
+      ? followups.map(f => '<li>' + f + '</li>').join('')
       : '<li style="color:var(--muted)">None scheduled</li>';
 
     document.getElementById('transcript-box').textContent = transcript;
@@ -773,7 +763,6 @@
     document.getElementById('results-section').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // TRANSCRIPT TOGGLE
   document.getElementById('transcript-toggle').addEventListener('click', () => {
     const box = document.getElementById('transcript-box');
     const btn = document.getElementById('transcript-toggle');
@@ -786,7 +775,6 @@
     }
   });
 
-  // RESET
   document.getElementById('reset-btn').addEventListener('click', () => {
     document.getElementById('results-section').classList.remove('visible');
     resetInput();
