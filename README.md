@@ -5,7 +5,7 @@ This repository hosts my GitHub Pages portfolio site.
 ## Live Site
 - Portfolio: https://shab00.github.io/
 - Chess Demo: https://shab00.github.io/chess/
-test
+
 ## About
 This site is where I showcase completed projects, live demos, and technical progress over time.
 
