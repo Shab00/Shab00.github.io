@@ -484,6 +484,10 @@
 
     <div class="progress-section" id="progress-section">
       <div class="progress-steps">
+        <div class="step" id="step-wake">
+          <span class="step-icon">⚡</span>
+          <span>Waking server...</span>
+        </div>
         <div class="step" id="step-upload">
           <span class="step-icon">📤</span>
           <span>Uploading audio to server...</span>
@@ -666,11 +670,45 @@
 
   document.getElementById('process-btn').addEventListener('click', runPipeline);
 
+  // Ping the server with a 3s timeout — fast enough to detect if it's awake
+  async function pingServer() {
+    const controller = new AbortController();
+    const t = setTimeout(() => controller.abort(), 3000);
+    try {
+      await fetch(BACKEND_URL + '/', { signal: controller.signal });
+      clearTimeout(t);
+      return true; // awake
+    } catch {
+      clearTimeout(t);
+      return false; // asleep or unreachable
+    }
+  }
+
   async function runPipeline() {
     hideError();
     showProgress();
 
     try {
+      // Step 0 — ping to check if server is awake
+      setStep('wake', 'active');
+      const awake = await pingServer();
+      if (!awake) {
+        // Server is cold — show wakeup message and wait for it to come up
+        showError('The server is waking up — this takes 20–30 seconds. Retrying...', true);
+        // Keep pinging every 5 seconds until it responds (max 90s)
+        let attempts = 0;
+        while (attempts < 18) {
+          await new Promise(r => setTimeout(r, 5000));
+          attempts++;
+          const up = await pingServer();
+          if (up) break;
+          if (attempts === 18) throw new Error('Server did not wake up in time. Please try again.');
+        }
+        hideError();
+      }
+      setStep('wake', 'done');
+
+      // Step 1 — get audio
       setStep('upload', 'active');
       let audioBlob, filename;
       if (selectedAudio) {
@@ -688,15 +726,11 @@
       setStep('upload', 'done');
       setStep('transcribe', 'active');
 
-      // 40s timeout — catches Render cold-start hangs
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 40000);
+      // No timeout on the main request — server is already warm, let Whisper take as long as it needs
       const response = await fetch(BACKEND_URL + '/analyse', {
         method: 'POST',
         body: formData,
-        signal: controller.signal,
       });
-      clearTimeout(timeout);
 
       if (!response.ok) {
         const err = await response.json().catch(() => ({ detail: response.statusText }));
@@ -717,12 +751,7 @@
       renderResults(data.analysis, data.transcript, data.language);
 
     } catch(e) {
-      const isWakeup = e.name === 'AbortError'
-        || (e instanceof TypeError && e.message.toLowerCase().includes('fetch'));
-      const msg = isWakeup
-        ? 'The server is waking up — give it 20–30 seconds and try again.'
-        : e.message;
-      showError(msg, isWakeup);
+      showError(e.message);
       hideProgress();
     }
   }
@@ -807,7 +836,7 @@
   function showProgress() {
     document.getElementById('progress-section').classList.add('visible');
     document.getElementById('process-btn').disabled = true;
-    ['upload','transcribe','extract','validate'].forEach(s => {
+    ['wake','upload','transcribe','extract','validate'].forEach(s => {
       document.getElementById('step-' + s).className = 'step';
     });
   }
