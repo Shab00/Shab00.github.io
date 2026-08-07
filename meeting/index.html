@@ -670,18 +670,31 @@
 
   document.getElementById('process-btn').addEventListener('click', runPipeline);
 
-  // Ping the server with a 3s timeout — fast enough to detect if it's awake
+  // Ping with 3s timeout — returns true if server is awake
   async function pingServer() {
     const controller = new AbortController();
     const t = setTimeout(() => controller.abort(), 3000);
     try {
       await fetch(BACKEND_URL + '/', { signal: controller.signal });
       clearTimeout(t);
-      return true; // awake
+      return true;
     } catch {
       clearTimeout(t);
-      return false; // asleep or unreachable
+      return false;
     }
+  }
+
+  // Send audio and return response — throws on network/HTTP error
+  async function sendAudio(formData) {
+    const response = await fetch(BACKEND_URL + '/analyse', {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ detail: response.statusText }));
+      throw new Error(err.detail || 'Server error ' + response.status);
+    }
+    return response.json();
   }
 
   async function runPipeline() {
@@ -693,18 +706,17 @@
       setStep('wake', 'active');
       const awake = await pingServer();
       if (!awake) {
-        // Server is cold — show wakeup message and wait for it to come up
-        showError('The server is waking up — this takes 20–30 seconds. Retrying...', true);
-        // Keep pinging every 5 seconds until it responds (max 90s)
-        let attempts = 0;
-        while (attempts < 18) {
+        showError('The server is waking up — this takes 20–30 seconds. Hanging on...', true);
+        // Retry ping every 5s for up to 90s
+        let ready = false;
+        for (let i = 0; i < 18; i++) {
           await new Promise(r => setTimeout(r, 5000));
-          attempts++;
-          const up = await pingServer();
-          if (up) break;
-          if (attempts === 18) throw new Error('Server did not wake up in time. Please try again.');
+          if (await pingServer()) { ready = true; break; }
         }
+        if (!ready) throw new Error('Server did not respond. Please try again in a moment.');
         hideError();
+        // Extra 3s buffer so Render is fully initialised before we hit /analyse
+        await new Promise(r => setTimeout(r, 3000));
       }
       setStep('wake', 'done');
 
@@ -726,20 +738,19 @@
       setStep('upload', 'done');
       setStep('transcribe', 'active');
 
-      // No timeout on the main request — server is already warm, let Whisper take as long as it needs
-      const response = await fetch(BACKEND_URL + '/analyse', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const err = await response.json().catch(() => ({ detail: response.statusText }));
-        throw new Error(err.detail || 'Server error ' + response.status);
+      // Send audio — retry once automatically if it fails (handles edge case where
+      // Render accepts the ping but /analyse still times out on first cold hit)
+      let data;
+      try {
+        data = await sendAudio(formData);
+      } catch (firstErr) {
+        // One silent retry after a 5s pause
+        await new Promise(r => setTimeout(r, 5000));
+        data = await sendAudio(formData); // if this throws, it propagates to outer catch
       }
 
       setStep('transcribe', 'done');
       setStep('extract', 'active');
-      const data = await response.json();
       setStep('extract', 'done');
       setStep('validate', 'active');
 
