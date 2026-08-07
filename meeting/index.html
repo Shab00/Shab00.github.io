@@ -688,10 +688,15 @@
       setStep('upload', 'done');
       setStep('transcribe', 'active');
 
+      // 40s timeout — catches Render cold-start hangs
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 40000);
       const response = await fetch(BACKEND_URL + '/analyse', {
         method: 'POST',
         body: formData,
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
 
       if (!response.ok) {
         const err = await response.json().catch(() => ({ detail: response.statusText }));
@@ -712,7 +717,8 @@
       renderResults(data.analysis, data.transcript, data.language);
 
     } catch(e) {
-      const isWakeup = e instanceof TypeError && e.message.toLowerCase().includes('fetch');
+      const isWakeup = e.name === 'AbortError'
+        || (e instanceof TypeError && e.message.toLowerCase().includes('fetch'));
       const msg = isWakeup
         ? 'The server is waking up — give it 20–30 seconds and try again.'
         : e.message;
