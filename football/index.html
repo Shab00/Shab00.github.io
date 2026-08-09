@@ -85,6 +85,31 @@
       color: var(--button-text);
       text-decoration: none;
     }
+    .performance-tracker {
+      background: rgba(17,24,39,0.8);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .performance-tracker h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      color: var(--accent);
+    }
+    .performance-summary {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .performance-stat {
+      font-size: 1rem;
+    }
+    .performance-stat strong {
+      color: var(--accent);
+    }
     .table-wrapper {
       max-width: 100%;
       overflow-x: auto;
@@ -183,7 +208,7 @@
 <body>
   <div class="container">
     <h1>Premier League Home‑Win Predictions</h1>
-    <p class="updated">Last updated: 2026-08-07 10:49 BST</p>
+    <p class="updated">Last updated: 2026-08-09 14:54 BST</p>
     <p class="refresh-note">Predictions are refreshed approximately one hour before kick‑off.</p>
     <div class="top-actions">
       <div class="telegram-banner">
@@ -191,6 +216,10 @@
       </div>
       <a class="back-button" href="/">← Back to Portfolio</a>
     </div>
+    <div class="performance-tracker">
+            <h2>📊 Performance Tracker</h2>
+            <p style="color: var(--muted);">Season starts 21 August – tracking will begin automatically once matches are played.</p>
+        </div>
     <div class="table-wrapper">
       <table class="predictions-table">
         <thead>
@@ -217,7 +246,7 @@
   <td>Hull City</td>
   <td>Man United</td>
   <td class="prob-low">7.83%</td>
-  <td>7.05</td>
+  <td>7.12</td>
   <td></td>
 </tr>
 <tr>
@@ -256,7 +285,7 @@
   <td>2026-08-23</td>
   <td>Brighton</td>
   <td>Aston Villa</td>
-  <td class="prob-low">13.27%</td>
+  <td class="prob-low">11.92%</td>
   <td>2.26</td>
   <td></td>
 </tr>
@@ -264,7 +293,7 @@
   <td>2026-08-23</td>
   <td>Man City</td>
   <td>Bournemouth</td>
-  <td class="prob-high">67.37%</td>
+  <td class="prob-high">65.55%</td>
   <td>1.45</td>
   <td></td>
 </tr>
@@ -272,9 +301,9 @@
   <td>2026-08-23</td>
   <td>Newcastle</td>
   <td>Liverpool</td>
-  <td class="prob-low">31.25%</td>
+  <td class="prob-low">29.95%</td>
   <td>3.26</td>
-  <td><span class="value-badge">VALUE</span></td>
+  <td></td>
 </tr>
 <tr>
   <td>2026-08-24</td>
