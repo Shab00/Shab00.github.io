@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eco Report Agent | Bashaar</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Cold-start banner -->
+  <div id="wake-banner" class="wake-banner hidden">
+    Backend is waking up — this may take up to 30 seconds on first load
+  </div>
+
+  <main class="container">
+
+      <a href="/" class="back-link">← Back to portfolio</a>
+    <section class="hero">
+      <p class="eyebrow">AI Agent</p>
+      <h1>Ecological Report Agent</h1>
+      <p class="subtitle">
+        Paste in your survey data, let the agent validate and draft a formal
+        ecological report, then walk it through review and approval.
+      </p>
+    </section>
+
+    <!-- Progress bar -->
+    <div class="progress-bar">
+      <div class="progress-step active" id="step-indicator-1">
+        <span class="step-number">1</span>
+        <span class="step-label">Survey Entry</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step" id="step-indicator-2">
+        <span class="step-number">2</span>
+        <span class="step-label">Draft Report</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step" id="step-indicator-3">
+        <span class="step-number">3</span>
+        <span class="step-label">Review</span>
+      </div>
+      <div class="progress-line"></div>
+      <div class="progress-step" id="step-indicator-4">
+        <span class="step-number">4</span>
+        <span class="step-label">Approved</span>
+      </div>
+    </div>
+
+    <!-- Step 1: Survey Entry -->
+    <div id="step-1" class="step project-card">
+      <h3>Survey Entry</h3>
+
+      <div class="form-group">
+        <label>Site Name</label>
+        <input type="text" id="site_name" placeholder="e.g. Greenlight Meadow Site A" />
+      </div>
+
+      <div class="form-group">
+        <label>Grid Reference</label>
+        <input type="text" id="grid_reference" placeholder="e.g. TQ123456" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Survey Date</label>
+          <input type="date" id="date" />
+        </div>
+        <div class="form-group">
+          <label>Weather Conditions</label>
+          <input type="text" id="weather" placeholder="e.g. Overcast, 14°C, light wind" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Surveyor Name</label>
+        <input type="text" id="surveyor_name" placeholder="e.g. B. Dhoot" />
+      </div>
+
+      <div class="form-group">
+        <label>Species Observed</label>
+        <div class="chip-input" id="chip-input">
+          <div id="chip-list" class="chip-list"></div>
+          <input type="text" id="species-input" placeholder="Type a species and press Enter" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Habitat Description</label>
+        <textarea id="habitat_description" rows="3" placeholder="Describe the habitat..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Additional Notes</label>
+        <textarea id="notes" rows="3" placeholder="Any additional observations..."></textarea>
+      </div>
+
+      <div id="validation-messages"></div>
+
+      <div class="form-actions">
+        <button class="button primary" id="generate-btn" onclick="submitSurvey()">
+          Validate &amp; Generate Draft →
+        </button>
+      </div>
+
+      <div id="spinner" class="spinner hidden">
+        <div class="spinner-ring"></div>
+        <p>Agent is drafting your report…</p>
+      </div>
+    </div>
+
+    <!-- Step 2: Draft Report -->
+    <div id="step-2" class="step project-card hidden">
+      <h3>Draft Report</h3>
+      <div id="validation-summary" class="validation-summary"></div>
+      <div class="report-meta">
+        <span id="generated-at"></span>
+        <span class="badge">Template v1.0</span>
+      </div>
+      <div id="draft-rendered" class="draft-rendered"></div>
+      <div class="form-group">
+        <label>Edit draft before submitting</label>
+        <textarea id="draft-edit" rows="20"></textarea>
+      </div>
+      <div class="form-actions">
+        <button class="button primary" onclick="submitForReview()">Submit for Review →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Review -->
+    <div id="step-3" class="step project-card hidden">
+      <h3>Review</h3>
+      <div id="review-draft-rendered" class="draft-rendered"></div>
+      <div class="form-group">
+        <label>Reviewer Name</label>
+        <input type="text" id="reviewer_name" placeholder="e.g. S. Ecologist" />
+      </div>
+      <div class="form-group">
+        <label>Review Comments</label>
+        <textarea id="reviewer_comment" rows="4" placeholder="Add your comments..."></textarea>
+      </div>
+      <div id="review-banner"></div>
+      <div class="form-actions review-actions">
+        <button class="button primary" onclick="submitReview('approved')">✓ Approve</button>
+        <button class="button secondary" onclick="submitReview('changes_requested')">↩ Request Changes</button>
+        <button class="button danger" onclick="submitReview('rejected')">✗ Reject</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Approved -->
+    <div id="step-4" class="step project-card hidden">
+      <div class="approved-header">
+        <div class="approved-tick">✓</div>
+        <h3>Report Approved</h3>
+        <p id="approved-meta" class="muted"></p>
+      </div>
+      <div id="approved-report" class="draft-rendered"></div>
+      <div class="audit-section">
+        <h4>Audit Trail</h4>
+        <div id="audit-log" class="audit-log"></div>
+      </div>
+      <div class="form-actions">
+        <button class="button primary" onclick="resetAll()">Start New Report</button>
+      </div>
+    </div>
+
+    <!-- Rejected -->
+    <div id="step-rejected" class="step project-card hidden">
+      <div class="rejected-header">
+        <div class="rejected-tick">✗</div>
+        <h3>Report Rejected</h3>
+        <p id="rejected-comment" class="muted"></p>
+      </div>
+      <div class="form-actions">
+        <button class="button primary" onclick="resetAll()">Start Over</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
