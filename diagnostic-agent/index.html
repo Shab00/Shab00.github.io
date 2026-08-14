@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnostic Repair Agent | Bashaar</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="wake-banner" class="wake-banner hidden">
+    Backend is waking up — this may take up to 30 seconds on first load
+  </div>
+
+  <main class="container">
+    <a href="/" class="back-link">← Back to portfolio</a>
+
+    <section class="hero">
+      <p class="eyebrow">AI Agent</p>
+      <h1>Diagnostic Repair Agent</h1>
+      <p class="subtitle">
+        Submit a fault report, watch the agent gather conflicting diagnostics 
+        from two independent sources, detect the contradiction, and produce a 
+        ranked repair strategy report with written justification.
+      </p>
+    </section>
+
+    <!-- Fault Entry -->
+    <div id="panel-fault" class="panel project-card">
+      <h3>Submit Fault Report</h3>
+
+      <div class="form-group">
+        <label>Fault Description</label>
+        <textarea id="description" rows="3" 
+          placeholder="e.g. Users reporting slow API responses across all endpoints...">
+        </textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Severity</label>
+          <select id="severity">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high" selected>High</option>
+            <option value="critical">Critical</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Affected Component</label>
+          <select id="component">
+            <option value="unknown" selected>Unknown</option>
+            <option value="api_gateway">API Gateway</option>
+            <option value="database">Database</option>
+            <option value="cache">Cache</option>
+            <option value="message_queue">Message Queue</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Fault Scenario</label>
+        <div class="scenario-grid" id="scenario-grid">
+          <div class="scenario-card active" data-scenario="cache_collapse">
+            <div class="scenario-title">Cache Collapse</div>
+            <div class="scenario-desc">Cache hit rate collapsed. APM blames DB latency, infra blames cache.</div>
+          </div>
+          <div class="scenario-card" data-scenario="db_degradation">
+            <div class="scenario-title">DB Degradation</div>
+            <div class="scenario-desc">Genuine database slowdown. Both sources agree on DB but disagree on cause.</div>
+          </div>
+          <div class="scenario-card" data-scenario="queue_backup">
+            <div class="scenario-title">Queue Backup</div>
+            <div class="scenario-desc">Message queue backed up severely. Cascading slowdowns across all components.</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="fault-error"></div>
+
+      <div class="form-actions">
+        <button class="button primary" id="submit-btn" onclick="submitFault()">
+          Run Diagnostic Agent →
+        </button>
+      </div>
+
+      <div id="spinner" class="spinner hidden">
+        <div class="spinner-ring"></div>
+        <p>Agent is gathering diagnostics and ranking strategies…</p>
+      </div>
+    </div>
+
+    <!-- Report Panel -->
+    <div id="panel-report" class="panel hidden">
+
+      <!-- Conflict Banner -->
+      <div id="conflict-banner" class="conflict-banner"></div>
+
+      <!-- Diagnostics -->
+      <div class="report-section project-card">
+        <h3>Diagnostic Sources</h3>
+        <div class="diagnostics-grid">
+          <div class="diagnostic-card" id="diag-apm">
+            <div class="diag-source">APM Monitor</div>
+            <div class="diag-summary" id="apm-summary"></div>
+            <div class="diag-flags" id="apm-flags"></div>
+            <div class="diag-confidence" id="apm-confidence"></div>
+          </div>
+          <div class="diagnostic-card" id="diag-infra">
+            <div class="diag-source">Infra Health Check</div>
+            <div class="diag-summary" id="infra-summary"></div>
+            <div class="diag-flags" id="infra-flags"></div>
+            <div class="diag-confidence" id="infra-confidence"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conflict Detail -->
+      <div class="report-section project-card" id="conflict-detail-card">
+        <h3>Conflict Analysis</h3>
+        <div class="conflict-row">
+          <div class="conflict-claim">
+            <div class="conflict-label">APM Monitor claims</div>
+            <div id="conflict-claim-a" class="conflict-text"></div>
+          </div>
+          <div class="conflict-vs">vs</div>
+          <div class="conflict-claim">
+            <div class="conflict-label">Infra Health claims</div>
+            <div id="conflict-claim-b" class="conflict-text"></div>
+          </div>
+        </div>
+        <div id="conflict-explanation" class="conflict-explanation"></div>
+      </div>
+
+      <!-- Ranked Strategies -->
+      <div class="report-section project-card">
+        <h3>Ranked Repair Strategies</h3>
+        <div id="strategies-list"></div>
+      </div>
+
+      <!-- Reasoning Summary -->
+      <div class="report-section project-card">
+        <h3>Agent Reasoning</h3>
+        <div id="reasoning-summary" class="reasoning-text"></div>
+        <div id="recommended-action" class="recommended-action"></div>
+      </div>
+
+      <!-- Audit -->
+      <div class="report-section project-card">
+        <h4>Audit Trail</h4>
+        <div id="audit-log" class="audit-log"></div>
+      </div>
+
+      <div class="form-actions">
+        <button class="button primary" onclick="resetAll()">
+          Submit New Fault
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
