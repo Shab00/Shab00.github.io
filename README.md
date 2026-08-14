@@ -1,12 +1,14 @@
-# Bashaar Portfolio Site
+# Bashaar Dhoot — Portfolio
 
-This repository hosts my GitHub Pages portfolio site.
+A personal portfolio site hosted on GitHub Pages, showcasing live project demos and technical work across AI engineering, machine learning, and software engineering.
 
 ## Live Site
-- Portfolio: https://shab00.github.io/
-- Chess Demo: https://shab00.github.io/chess/
-test
-## About
-This site is where I showcase completed projects, live demos, and technical progress over time.
 
-More projects and write-ups will be added here as the portfolio grows.
+https://shab00.github.io/
+
+## Projects
+
+- **Ecological Surveyor Reporting Agent** — https://shab00.github.io/eco-agent/
+- **Meeting Intelligence Agent** — https://shab00.github.io/meeting/
+- **Premier League Predictions** — https://shab00.github.io/football/
+- **Chess Engine Demo** — https://shab00.github.io/chess/
