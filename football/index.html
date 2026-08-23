@@ -128,9 +128,9 @@
       color: var(--accent);
     }
     .legend-items {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 0.6rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1.5rem;
     }
     .legend-item {
       display: flex;
@@ -282,7 +282,7 @@
     <div class="performance-tracker">
             <h2>Performance Tracker</h2>
             <p style="color: var(--muted);">Season starts 21 August – tracking will begin automatically once matches are played.</p>
-            <div class="model-accuracy">Model training accuracy: N/A</div>
+            <div class="model-accuracy">Model training accuracy: 65.2% · F1: 0.591</div>
         </div>
     <div class="table-wrapper">
       <table class="predictions-table">
