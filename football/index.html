@@ -178,6 +178,11 @@
     .odds-cell {
       text-align: right;
     }
+    .score-cell,
+    .actual-cell,
+    .correct-cell {
+      text-align: right;
+    }
     .no-upcoming {
       color: var(--muted);
       font-style: italic;
@@ -243,6 +248,14 @@
       margin-left: 0.5rem;
       vertical-align: middle;
     }
+    .correct-yes {
+      color: #4ade80;
+      font-weight: 700;
+    }
+    .correct-no {
+      color: #f87171;
+      font-weight: 700;
+    }
     .footer {
       margin-top: 2rem;
       color: var(--muted);
@@ -288,6 +301,119 @@
                 <div class="performance-stat"><strong>Value Profit:</strong> +8.03 units</div>
             </div>
             <div class="model-accuracy">Model training accuracy: 65.1% · F1: 0.598</div>
+        </div>
+    
+        <div class="performance-tracker">
+            <h2>Recent Results</h2>
+            <div class="table-wrapper">
+                <table class="predictions-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Home</th>
+                            <th>Away</th>
+                            <th class="score-cell">Score</th>
+                            <th>Predicted</th>
+                            <th class="actual-cell">Actual</th>
+                            <th class="correct-cell">Correct?</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+  <td>2026-08-24</td>
+  <td>Fulham</td>
+  <td>Chelsea</td>
+  <td class="score-cell">2-3</td>
+  <td>Not Home</td>
+  <td class="actual-cell">A</td>
+  <td class="correct-cell correct-yes">Yes</td>
+  <td></td>
+</tr><tr>
+  <td>2026-08-23</td>
+  <td>Newcastle</td>
+  <td>Liverpool</td>
+  <td class="score-cell">2-2</td>
+  <td>Not Home</td>
+  <td class="actual-cell">D</td>
+  <td class="correct-cell correct-yes">Yes</td>
+  <td></td>
+</tr><tr>
+  <td>2026-08-23</td>
+  <td>Brighton</td>
+  <td>Aston Villa</td>
+  <td class="score-cell">4-0</td>
+  <td>Home</td>
+  <td class="actual-cell">H</td>
+  <td class="correct-cell correct-yes">Yes</td>
+  <td></td>
+</tr><tr>
+  <td>2026-08-23</td>
+  <td>Man City</td>
+  <td>Bournemouth</td>
+  <td class="score-cell">2-1</td>
+  <td>Not Home</td>
+  <td class="actual-cell">H</td>
+  <td class="correct-cell correct-no">No</td>
+  <td><span class="value-badge">VALUE</span></td>
+</tr><tr>
+  <td>2026-08-22</td>
+  <td>Brentford</td>
+  <td>Tottenham</td>
+  <td class="score-cell">3-0</td>
+  <td>Not Home</td>
+  <td class="actual-cell">H</td>
+  <td class="correct-cell correct-no">No</td>
+  <td></td>
+</tr><tr>
+  <td>2026-08-22</td>
+  <td>Nott'm Forest</td>
+  <td>Leeds</td>
+  <td class="score-cell">0-1</td>
+  <td>Not Home</td>
+  <td class="actual-cell">A</td>
+  <td class="correct-cell correct-yes">Yes</td>
+  <td></td>
+</tr><tr>
+  <td>2026-08-22</td>
+  <td>Ipswich Town</td>
+  <td>Sunderland</td>
+  <td class="score-cell">2-1</td>
+  <td>Home</td>
+  <td class="actual-cell">H</td>
+  <td class="correct-cell correct-yes">Yes</td>
+  <td><span class="value-badge">VALUE</span></td>
+</tr><tr>
+  <td>2026-08-22</td>
+  <td>Everton</td>
+  <td>Crystal Palace</td>
+  <td class="score-cell">2-0</td>
+  <td>Home</td>
+  <td class="actual-cell">H</td>
+  <td class="correct-cell correct-yes">Yes</td>
+  <td></td>
+</tr><tr>
+  <td>2026-08-22</td>
+  <td>Hull City</td>
+  <td>Man United</td>
+  <td class="score-cell">2-0</td>
+  <td>Not Home</td>
+  <td class="actual-cell">H</td>
+  <td class="correct-cell correct-no">No</td>
+  <td></td>
+</tr><tr>
+  <td>2026-08-21</td>
+  <td>Arsenal</td>
+  <td>Coventry City</td>
+  <td class="score-cell">3-0</td>
+  <td>Home</td>
+  <td class="actual-cell">H</td>
+  <td class="correct-cell correct-yes">Yes</td>
+  <td></td>
+</tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     <div class="table-wrapper">
       <table class="predictions-table">
