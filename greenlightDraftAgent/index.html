@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PEA Report Generator — Greenlight Ecology</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      background: #0f172a;
+      color: #f1f5f9;
+      font-family: inherit;
+      margin: 0;
+    }
+
+    .gl-nav {
+      background: #1e293b;
+      border-bottom: 1px solid #2D5A27;
+      padding: 0.875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .gl-nav-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .gl-nav-title span {
+      color: #2D5A27;
+      font-size: 1.1rem;
+    }
+
+    .gl-nav a.back {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.2s;
+    }
+
+    .gl-nav a.back:hover { color: #38bdf8; }
+
+    .gl-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .gl-hero {
+      margin-bottom: 2rem;
+    }
+
+    .gl-hero h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin: 0 0 0.4rem;
+    }
+
+    .gl-hero p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .gl-card {
+      background: #1e293b;
+      border-left: 3px solid #2D5A27;
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .gl-card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin: 0 0 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #334155;
+    }
+
+    .gl-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .gl-grid.single { grid-template-columns: 1fr; }
+    .gl-grid.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+    @media (max-width: 600px) {
+      .gl-grid, .gl-grid.triple { grid-template-columns: 1fr; }
+    }
+
+    .gl-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .gl-field.full { grid-column: 1 / -1; }
+
+    .gl-field label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .gl-field input,
+    .gl-field textarea,
+    .gl-field select {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #f1f5f9;
+      font-size: 0.9rem;
+      font-family: inherit;
+      padding: 0.55rem 0.75rem;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .gl-field input:focus,
+    .gl-field textarea:focus {
+      outline: none;
+      border-color: #38bdf8;
+    }
+
+    .gl-field input.error,
+    .gl-field textarea.error {
+      border-color: #ef4444;
+    }
+
+    .gl-field textarea { resize: vertical; min-height: 90px; }
+
+    .gl-field input[type="file"] {
+      padding: 0.4rem 0.5rem;
+      cursor: pointer;
+      color: #94a3b8;
+    }
+
+    .gl-field input[type="file"]::file-selector-button {
+      background: #334155;
+      border: none;
+      border-radius: 4px;
+      color: #f1f5f9;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-right: 0.75rem;
+      padding: 0.3rem 0.6rem;
+    }
+
+    /* Collapsible species cards */
+    .species-card {
+      background: #1e293b;
+      border-left: 3px solid #1e4d2b;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 0.6rem;
+      overflow: hidden;
+    }
+
+    .species-header {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      padding: 0.85rem 1.25rem;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .species-header:hover { background: #243347; }
+
+    .species-header h3 {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .species-chevron {
+      color: #2D5A27;
+      font-size: 1rem;
+      transition: transform 0.25s;
+    }
+
+    .species-card.open .species-chevron { transform: rotate(180deg); }
+
+    .species-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .species-card.open .species-body { max-height: 300px; }
+
+    .species-body-inner {
+      padding: 0 1.25rem 1.25rem;
+    }
+
+    /* Photo captions */
+    .photo-captions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .photo-caption-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .photo-caption-item label {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .photo-caption-item input {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      color: #f1f5f9;
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.45rem 0.65rem;
+      width: 100%;
+    }
+
+    /* Submit area */
+    .gl-submit-area {
+      margin-top: 1.75rem;
+    }
+
+    .gl-coldstart {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      padding: 0.65rem 1rem;
+      text-align: center;
+    }
+
+    .gl-coldstart span { color: #38bdf8; }
+
+    .gl-submit-btn {
+      background: #2D5A27;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.9rem;
+      transition: background 0.2s, opacity 0.2s;
+      width: 100%;
+    }
+
+    .gl-submit-btn:hover:not(:disabled) { background: #3a7232; }
+    .gl-submit-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+
+    .gl-error {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+      text-align: center;
+    }
+
+    .gl-success {
+      background: #1a3d1a;
+      border: 1px solid #2D5A27;
+      border-radius: 8px;
+      color: #86efac;
+      font-size: 0.9rem;
+      margin-top: 0.75rem;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .spinner {
+      animation: spin 0.8s linear infinite;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      display: inline-block;
+      height: 14px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      width: 14px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .section-label {
+      color: #38bdf8;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="gl-nav">
+    <div class="gl-nav-title">
+      <img src="logoImage.png" alt="Greenlight Ecology" style="height:32px;width:32px;object-fit:contain;" /> Greenlight Ecology — PEA Report Generator
+    </div>
+    <a class="back" href="../index.html">← Portfolio</a>
+  </nav>
+
+  <div class="gl-wrap">
+
+    <div class="gl-hero">
+      <h1>Generate a PEA Report</h1>
+      <p>Fill in the survey details below. The agent will generate a fully formatted Preliminary Ecological Appraisal (.docx) ready to review.</p>
+    </div>
+
+    <div style="background:#1e293b;border:1px solid #2D5A27;border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:1.75rem;">
+      <p style="color:#86efac;font-size:0.85rem;font-weight:600;margin:0 0 0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📋 How to use this form</p>
+      <ol style="color:#94a3b8;font-size:0.85rem;margin:0;padding-left:1.25rem;line-height:1.9;">
+        <li>Fill in <strong style="color:#f1f5f9;">Site Information</strong> and <strong style="color:#f1f5f9;">Author Information</strong> at the top.</li>
+        <li>Enter the <strong style="color:#f1f5f9;">Survey Conditions</strong> from your field notes.</li>
+        <li>Click each <strong style="color:#f1f5f9;">Species section</strong> to expand it and paste in your field notes — the AI will turn them into formal report language.</li>
+        <li>Upload your <strong style="color:#f1f5f9;">maps and site photos</strong> in the Appendix Images section. Add one photo at a time and write a caption for each.</li>
+        <li>Hit <strong style="color:#f1f5f9;">Generate PEA Report</strong> — your .docx will download automatically. The first request may take up to 60 seconds.</li>
+      </ol>
+    </div>
+
+    <form id="peaForm" novalidate>
+
+      <!-- Site Information -->
+      <div class="gl-card">
+        <h2>Site Information</h2>
+        <div class="gl-grid">
+          <div class="gl-field">
+            <label for="site_name">Site Name *</label>
+            <input type="text" id="site_name" placeholder="e.g. Serge Hill – Lunch Room and New Shed" required />
+          </div>
+          <div class="gl-field">
+            <label for="grid_reference">Grid Reference *</label>
+            <input type="text" id="grid_reference" placeholder="e.g. TL 10766 04254" required />
+          </div>
+          <div class="gl-field">
+            <label for="site_area_ha">Site Area (ha) *</label>
+            <input type="number" id="site_area_ha" step="0.001" min="0" placeholder="0.031" required />
+          </div>
+          <div class="gl-field">
+            <label for="prepared_for">Prepared For *</label>
+            <input type="text" id="prepared_for" placeholder="e.g. Studio Benjamin" required />
+          </div>
+          <div class="gl-field">
+            <label for="doc_ref">Doc Reference *</label>
+            <input type="text" id="doc_ref" placeholder="e.g. GE-1003" required />
+          </div>
+          <div class="gl-field full">
+            <label for="development_description">Development Description *</label>
+            <textarea id="development_description" rows="3" placeholder="Describe the proposed development…" required></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Author Information -->
+      <div class="gl-card">
+        <h2>Author Information</h2>
+        <div class="gl-grid">
+          <div class="gl-field">
+            <label for="author_name">Name *</label>
+            <input type="text" id="author_name" placeholder="Samuel Radonich" required />
+          </div>
+          <div class="gl-field">
+            <label for="author_credentials">Credentials</label>
+            <input type="text" id="author_credentials" placeholder="BSc MRes" />
+          </div>
+          <div class="gl-field">
+            <label for="author_role">Role</label>
+            <input type="text" id="author_role" placeholder="Principal Ecologist" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Survey Conditions -->
+      <div class="gl-card">
+        <h2>Survey Conditions</h2>
+        <div class="gl-grid triple">
+          <div class="gl-field">
+            <label for="survey_date">Date of Survey *</label>
+            <input type="date" id="survey_date" required />
+          </div>
+          <div class="gl-field">
+            <label for="temperature_c">Temperature (°C)</label>
+            <input type="number" id="temperature_c" step="0.1" placeholder="23" />
+          </div>
+          <div class="gl-field">
+            <label for="humidity_percent">Humidity (%)</label>
+            <input type="number" id="humidity_percent" min="0" max="100" placeholder="68" />
+          </div>
+          <div class="gl-field">
+            <label for="cloud_cover_percent">Cloud Cover (%)</label>
+            <input type="number" id="cloud_cover_percent" min="0" max="100" placeholder="65" />
+          </div>
+          <div class="gl-field">
+            <label for="wind_kmh">Wind (km/h)</label>
+            <input type="number" id="wind_kmh" step="0.1" placeholder="18" />
+          </div>
+          <div class="gl-field">
+            <label for="rain">Rain</label>
+            <input type="text" id="rain" placeholder="None" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Species Assessment Notes -->
+      <div class="gl-card">
+        <h2>Species Assessment Notes</h2>
+        <p style="color:#64748b;font-size:0.82rem;margin:0 0 1rem;">Click each section to expand and add field notes. The AI will generate formal report language from your notes.</p>
+
+        <div id="speciesSections">
+          <!-- injected by JS -->
+        </div>
+      </div>
+
+      <!-- Appendix Images -->
+      <div class="gl-card">
+        <h2>Appendix Images</h2>
+        <div class="gl-grid">
+          <div class="gl-field">
+            <label for="habitat_map">Appendix 1 — Habitat Map</label>
+            <input type="file" id="habitat_map" accept="image/*" />
+          </div>
+          <div class="gl-field">
+            <label for="location_map">Appendix 2 — Location Map</label>
+            <input type="file" id="location_map" accept="image/*" />
+          </div>
+          <div class="gl-field">
+            <label for="proposed_plan">Appendix 3 — Proposed Plan</label>
+            <input type="file" id="proposed_plan" accept="image/*" />
+          </div>
+          <div class="gl-field full">
+            <label for="site_photos">Appendix 4 — Site Photos (multiple)</label>
+            <input type="file" id="site_photos" accept="image/*" multiple />
+            <small style="color:#64748b;margin-top:0.25rem;display:block;">You can add photos in multiple batches — each selection adds to the list.</small>
+            <div id="photoFileList" style="margin-top:0.5rem;"></div>
+            <div class="photo-captions" id="photoCaptions"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="gl-submit-area">
+        <div class="gl-coldstart">
+          <span>⚠ Note:</span> First request may take 30–60 seconds while the server wakes up.
+        </div>
+        <button type="submit" class="gl-submit-btn" id="submitBtn">Generate PEA Report</button>
+        <div id="formError" class="gl-error" style="display:none;"></div>
+        <div id="formSuccess" class="gl-success" style="display:none;"></div>
+      </div>
+
+    </form>
+  </div>
+
+  <script>
+    // ── Species sections ──────────────────────────────────────────────
+    const SPECIES = [
+      { key: 'habitat_notes',           label: 'Habitats & Plants' },
+      { key: 'designated_sites_notes',  label: 'Designated Sites' },
+      { key: 'invasive_species_notes',  label: 'Invasive / Non-native Species' },
+      { key: 'invertebrates_notes',     label: 'Invertebrates' },
+      { key: 'bats_notes',              label: 'Bats' },
+      { key: 'birds_notes',             label: 'Birds' },
+      { key: 'reptiles_notes',          label: 'Reptiles' },
+      { key: 'amphibians_notes',        label: 'Amphibians' },
+      { key: 'badger_notes',            label: 'Badger' },
+      { key: 'riparian_notes',          label: 'Riparian Animals' },
+      { key: 'dormouse_notes',          label: 'Hazel Dormouse' },
+      { key: 'hedgehog_notes',          label: 'Other (e.g. Hedgehog)' },
+    ];
+
+    const speciesContainer = document.getElementById('speciesSections');
+
+    SPECIES.forEach(({ key, label }) => {
+      const card = document.createElement('div');
+      card.className = 'species-card';
+      card.innerHTML = `
+        <div class="species-header">
+          <h3>${label}</h3>
+          <span class="species-chevron">▾</span>
+        </div>
+        <div class="species-body">
+          <div class="species-body-inner">
+            <textarea id="${key}" rows="4" placeholder="Enter field notes for ${label.toLowerCase()}…"></textarea>
+          </div>
+        </div>`;
+      speciesContainer.appendChild(card);
+
+      card.querySelector('.species-header').addEventListener('click', () => {
+        card.classList.toggle('open');
+      });
+    });
+
+    // ── Photo accumulator with auto-compression ─────────────────────
+    let photoFiles = [];
+    const MAX_PX = 800;
+    const JPEG_QUALITY = 0.85;
+    const COMPRESS_THRESHOLD_MB = 0.5;
+
+    function compressImage(file) {
+      return new Promise(resolve => {
+        const sizeMb = file.size / 1024 / 1024;
+        if (sizeMb <= COMPRESS_THRESHOLD_MB) { resolve(file); return; }
+
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(url);
+          let { width, height } = img;
+          if (width > MAX_PX || height > MAX_PX) {
+            if (width > height) { height = Math.round(height * MAX_PX / width); width = MAX_PX; }
+            else { width = Math.round(width * MAX_PX / height); height = MAX_PX; }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width; canvas.height = height;
+          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+          canvas.toBlob(blob => {
+            const compressed = new File([blob], file.name, { type: 'image/jpeg' });
+            resolve(compressed);
+          }, 'image/jpeg', JPEG_QUALITY);
+        };
+        img.src = url;
+      });
+    }
+
+    document.getElementById('site_photos').addEventListener('change', async function () {
+      const incoming = Array.from(this.files).filter(f => !photoFiles.find(p => p.name === f.name));
+      this.value = '';
+      for (const file of incoming) {
+        const compressed = await compressImage(file);
+        photoFiles.push(compressed);
+      }
+      renderPhotoList();
+    });
+
+    function renderPhotoList() {
+      const captions = document.getElementById('photoCaptions');
+      const fileList = document.getElementById('photoFileList');
+      captions.innerHTML = '';
+      fileList.innerHTML = '';
+
+      if (!photoFiles.length) return;
+
+      const badge = document.createElement('div');
+      badge.style.cssText = 'background:#1a3d1a;border:1px solid #2D5A27;border-radius:6px;padding:0.5rem 0.75rem;margin-bottom:0.5rem;font-size:0.8rem;color:#86efac;';
+      badge.textContent = `✓ ${photoFiles.length} photo${photoFiles.length > 1 ? 's' : ''} selected`;
+      fileList.appendChild(badge);
+
+      photoFiles.forEach((file, i) => {
+        const sizeMb = (file.size / 1024 / 1024).toFixed(1);
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:0.5rem;padding:0.3rem 0;border-bottom:1px solid #1e293b;font-size:0.8rem;';
+        const sizeLabel = parseFloat(sizeMb) < 0.5 ? `${sizeMb} MB` : `${sizeMb} MB → compressed`;
+        row.innerHTML = `
+          <span style="color:#38bdf8;">📷</span>
+          <span style="color:#f1f5f9;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${file.name}</span>
+          <span style="color:#64748b;white-space:nowrap;">${sizeLabel}</span>
+          <button type="button" data-remove="${i}" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.9rem;padding:0 0.25rem;">✕</button>`;
+        fileList.appendChild(row);
+
+        const item = document.createElement('div');
+        item.className = 'photo-caption-item';
+        item.innerHTML = `
+          <label>Caption for ${file.name}</label>
+          <input type="text" placeholder="Figure ${i + 1}: Showing…" data-caption-index="${i}" />`;
+        captions.appendChild(item);
+      });
+
+      fileList.querySelectorAll('[data-remove]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          photoFiles.splice(parseInt(btn.dataset.remove), 1);
+          renderPhotoList();
+        });
+      });
+    }
+
+    // ── Form submission ───────────────────────────────────────────────
+    document.getElementById('peaForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const errorEl  = document.getElementById('formError');
+      const successEl = document.getElementById('formSuccess');
+      const btn = document.getElementById('submitBtn');
+
+      errorEl.style.display  = 'none';
+      successEl.style.display = 'none';
+
+      // Validate required fields
+      const required = [
+        'site_name', 'grid_reference', 'site_area_ha',
+        'development_description', 'prepared_for', 'doc_ref',
+        'author_name', 'survey_date'
+      ];
+      let valid = true;
+      required.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.remove('error');
+        if (!el.value.trim()) { el.classList.add('error'); valid = false; }
+      });
+
+      if (!valid) {
+        errorEl.textContent = 'Please fill in all required fields (marked above in red).';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      // Format date DD/MM/YYYY
+      const rawDate = document.getElementById('survey_date').value;
+      const [y, m, d] = rawDate.split('-');
+      const formattedDate = `${d}/${m}/${y}`;
+
+      // Build survey JSON
+      const survey = {
+        site_info: {
+          site_name:               document.getElementById('site_name').value.trim(),
+          grid_reference:          document.getElementById('grid_reference').value.trim(),
+          site_area_ha:            parseFloat(document.getElementById('site_area_ha').value),
+          development_description: document.getElementById('development_description').value.trim(),
+          prepared_for:            document.getElementById('prepared_for').value.trim(),
+          doc_ref:                 document.getElementById('doc_ref').value.trim(),
+        },
+        author_info: {
+          name:        document.getElementById('author_name').value.trim(),
+          credentials: document.getElementById('author_credentials').value.trim(),
+          role:        document.getElementById('author_role').value.trim(),
+        },
+        survey_conditions: {
+          date:                 formattedDate,
+          temperature_c:        parseFloat(document.getElementById('temperature_c').value) || 0,
+          humidity_percent:     parseFloat(document.getElementById('humidity_percent').value) || 0,
+          cloud_cover_percent:  parseFloat(document.getElementById('cloud_cover_percent').value) || 0,
+          wind_kmh:             parseFloat(document.getElementById('wind_kmh').value) || 0,
+          rain:                 document.getElementById('rain').value.trim() || 'None',
+        },
+      };
+
+      // Add species notes
+      SPECIES.forEach(({ key }) => {
+        survey[key] = document.getElementById(key).value.trim();
+      });
+
+      // Photo captions
+      const captionInputs = document.querySelectorAll('[data-caption-index]');
+      const photoCaptions = Array.from(captionInputs).map(i => i.value.trim() || `Figure ${parseInt(i.dataset.captionIndex) + 1}:`);
+
+      // Build FormData
+      const fd = new FormData();
+      fd.append('survey', JSON.stringify(survey));
+      fd.append('photo_descriptions', JSON.stringify(photoCaptions));
+
+      const habitatMap  = document.getElementById('habitat_map').files[0];
+      const locationMap = document.getElementById('location_map').files[0];
+      const proposedPlan = document.getElementById('proposed_plan').files[0];
+      if (habitatMap)   fd.append('habitat_map',   habitatMap);
+      if (locationMap)  fd.append('location_map',  locationMap);
+      if (proposedPlan) fd.append('proposed_plan', proposedPlan);
+      photoFiles.forEach(f => fd.append('photos', f));
+
+      // Submit
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Generating report…';
+
+      try {
+        const res = await fetch('https://eco-report-agent-v2.onrender.com/survey', {
+          method: 'POST',
+          body: fd,
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || `Server error ${res.status}`);
+        }
+
+        const { report_id } = await res.json();
+
+        // Download the docx
+        const dlRes = await fetch(`https://eco-report-agent-v2.onrender.com/report/${report_id}/download`);
+        if (!dlRes.ok) throw new Error('Failed to download report.');
+
+        const blob = await dlRes.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        const siteName = document.getElementById('site_name').value.trim().replace(/\s+/g, '_');
+        a.href     = url;
+        a.download = `${siteName}_PEA_Report.docx`;
+        a.click();
+        URL.revokeObjectURL(url);
+
+        successEl.textContent = '✓ Report generated and downloaded successfully.';
+        successEl.style.display = 'block';
+
+      } catch (err) {
+        errorEl.textContent = `Error: ${err.message}`;
+        errorEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Generate PEA Report';
+      }
+    });
+  </script>
+
+</body>
+</html>
