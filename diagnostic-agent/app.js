@@ -160,7 +160,7 @@ function renderReport(report) {
   const auditLog = document.getElementById("audit-log");
   auditLog.innerHTML = [
     { event: "fault_received", at: report.generated_at, 
-      detail: `Severity: ${currentReport.fault_id}` },
+      detail: `Severity: ${currentReport.severity}` },
     { event: "report_generated", at: report.generated_at, 
       detail: `Report ID: ${report.report_id}` },
   ].map(e => `
