@@ -3,6 +3,7 @@ const BACKEND_URL = "https://diagnostic-repair-ranking-agent.onrender.com";
 // ── State ──
 let selectedScenario = "cache_collapse";
 let currentReport = null;
+let currentSeverity = "high";
 
 // ── Cold-start ping ──
 (function pingHealth() {
@@ -44,6 +45,8 @@ async function submitFault() {
     errorDiv.innerHTML = `<div class="error-msg">Please enter a fault description.</div>`;
     return;
   }
+
+  currentSeverity = severity;
 
   btn.disabled = true;
   spinner.classList.remove("hidden");
@@ -159,9 +162,9 @@ function renderReport(report) {
   };
   const auditLog = document.getElementById("audit-log");
   auditLog.innerHTML = [
-    { event: "fault_received", at: report.generated_at, 
-      detail: `Severity: ${currentReport.severity}` },
-    { event: "report_generated", at: report.generated_at, 
+    { event: "fault_received", at: report.generated_at,
+      detail: `Severity: ${currentSeverity}` },
+    { event: "report_generated", at: report.generated_at,
       detail: `Report ID: ${report.report_id}` },
   ].map(e => `
     <div class="audit-entry">
@@ -188,6 +191,7 @@ function formatName(name) {
 // ── Reset ──
 function resetAll() {
   currentReport = null;
+  currentSeverity = "high";
   document.getElementById("description").value = "";
   document.getElementById("severity").value = "high";
   document.getElementById("component").value = "unknown";
