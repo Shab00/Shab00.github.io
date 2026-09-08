@@ -232,6 +232,26 @@
       color: #f87171;
       font-weight: 700;
     }
+    .today-badge {
+      background: #dc2626;
+      color: white;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    .locked-badge {
+      background: #f59e0b;
+      color: #000;
+      padding: 0.15rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
     .footer {
       margin-top: 2rem;
       color: var(--muted);
@@ -250,7 +270,7 @@
 <body>
   <div class="container">
     <h1>Premier League Home‑Win Predictions</h1>
-    <p class="updated">Last updated: 2026-09-08 15:56 BST</p>
+    <p class="updated">Last updated: 2026-09-08 20:30 BST</p>
     <p class="refresh-note">Predictions are refreshed approximately one hour before kick‑off.</p>
     <div class="top-actions">
       <div class="telegram-banner">
@@ -272,13 +292,13 @@
     <div class="performance-tracker">
             <h2>Performance Tracker</h2>
             <div class="performance-summary">
-                <div class="performance-stat"><strong>Overall Accuracy:</strong> 82.8% (24/29)</div>
-                <div class="performance-stat"><strong>Avoid:</strong> 1 match</div>
+                <div class="performance-stat"><strong>Overall Accuracy:</strong> 70.4% (19/27)</div>
+                <div class="performance-stat"><strong>Avoid:</strong> 3 matches</div>
                 <div class="performance-stat"><strong>Edge Bets:</strong> 4 picks</div>
                 <div class="performance-stat"><strong>Edge Accuracy:</strong> 75.0% (3/4)</div>
-                <div class="performance-stat"><strong>Edge Profit:</strong> +4.00 units</div>
-                <div class="performance-stat"><strong>Fade Picks:</strong> 17 picks</div>
-                <div class="performance-stat"><strong>Fade Accuracy:</strong> 88.2% (15/17)</div>
+                <div class="performance-stat"><strong>Edge Profit:</strong> +0.82 units</div>
+                <div class="performance-stat"><strong>Fade Picks:</strong> 21 picks</div>
+                <div class="performance-stat"><strong>Fade Accuracy:</strong> 66.7% (14/21)</div>
             </div>
             <div class="model-accuracy">Model training accuracy: 64.7% · F1: 0.591</div>
         </div>
@@ -320,15 +340,6 @@
   <td><span class="fade-text">FADE</span></td>
 </tr><tr>
   <td>2026-09-05</td>
-  <td>Fulham</td>
-  <td>Crystal Palace</td>
-  <td class="score-cell">2-3</td>
-  <td><span class="not-home-text">Not Home</span></td>
-  <td class="actual-cell">A</td>
-  <td class="correct-cell correct-yes">Yes</td>
-  <td><span class="fade-text">FADE</span></td>
-</tr><tr>
-  <td>2026-09-05</td>
   <td>Hull City</td>
   <td>Aston Villa</td>
   <td class="score-cell">0-0</td>
@@ -336,6 +347,15 @@
   <td class="actual-cell">D</td>
   <td class="correct-cell correct-yes">Yes</td>
   <td><span class="fade-text">FADE</span></td>
+</tr><tr>
+  <td>2026-09-05</td>
+  <td>Fulham</td>
+  <td>Crystal Palace</td>
+  <td class="score-cell">2-3</td>
+  <td><span class="avoid-text">Avoid</span></td>
+  <td class="actual-cell">A</td>
+  <td class="correct-cell avoid-text">–</td>
+  <td></td>
 </tr><tr>
   <td>2026-09-05</td>
   <td>Nott'm Forest</td>
@@ -353,16 +373,7 @@
   <td><span class="home-text">Home</span></td>
   <td class="actual-cell">H</td>
   <td class="correct-cell correct-yes">Yes</td>
-  <td></td>
-</tr><tr>
-  <td>2026-09-05</td>
-  <td>Newcastle</td>
-  <td>Bournemouth</td>
-  <td class="score-cell">2-2</td>
-  <td><span class="not-home-text">Not Home</span></td>
-  <td class="actual-cell">D</td>
-  <td class="correct-cell correct-yes">Yes</td>
-  <td><span class="fade-text">FADE</span></td>
+  <td><span class="edge-text">EDGE</span></td>
 </tr><tr>
   <td>2026-09-05</td>
   <td>Brighton</td>
@@ -380,6 +391,15 @@
   <td><span class="home-text">Home</span></td>
   <td class="actual-cell">D</td>
   <td class="correct-cell correct-no">No</td>
+  <td><span class="edge-text">EDGE</span></td>
+</tr><tr>
+  <td>2026-09-05</td>
+  <td>Newcastle</td>
+  <td>Bournemouth</td>
+  <td class="score-cell">2-2</td>
+  <td><span class="avoid-text">Avoid</span></td>
+  <td class="actual-cell">D</td>
+  <td class="correct-cell avoid-text">–</td>
   <td></td>
 </tr><tr>
   <td>2026-09-04</td>
@@ -413,8 +433,8 @@
   <td>Aston Villa</td>
   <td>Nott'm Forest</td>
   <td class="prob-cell prob-mid">40.85%</td>
-  <td class="odds-cell">2.27</td>
-  <td></td>
+  <td class="odds-cell">2.26</td>
+  <td><span class="not-home-text">Not Home</span></td>
 </tr>
 <tr>
   <td>Sat 12 Sep 15:00</td>
@@ -422,7 +442,7 @@
   <td>Brentford</td>
   <td class="prob-cell prob-low">29.33%</td>
   <td class="odds-cell">2.51</td>
-  <td></td>
+  <td><span class="not-home-text">Not Home</span></td>
 </tr>
 <tr>
   <td>Sat 12 Sep 15:00</td>
@@ -430,15 +450,15 @@
   <td>Hull City</td>
   <td class="prob-cell prob-high">92.20%</td>
   <td class="odds-cell">1.23</td>
-  <td><span class="edge-text">EDGE</span></td>
+  <td><span class="home-text">Home</span></td>
 </tr>
 <tr>
   <td>Sat 12 Sep 15:00</td>
   <td>Crystal Palace</td>
   <td>Ipswich Town</td>
-  <td class="prob-cell prob-high">75.67%</td>
+  <td class="prob-cell prob-high">75.94%</td>
   <td class="odds-cell">1.90</td>
-  <td><span class="edge-text">EDGE</span></td>
+  <td><span class="home-text">Home</span></td>
 </tr>
 <tr>
   <td>Sat 12 Sep 15:00</td>
@@ -446,7 +466,7 @@
   <td>Fulham</td>
   <td class="prob-cell prob-high">83.41%</td>
   <td class="odds-cell">1.46</td>
-  <td><span class="edge-text">EDGE</span></td>
+  <td><span class="home-text">Home</span></td>
 </tr>
 <tr>
   <td>Sat 12 Sep 17:30</td>
@@ -454,7 +474,7 @@
   <td>Everton</td>
   <td class="prob-cell prob-low">27.44%</td>
   <td class="odds-cell">2.07</td>
-  <td><span class="fade-text">FADE</span></td>
+  <td><span class="not-home-text">Not Home</span></td>
 </tr>
 <tr>
   <td>Sat 12 Sep 20:00</td>
@@ -462,15 +482,15 @@
   <td>Arsenal</td>
   <td class="prob-cell prob-low">30.07%</td>
   <td class="odds-cell">7.18</td>
-  <td><span class="edge-text">EDGE</span></td>
+  <td><span class="not-home-text">Not Home</span></td>
 </tr>
 <tr>
   <td>Sun 13 Sep 14:00</td>
   <td>Coventry City</td>
   <td>Brighton</td>
-  <td class="prob-cell prob-low">26.79%</td>
+  <td class="prob-cell prob-low">29.31%</td>
   <td class="odds-cell">4.09</td>
-  <td><span class="edge-text">EDGE</span></td>
+  <td><span class="not-home-text">Not Home</span></td>
 </tr>
 <tr>
   <td>Sun 13 Sep 16:30</td>
@@ -478,15 +498,15 @@
   <td>Man City</td>
   <td class="prob-cell prob-low">9.70%</td>
   <td class="odds-cell">3.15</td>
-  <td><span class="fade-text">FADE</span></td>
+  <td><span class="not-home-text">Not Home</span></td>
 </tr>
 <tr>
   <td>Mon 14 Sep 20:00</td>
   <td>Leeds</td>
   <td>Newcastle</td>
-  <td class="prob-cell prob-mid">36.18%</td>
-  <td class="odds-cell">2.42</td>
-  <td></td>
+  <td class="prob-cell prob-mid">41.84%</td>
+  <td class="odds-cell">2.43</td>
+  <td><span class="not-home-text">Not Home</span></td>
 </tr>
         </tbody>
       </table>
