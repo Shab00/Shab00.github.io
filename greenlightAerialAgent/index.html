@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aerial Tree Inspection — Greenlight Ecology</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      background: #0f172a;
+      color: #f1f5f9;
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+    }
+
+    .gl-nav {
+      background: #1e293b;
+      border-bottom: 1px solid #2D5A27;
+      padding: 0.875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .gl-nav-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .gl-nav-title span { color: #2D5A27; font-size: 1.1rem; }
+
+    .gl-nav a.back {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.2s;
+    }
+    .gl-nav a.back:hover { color: #38bdf8; }
+
+    .gl-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .gl-hero { margin-bottom: 2rem; }
+    .gl-hero h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin: 0 0 0.4rem;
+    }
+    .gl-hero p { color: #94a3b8; font-size: 0.9rem; margin: 0; }
+
+    .gl-card {
+      background: #1e293b;
+      border-left: 3px solid #2D5A27;
+      border-radius: 0 8px 8px 0;
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .gl-card h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin: 0 0 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid #334155;
+    }
+
+    .gl-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .gl-grid.single { grid-template-columns: 1fr; }
+    .gl-grid.triple { grid-template-columns: 1fr 1fr 1fr; }
+    .gl-grid.quad { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+    @media (max-width: 600px) {
+      .gl-grid, .gl-grid.triple, .gl-grid.quad { grid-template-columns: 1fr; }
+    }
+
+    .gl-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .gl-field.full { grid-column: 1 / -1; }
+
+    .gl-field label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #94a3b8;
+      letter-spacing: 0.02em;
+    }
+
+    .gl-field input,
+    .gl-field textarea,
+    .gl-field select {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #f1f5f9;
+      font-size: 0.9rem;
+      font-family: inherit;
+      padding: 0.55rem 0.75rem;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    .gl-field select option { background: #1e293b; }
+
+    .gl-field input:focus,
+    .gl-field textarea:focus,
+    .gl-field select:focus {
+      outline: none;
+      border-color: #2D5A27;
+    }
+
+    .gl-field input.error,
+    .gl-field select.error { border-color: #ef4444; }
+    .gl-field textarea { resize: vertical; min-height: 80px; }
+
+    /* Tree cards */
+    .tree-card {
+      background: #162032;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      overflow: hidden;
+    }
+
+    .tree-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+    }
+
+    .tree-card-header h3 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+
+    .tree-card-header .tree-badge {
+      background: #2D5A27;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .tree-card-body { padding: 1.25rem; }
+
+    .tree-remove-btn {
+      background: none;
+      border: 1px solid #ef4444;
+      border-radius: 4px;
+      color: #ef4444;
+      cursor: pointer;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.5rem;
+      transition: background 0.2s;
+    }
+    .tree-remove-btn:hover { background: rgba(239,68,68,0.1); }
+
+    /* PRF cards */
+    .prf-section { margin-top: 1.25rem; }
+    .prf-section-title {
+      color: #94a3b8;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .prf-card {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-left: 2px solid #1e4d2b;
+      border-radius: 0 6px 6px 0;
+      margin-bottom: 0.75rem;
+      overflow: hidden;
+    }
+
+    .prf-card-header {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .prf-card-header:hover { background: #162032; }
+
+    .prf-card-header h4 {
+      color: #cbd5e1;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .prf-chevron {
+      color: #2D5A27;
+      font-size: 0.9rem;
+      transition: transform 0.25s;
+    }
+    .prf-card.open .prf-chevron { transform: rotate(180deg); }
+
+    .prf-card-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+    .prf-card.open .prf-card-body { max-height: 9999px; }
+
+    .prf-card-inner { padding: 0 1rem 1rem; }
+
+    .prf-remove-btn {
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-size: 0.8rem;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .prf-remove-btn:hover { color: #ef4444; }
+
+    /* Droppings toggle */
+    .toggle-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .toggle-btn {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      color: #94a3b8;
+      cursor: pointer;
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.45rem;
+      transition: all 0.15s;
+    }
+    .toggle-btn.active-yes {
+      background: rgba(45,90,39,0.2);
+      border-color: #2D5A27;
+      color: #86efac;
+    }
+    .toggle-btn.active-no {
+      background: rgba(51,65,85,0.4);
+      border-color: #64748b;
+      color: #f1f5f9;
+    }
+
+    /* Photo preview */
+    .photo-preview {
+      border: 1px dashed #334155;
+      border-radius: 6px;
+      color: #64748b;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    .photo-preview img {
+      border-radius: 4px;
+      max-height: 80px;
+      max-width: 100%;
+      object-fit: cover;
+    }
+
+    /* Audio section */
+    .audio-section {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      margin-top: 1rem;
+      padding: 1rem;
+    }
+
+    .audio-section-title {
+      color: #94a3b8;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+    }
+
+    .audio-controls { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    .audio-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #f1f5f9;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s;
+    }
+    .audio-btn:hover { border-color: #2D5A27; }
+    .audio-btn.recording {
+      background: rgba(239,68,68,0.15);
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
+    .audio-status {
+      color: #94a3b8;
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+    }
+
+    .audio-transcript {
+      background: #162032;
+      border: 1px solid #334155;
+      border-radius: 5px;
+      color: #cbd5e1;
+      font-size: 0.8rem;
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+    }
+
+    .audio-notice {
+      background: rgba(45,90,39,0.1);
+      border: 1px solid #2D5A27;
+      border-radius: 5px;
+      color: #86efac;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      padding: 0.5rem 0.75rem;
+    }
+
+    /* Add buttons */
+    .add-btn {
+      background: transparent;
+      border: 1px dashed #2D5A27;
+      border-radius: 6px;
+      color: #2D5A27;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+      padding: 0.6rem 1rem;
+      transition: all 0.2s;
+      width: 100%;
+    }
+    .add-btn:hover {
+      background: rgba(45,90,39,0.1);
+      border-style: solid;
+    }
+
+    /* Section divider */
+    .section-divider {
+      border: none;
+      border-top: 1px solid #1e293b;
+      margin: 1.25rem 0;
+    }
+
+    /* Submit area */
+    .gl-submit-area { margin-top: 1.75rem; }
+
+    .gl-coldstart {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      padding: 0.65rem 1rem;
+      text-align: center;
+    }
+    .gl-coldstart span { color: #38bdf8; }
+
+    .gl-submit-btn {
+      background: #2D5A27;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.9rem;
+      transition: background 0.2s, opacity 0.2s;
+      width: 100%;
+    }
+    .gl-submit-btn:hover:not(:disabled) { background: #3a7232; }
+    .gl-submit-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+
+    .gl-error {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+      text-align: center;
+    }
+
+    .gl-success {
+      background: #1a3d1a;
+      border: 1px solid #2D5A27;
+      border-radius: 8px;
+      color: #86efac;
+      font-size: 0.9rem;
+      margin-top: 0.75rem;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .gl-success a {
+      color: #4ade80;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .gl-success a:hover { text-decoration: underline; }
+
+    .spinner {
+      animation: spin 0.8s linear infinite;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      display: inline-block;
+      height: 14px;
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      width: 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<nav class="gl-nav">
+  <div class="gl-nav-title">
+    <img src="logoImage.png" alt="Greenlight Ecology" 
+      style="height:32px;width:auto;vertical-align:middle;margin-right:0.5rem;" />
+    Greenlight Ecology Ltd
+  </div>
+  <a class="back" href="/">← Back to Portfolio</a>
+</nav>
+
+<div class="gl-wrap">
+  <div class="gl-hero">
+    <h1>Aerial Tree Inspection Survey</h1>
+    <p>Submit survey data to generate a populated Excel inspection sheet. 
+       All measurements and suitability ratings must be entered manually.</p>
+  </div>
+
+  <form id="surveyForm" novalidate>
+
+    <!-- Survey Info -->
+    <div class="gl-card">
+      <h2>Survey Details</h2>
+      <div class="gl-grid">
+        <div class="gl-field">
+          <label>Site Name *</label>
+          <input type="text" id="site_name" placeholder="e.g. Bluebell Hill" required />
+        </div>
+        <div class="gl-field">
+          <label>Licence No *</label>
+          <input type="text" id="licence_no" placeholder="e.g. 2025-12120-CL18_BAT" required />
+        </div>
+        <div class="gl-field">
+          <label>Survey Date *</label>
+          <input type="date" id="survey_date" required />
+        </div>
+      </div>
+    </div>
+
+    <!-- Trees -->
+    <div class="gl-card">
+      <h2>Trees</h2>
+      <div id="treesContainer"></div>
+      <button type="button" class="add-btn" id="addTreeBtn">+ Add Tree</button>
+    </div>
+
+    <!-- Submit -->
+    <div class="gl-submit-area">
+      <div class="gl-coldstart">
+        Backend hosted on Render — <span>first request may take ~30s to wake up</span>
+      </div>
+      <button type="submit" class="gl-submit-btn" id="submitBtn">
+        Generate Inspection Excel
+      </button>
+      <div class="gl-error" id="formError" style="display:none;"></div>
+      <div class="gl-success" id="formSuccess" style="display:none;"></div>
+    </div>
+
+  </form>
+</div>
+
+<script>
+  const API_URL = 'https://aerial-inspection-agent.onrender.com';
+  // Change to http://localhost:8000 for local development
+
+  let treeCount = 0;
+  const trees = {}; // tree index -> { prfCount, mediaRecorder, audioChunks }
+
+  // ── Dropdown options ─────────────────────────────────────────────
+  const ASPECTS = ['N','NE','E','SE','S','SW','W','NW'];
+  const SMELL = ['Pleasant','Not unpleasant','Unpleasant'];
+  const SUBSTRATE = ['Smooth','Bobbly','Bumpy','Rough','Clean','Waxy',
+                     'Blackened','Polished','Dirty','Dusty','Debris','Sludgy'];
+  const HUMIDITY_COND = ['Dry','Damp','Wet','Mildew','Seasonally damp'];
+  const APEX = ['Domed','Spire','Peak/Wedge','Flat','Chambered','Tube'];
+  const COMPETITORS = ['Inverts','Birds E','Birds N/E','Mammals','Slugs'];
+  const PRF_SUIT = ['PRF-I','PRF-M','Negligible','Confirmed','FAR','N/A'];
+  const OVERALL_SUIT = ['PRF-I','PRF-M','Negligible'];
+  const TREE_FORM = ['Single stem','Multi stem','Coppice'];
+
+  function makeSelect(options, selectedVal, placeholder) {
+    const opts = (placeholder ? `<option value="">${placeholder}</option>` : '') +
+      options.map(o => `<option value="${o}"${o === selectedVal ? ' selected' : ''}>${o}</option>`).join('');
+    return opts;
+  }
+
+  // ── Add Tree ─────────────────────────────────────────────────────
+  document.getElementById('addTreeBtn').addEventListener('click', addTree);
+
+  function addTree() {
+    treeCount++;
+    const ti = treeCount;
+    trees[ti] = { prfCount: 0, mediaRecorder: null, audioChunks: [] };
+
+    const card = document.createElement('div');
+    card.className = 'tree-card';
+    card.id = `tree-${ti}`;
+    card.innerHTML = `
+      <div class="tree-card-header" onclick="toggleTree(${ti})">
+        <h3>Tree <span id="tree-ref-label-${ti}">#${ti}</span></h3>
+        <div style="display:flex;gap:0.5rem;align-items:center;">
+          <span class="tree-badge">T${ti}</span>
+          <button type="button" class="tree-remove-btn" onclick="removeTree(event,${ti})">Remove</button>
+        </div>
+      </div>
+      <div class="tree-card-body" id="tree-body-${ti}">
+        <div class="gl-grid">
+          <div class="gl-field">
+            <label>Tree Ref *</label>
+            <input type="number" id="tree_ref_${ti}" placeholder="e.g. 13" min="1"
+              oninput="document.getElementById('tree-ref-label-${ti}').textContent=this.value||'#${ti}';
+                       document.querySelector('#tree-${ti} .tree-badge').textContent='T'+(this.value||${ti});" />
+          </div>
+          <div class="gl-field">
+            <label>Overall Suitability *</label>
+            <select id="overall_suit_${ti}">
+              <option value="">Select…</option>
+              ${makeSelect(OVERALL_SUIT)}
+            </select>
+          </div>
+          <div class="gl-field">
+            <label>Habitat</label>
+            <input type="text" id="habitat_${ti}" placeholder="e.g. Open Field" />
+          </div>
+          <div class="gl-field">
+            <label>What3Words (optional)</label>
+            <input type="text" id="w3w_${ti}" placeholder="e.g. filled.count.soap" />
+          </div>
+          <div class="gl-field">
+            <label>Tree Species *</label>
+            <input type="text" id="species_${ti}" placeholder="e.g. Sweet Chestnut" />
+          </div>
+          <div class="gl-field">
+            <label>Alive / Dead</label>
+            <select id="alive_${ti}">
+              <option value="Alive">Alive</option>
+              <option value="Dead">Dead</option>
+            </select>
+          </div>
+          <div class="gl-field">
+            <label>DBH (cm)</label>
+            <input type="number" id="dbh_${ti}" placeholder="optional" step="0.1" />
+          </div>
+          <div class="gl-field">
+            <label>Tree Height (m)</label>
+            <input type="number" id="height_${ti}" placeholder="optional" step="0.1" />
+          </div>
+          <div class="gl-field">
+            <label>Tree Form</label>
+            <select id="form_${ti}">
+              ${makeSelect(TREE_FORM)}
+            </select>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+        <div style="color:#94a3b8;font-size:0.8rem;font-weight:600;letter-spacing:0.04em;margin-bottom:0.75rem;">WEATHER CONDITIONS</div>
+        <div class="gl-grid quad">
+          <div class="gl-field">
+            <label>Temperature (°C) *</label>
+            <input type="number" id="temp_${ti}" placeholder="e.g. 23" step="0.1" />
+          </div>
+          <div class="gl-field">
+            <label>Cloud Cover (0–8) *</label>
+            <input type="number" id="cloud_${ti}" placeholder="0–8" min="0" max="8" />
+          </div>
+          <div class="gl-field">
+            <label>Humidity (%) *</label>
+            <input type="number" id="humidity_${ti}" placeholder="e.g. 65" step="0.1" />
+          </div>
+          <div class="gl-field">
+            <label>Wind (0–12) *</label>
+            <input type="number" id="wind_${ti}" placeholder="0–12" min="0" max="12" />
+          </div>
+        </div>
+
+        <!-- Audio -->
+        <hr class="section-divider" />
+        <div class="audio-section">
+          <div class="audio-section-title">Audio Field Notes (optional)</div>
+
+          <!-- Audio Guide -->
+          <div style="margin-bottom:0.75rem;">
+            <button type="button" onclick="toggleAudioGuide(${ti})"
+              style="background:none;border:none;color:#2D5A27;cursor:pointer;
+              font-family:inherit;font-size:0.8rem;font-weight:600;padding:0;text-align:left;">
+              📋 Audio Recording Guide ▼
+            </button>
+            <div id="audioGuide_${ti}" style="display:none;margin-top:0.75rem;
+              background:#0f172a;border:1px solid #334155;border-radius:8px;padding:1.25rem;">
+
+              <div style="color:#f1f5f9;font-size:0.9rem;font-weight:600;margin-bottom:0.75rem;">
+                How to record your field notes
+              </div>
+
+              <div style="color:#94a3b8;font-size:0.82rem;line-height:1.7;margin-bottom:1rem;">
+                When recording audio in the field, describe each PRF clearly and naturally. 
+                The system will transcribe your notes and automatically populate the text 
+                fields in the inspection sheet. You do not need to follow a strict script — 
+                just describe what you observe.
+              </div>
+
+              <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.4);
+                border-radius:6px;padding:0.75rem 1rem;margin-bottom:1rem;">
+                <div style="color:#fca5a5;font-size:0.8rem;font-weight:600;margin-bottom:0.25rem;">
+                  ⚠ Important — measurements must be entered manually
+                </div>
+                <div style="color:#94a3b8;font-size:0.78rem;line-height:1.6;">
+                  Do not describe measurements in your audio. All dimensions — PRF height, 
+                  entrance size, internal depth and width — must be entered by hand in the 
+                  form below. Only descriptive observations are extracted from audio.
+                </div>
+              </div>
+
+              <div style="color:#f1f5f9;font-size:0.8rem;font-weight:600;margin-bottom:0.5rem;">
+                What to describe in your recording
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem 1.5rem;
+                margin-bottom:1rem;">
+                ${[
+                  ['Feature type','Woodpecker hole · Helical crack · Tear out · Frost crack · Snapped limb · Wound'],
+                  ['Aspect','Compass direction the feature faces — North, NE, East, SE, South etc'],
+                  ['Orientation','Upward · Downward facing · Horizontal · Angled'],
+                  ['Substrate','Smooth · Rough · Bobbly · Waxy · Polished · Blackened · Debris · Sludgy'],
+                  ['Humidity','Seasonally dry · Damp · Wet · Mildew present'],
+                  ['Apex shape','Domed · Flat · Wedge · Spire · Peaked wedge · Chambered · Tube'],
+                  ['Competitors','Invertebrates · Birds · Mammals · Slugs · None'],
+                  ['Smell','No smell · Pleasant · Unpleasant'],
+                  ['Bat evidence','No droppings · Droppings present · Staining · Smell of bats'],
+                  ['Inspection notes','Your full qualitative description of the feature and its roost potential'],
+                ].map(([label, desc]) => `
+                  <div style="border-left:2px solid #2D5A27;padding-left:0.6rem;">
+                    <div style="color:#86efac;font-size:0.75rem;font-weight:600;">${label}</div>
+                    <div style="color:#64748b;font-size:0.72rem;line-height:1.5;">${desc}</div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <div style="background:#162032;border:1px solid #334155;border-radius:6px;
+                padding:0.875rem;margin-bottom:0;">
+                <div style="color:#94a3b8;font-size:0.75rem;font-weight:600;
+                  margin-bottom:0.4rem;">Example recording</div>
+                <div style="color:#cbd5e1;font-size:0.78rem;line-height:1.7;font-style:italic;">
+                  "PRF one — woodpecker hole, east-facing, downward orientation. 
+                  Smooth substrate, seasonally dry interior. Domed apex. Invertebrates present, 
+                  no smell, no droppings. Feature goes straight into the stem — 
+                  day roost potential at best, open hole with limited depth and clutter-free 
+                  flight access."
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="audio-controls">
+            <button type="button" class="audio-btn" id="recordBtn_${ti}" onclick="toggleRecording(${ti})">
+              🎙 Record Audio
+            </button>
+            <label class="audio-btn" style="cursor:pointer;">
+              📁 Upload Audio
+              <input type="file" accept="audio/*" style="display:none;"
+                onchange="uploadAudio(${ti}, this)" />
+            </label>
+          </div>
+          <div class="audio-status" id="audioStatus_${ti}"></div>
+          <div class="audio-transcript" id="audioTranscript_${ti}" style="display:none;"></div>
+          <div class="audio-notice" style="display:none;" id="audioNotice_${ti}">
+            ✓ Text fields auto-filled from audio. Measurements must be entered manually below.
+          </div>
+        </div>
+
+        <!-- PRFs -->
+        <hr class="section-divider" />
+        <div class="prf-section">
+          <div class="prf-section-title">Potential Roost Features (PRFs)</div>
+          <div id="prfsContainer_${ti}"></div>
+          <button type="button" class="add-btn" onclick="addPRF(${ti})">+ Add PRF</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('treesContainer').appendChild(card);
+  }
+
+  function toggleTree(ti) {
+    const body = document.getElementById(`tree-body-${ti}`);
+    body.style.display = body.style.display === 'none' ? '' : 'none';
+  }
+
+  function removeTree(e, ti) {
+    e.stopPropagation();
+    document.getElementById(`tree-${ti}`).remove();
+    delete trees[ti];
+  }
+
+  // ── Add PRF ──────────────────────────────────────────────────────
+  function addPRF(ti) {
+    if (!trees[ti]) return;
+    trees[ti].prfCount++;
+    const pi = trees[ti].prfCount;
+
+    const card = document.createElement('div');
+    card.className = 'prf-card';
+    card.id = `prf-${ti}-${pi}`;
+    card.innerHTML = `
+      <div class="prf-card-header" onclick="togglePRF(${ti},${pi})">
+        <h4>PRF ${pi}</h4>
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+          <span class="prf-chevron">▼</span>
+          <button type="button" class="prf-remove-btn" onclick="removePRF(event,${ti},${pi})">✕ Remove</button>
+        </div>
+      </div>
+      <div class="prf-card-body">
+        <div class="prf-card-inner">
+          <div style="color:#94a3b8;font-size:0.75rem;font-weight:600;letter-spacing:0.04em;margin-bottom:0.75rem;">MEASUREMENTS</div>
+          <div class="gl-grid triple">
+            <div class="gl-field">
+              <label>PRF Height (m)</label>
+              <input type="number" id="prf_height_${ti}_${pi}" step="0.1" />
+            </div>
+            <div class="gl-field">
+              <label>DPH (cm)</label>
+              <input type="number" id="dph_${ti}_${pi}" step="0.1" />
+            </div>
+            <div class="gl-field" style="grid-column:span 1;"></div>
+            <div class="gl-field">
+              <label>Entrance Height (cm)</label>
+              <input type="number" id="ent_h_${ti}_${pi}" step="0.1" />
+            </div>
+            <div class="gl-field">
+              <label>Entrance Width (cm)</label>
+              <input type="number" id="ent_w_${ti}_${pi}" step="0.1" />
+            </div>
+            <div class="gl-field"></div>
+            <div class="gl-field">
+              <label>Internal Width (cm)</label>
+              <input type="number" id="int_w_${ti}_${pi}" step="0.1" />
+            </div>
+            <div class="gl-field">
+              <label>Internal Depth (cm)</label>
+              <input type="number" id="int_d_${ti}_${pi}" step="0.1" />
+            </div>
+            <div class="gl-field">
+              <label>Internal Height (cm)</label>
+              <input type="number" id="int_h_${ti}_${pi}" step="0.1" />
+            </div>
+          </div>
+
+          <hr class="section-divider" />
+          <div style="color:#94a3b8;font-size:0.75rem;font-weight:600;letter-spacing:0.04em;margin-bottom:0.75rem;">FEATURE DETAILS</div>
+          <div class="gl-grid">
+            <div class="gl-field">
+              <label>Feature Type</label>
+              <input type="text" id="feat_type_${ti}_${pi}" placeholder="e.g. Woodpecker hole" />
+            </div>
+            <div class="gl-field">
+              <label>Aspect</label>
+              <select id="aspect_${ti}_${pi}">
+                <option value="">Select…</option>
+                ${makeSelect(ASPECTS)}
+              </select>
+            </div>
+            <div class="gl-field">
+              <label>Orientation</label>
+              <input type="text" id="orient_${ti}_${pi}" placeholder="e.g. Downward facing" />
+            </div>
+            <div class="gl-field">
+              <label>PRF Suitability</label>
+              <select id="prf_suit_${ti}_${pi}">
+                ${makeSelect(PRF_SUIT, 'N/A')}
+              </select>
+            </div>
+          </div>
+
+          <hr class="section-divider" />
+          <div style="color:#94a3b8;font-size:0.75rem;font-weight:600;letter-spacing:0.04em;margin-bottom:0.75rem;">ROOSTING EVIDENCE</div>
+          <div class="gl-grid">
+            <div class="gl-field">
+              <label>Droppings</label>
+              <div class="toggle-group" id="droppings_${ti}_${pi}">
+                <button type="button" class="toggle-btn active-no" data-val="No"
+                  onclick="setDroppings(${ti},${pi},'No')">No</button>
+                <button type="button" class="toggle-btn" data-val="Yes"
+                  onclick="setDroppings(${ti},${pi},'Yes')">Yes</button>
+              </div>
+            </div>
+            <div class="gl-field">
+              <label>Bat Notes</label>
+              <input type="text" id="bat_notes_${ti}_${pi}" placeholder="Any bat observations" />
+            </div>
+          </div>
+
+          <hr class="section-divider" />
+          <div style="color:#94a3b8;font-size:0.75rem;font-weight:600;letter-spacing:0.04em;margin-bottom:0.75rem;">CONDITIONS</div>
+          <div class="gl-grid triple">
+            <div class="gl-field">
+              <label>Smell</label>
+              <select id="smell_${ti}_${pi}">
+                <option value="">Select…</option>
+                ${makeSelect(SMELL)}
+              </select>
+            </div>
+            <div class="gl-field">
+              <label>Substrate</label>
+              <select id="substrate_${ti}_${pi}">
+                <option value="">Select…</option>
+                ${makeSelect(SUBSTRATE)}
+              </select>
+            </div>
+            <div class="gl-field">
+              <label>Humidity</label>
+              <select id="hum_cond_${ti}_${pi}">
+                <option value="">Select…</option>
+                ${makeSelect(HUMIDITY_COND)}
+              </select>
+            </div>
+            <div class="gl-field">
+              <label>Apex Shape</label>
+              <select id="apex_${ti}_${pi}">
+                <option value="">Select…</option>
+                ${makeSelect(APEX)}
+              </select>
+            </div>
+            <div class="gl-field">
+              <label>Competitors</label>
+              <select id="competitors_${ti}_${pi}">
+                <option value="">Select…</option>
+                ${makeSelect(COMPETITORS)}
+              </select>
+            </div>
+          </div>
+
+          <hr class="section-divider" />
+          <div style="color:#94a3b8;font-size:0.75rem;font-weight:600;letter-spacing:0.04em;margin-bottom:0.75rem;">INSPECTION NOTES</div>
+          <div class="gl-grid single">
+            <div class="gl-field">
+              <label>Inspection Notes #1</label>
+              <textarea id="notes1_${ti}_${pi}" placeholder="Describe the feature…"></textarea>
+            </div>
+            <div class="gl-field">
+              <label>Re-inspection Notes #2</label>
+              <textarea id="notes2_${ti}_${pi}" placeholder="Re-inspection observations…"></textarea>
+            </div>
+            <div class="gl-field">
+              <label>Re-inspection Notes #3</label>
+              <textarea id="notes3_${ti}_${pi}" placeholder="Re-inspection observations…"></textarea>
+            </div>
+          </div>
+
+          <hr class="section-divider" />
+          <div class="gl-field">
+            <label>PRF Photo</label>
+            <input type="file" accept="image/*" id="photo_${ti}_${pi}"
+              onchange="previewPhoto(${ti},${pi},this)" />
+            <div class="photo-preview" id="photoPreview_${ti}_${pi}">
+              No photo selected
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    document.getElementById(`prfsContainer_${ti}`).appendChild(card);
+    // Auto-open
+    card.classList.add('open');
+  }
+
+  function togglePRF(ti, pi) {
+    document.getElementById(`prf-${ti}-${pi}`).classList.toggle('open');
+  }
+
+  function removePRF(e, ti, pi) {
+    e.stopPropagation();
+    document.getElementById(`prf-${ti}-${pi}`).remove();
+  }
+
+  function setDroppings(ti, pi, val) {
+    const group = document.getElementById(`droppings_${ti}_${pi}`);
+    group.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.className = 'toggle-btn';
+      if (btn.dataset.val === val) {
+        btn.className = val === 'Yes' ? 'toggle-btn active-yes' : 'toggle-btn active-no';
+      }
+    });
+  }
+
+  function previewPhoto(ti, pi, input) {
+    const preview = document.getElementById(`photoPreview_${ti}_${pi}`);
+    if (input.files && input.files[0]) {
+      const url = URL.createObjectURL(input.files[0]);
+      preview.innerHTML = `<img src="${url}" alt="PRF photo preview" />`;
+    }
+  }
+
+  // ── Audio guide toggle ───────────────────────────────────────────
+  function toggleAudioGuide(ti) {
+    const guide = document.getElementById(`audioGuide_${ti}`);
+    const btn = guide.previousElementSibling;
+    if (guide.style.display === 'none') {
+      guide.style.display = 'block';
+      btn.textContent = btn.textContent.replace('▼','▲');
+    } else {
+      guide.style.display = 'none';
+      btn.textContent = btn.textContent.replace('▲','▼');
+    }
+  }
+
+  // ── Audio recording ──────────────────────────────────────────────
+  function toggleRecording(ti) {
+    if (!trees[ti]) return;
+    if (trees[ti].mediaRecorder && trees[ti].mediaRecorder.state === 'recording') {
+      trees[ti].mediaRecorder.stop();
+    } else {
+      startRecording(ti);
+    }
+  }
+
+  async function startRecording(ti) {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      trees[ti].audioChunks = [];
+      trees[ti].mediaRecorder = new MediaRecorder(stream);
+      trees[ti].mediaRecorder.ondataavailable = e => trees[ti].audioChunks.push(e.data);
+      trees[ti].mediaRecorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        const blob = new Blob(trees[ti].audioChunks, { type: 'audio/webm' });
+        const file = new File([blob], 'recording.webm', { type: 'audio/webm' });
+        document.getElementById(`recordBtn_${ti}`).className = 'audio-btn';
+        document.getElementById(`recordBtn_${ti}`).textContent = '🎙 Record Audio';
+        document.getElementById(`audioStatus_${ti}`).textContent = 'Processing audio…';
+        await processAudio(ti, file);
+      };
+      trees[ti].mediaRecorder.start();
+      document.getElementById(`recordBtn_${ti}`).className = 'audio-btn recording';
+      document.getElementById(`recordBtn_${ti}`).textContent = '⏹ Stop Recording';
+      document.getElementById(`audioStatus_${ti}`).textContent = 'Recording…';
+    } catch (err) {
+      document.getElementById(`audioStatus_${ti}`).textContent = 
+        'Microphone access denied. Use file upload instead.';
+    }
+  }
+
+  async function uploadAudio(ti, input) {
+    if (!input.files || !input.files[0]) return;
+    document.getElementById(`audioStatus_${ti}`).textContent = 'Processing audio…';
+    await processAudio(ti, input.files[0]);
+  }
+
+  async function processAudio(ti, file) {
+    const treeRef = parseInt(document.getElementById(`tree_ref_${ti}`)?.value) || ti;
+    const fd = new FormData();
+    fd.append('audio', file);
+    fd.append('tree_ref', treeRef);
+    fd.append('prf_number', 1);
+
+    try {
+      const res = await fetch(`${API_URL}/audio`, { method: 'POST', body: fd });
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const { transcript, extracted_fields } = await res.json();
+
+      // Show transcript
+      const transcriptEl = document.getElementById(`audioTranscript_${ti}`);
+      transcriptEl.textContent = transcript;
+      transcriptEl.style.display = 'block';
+
+      // Auto-fill text fields from extracted_fields
+      autoFillFromAudio(ti, 1, extracted_fields);
+
+      document.getElementById(`audioStatus_${ti}`).textContent = '✓ Audio processed';
+      document.getElementById(`audioNotice_${ti}`).style.display = 'block';
+
+    } catch (err) {
+      document.getElementById(`audioStatus_${ti}`).textContent = 
+        `Audio error: ${err.message}`;
+    }
+  }
+
+  function autoFillFromAudio(ti, pi, fields) {
+    if (!fields) return;
+    // Only fill text fields — never measurements
+    const mapping = {
+      feature_type: `feat_type_${ti}_${pi}`,
+      orientation: `orient_${ti}_${pi}`,
+      bat_notes: `bat_notes_${ti}_${pi}`,
+      inspection_notes_1: `notes1_${ti}_${pi}`,
+    };
+    Object.entries(mapping).forEach(([key, elId]) => {
+      if (fields[key]) {
+        const el = document.getElementById(elId);
+        if (el && !el.value) el.value = fields[key];
+      }
+    });
+    // Dropdowns
+    if (fields.aspect) {
+      const el = document.getElementById(`aspect_${ti}_${pi}`);
+      if (el) el.value = fields.aspect;
+    }
+    if (fields.smell) {
+      const el = document.getElementById(`smell_${ti}_${pi}`);
+      if (el) el.value = fields.smell;
+    }
+    if (fields.substrate) {
+      const el = document.getElementById(`substrate_${ti}_${pi}`);
+      if (el) el.value = fields.substrate;
+    }
+    if (fields.apex_shape) {
+      const el = document.getElementById(`apex_${ti}_${pi}`);
+      if (el) el.value = fields.apex_shape;
+    }
+    if (fields.competitors) {
+      const el = document.getElementById(`competitors_${ti}_${pi}`);
+      if (el) el.value = fields.competitors;
+    }
+  }
+
+  // ── Form submission ──────────────────────────────────────────────
+  document.getElementById('surveyForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const errorEl = document.getElementById('formError');
+    const successEl = document.getElementById('formSuccess');
+    const btn = document.getElementById('submitBtn');
+
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+
+    // Validate global fields
+    const siteName = document.getElementById('site_name').value.trim();
+    const licenceNo = document.getElementById('licence_no').value.trim();
+    const surveyDate = document.getElementById('survey_date').value;
+
+    if (!siteName || !licenceNo || !surveyDate) {
+      errorEl.textContent = 'Please fill in Site Name, Licence No and Date.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    // Collect trees
+    const treeEls = document.querySelectorAll('.tree-card');
+    if (!treeEls.length) {
+      errorEl.textContent = 'Please add at least one tree.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    const treesData = [];
+    let valid = true;
+
+    for (const treeEl of treeEls) {
+      const ti = treeEl.id.split('-')[1];
+      const treeRef = parseInt(document.getElementById(`tree_ref_${ti}`)?.value);
+      const overallSuit = document.getElementById(`overall_suit_${ti}`)?.value;
+      const species = document.getElementById(`species_${ti}`)?.value.trim();
+      const temp = document.getElementById(`temp_${ti}`)?.value;
+      const cloud = document.getElementById(`cloud_${ti}`)?.value;
+      const humidity = document.getElementById(`humidity_${ti}`)?.value;
+      const wind = document.getElementById(`wind_${ti}`)?.value;
+
+      if (!treeRef || !overallSuit || !species || !temp || !cloud || !humidity || !wind) {
+        errorEl.textContent = `Tree ${ti}: please fill all required fields (Tree Ref, Suitability, Species, Weather).`;
+        errorEl.style.display = 'block';
+        valid = false;
+        break;
+      }
+
+      // Collect PRFs
+      const prfEls = treeEl.querySelectorAll('.prf-card');
+      const prfs = [];
+
+      for (const prfEl of prfEls) {
+        const parts = prfEl.id.split('-');
+        const pi = parts[2];
+
+        const droppingsGroup = document.getElementById(`droppings_${ti}_${pi}`);
+        const activeBtn = droppingsGroup?.querySelector('.active-yes, .active-no');
+        const droppingsVal = activeBtn?.dataset.val === 'Yes';
+
+        prfs.push({
+          prf_number: parseInt(pi),
+          prf_height_m: parseFloat(document.getElementById(`prf_height_${ti}_${pi}`)?.value) || null,
+          dph_cm: parseFloat(document.getElementById(`dph_${ti}_${pi}`)?.value) || null,
+          entrance_height_cm: parseFloat(document.getElementById(`ent_h_${ti}_${pi}`)?.value) || null,
+          entrance_width_cm: parseFloat(document.getElementById(`ent_w_${ti}_${pi}`)?.value) || null,
+          internal_width_cm: parseFloat(document.getElementById(`int_w_${ti}_${pi}`)?.value) || null,
+          internal_depth_cm: parseFloat(document.getElementById(`int_d_${ti}_${pi}`)?.value) || null,
+          internal_height_cm: parseFloat(document.getElementById(`int_h_${ti}_${pi}`)?.value) || null,
+          feature_type: document.getElementById(`feat_type_${ti}_${pi}`)?.value.trim() || null,
+          aspect: document.getElementById(`aspect_${ti}_${pi}`)?.value || null,
+          orientation: document.getElementById(`orient_${ti}_${pi}`)?.value.trim() || null,
+          droppings: droppingsVal,
+          bat_notes: document.getElementById(`bat_notes_${ti}_${pi}`)?.value.trim() || null,
+          smell: document.getElementById(`smell_${ti}_${pi}`)?.value || null,
+          substrate: document.getElementById(`substrate_${ti}_${pi}`)?.value || null,
+          humidity_condition: document.getElementById(`hum_cond_${ti}_${pi}`)?.value || null,
+          apex_shape: document.getElementById(`apex_${ti}_${pi}`)?.value || null,
+          competitors: document.getElementById(`competitors_${ti}_${pi}`)?.value || null,
+          prf_suitability: document.getElementById(`prf_suit_${ti}_${pi}`)?.value || 'N/A',
+          inspection_notes_1: document.getElementById(`notes1_${ti}_${pi}`)?.value.trim() || null,
+          inspection_notes_2: document.getElementById(`notes2_${ti}_${pi}`)?.value.trim() || null,
+          inspection_notes_3: document.getElementById(`notes3_${ti}_${pi}`)?.value.trim() || null,
+        });
+      }
+
+      treesData.push({
+        site_name: siteName,
+        licence_no: licenceNo,
+        tree_ref: treeRef,
+        overall_suitability: overallSuit,
+        date: surveyDate,
+        habitat: document.getElementById(`habitat_${ti}`)?.value.trim() || '',
+        w3w: document.getElementById(`w3w_${ti}`)?.value.trim() || null,
+        tree_species: species,
+        tree_alive: document.getElementById(`alive_${ti}`)?.value || 'Alive',
+        dbh_cm: parseFloat(document.getElementById(`dbh_${ti}`)?.value) || null,
+        tree_height_m: parseFloat(document.getElementById(`height_${ti}`)?.value) || null,
+        tree_form: document.getElementById(`form_${ti}`)?.value || 'Single stem',
+        temperature: parseFloat(temp),
+        cloud_cover: parseInt(cloud),
+        humidity_pct: parseFloat(humidity),
+        wind: parseInt(wind),
+        prfs,
+      });
+    }
+
+    if (!valid) return;
+
+    const surveyId = `survey-${Date.now()}`;
+    const payload = {
+      survey_id: surveyId,
+      generated_at: new Date().toISOString(),
+      trees: treesData,
+    };
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Generating Excel…';
+
+    try {
+      // Upload photos first
+      for (const treeEl of treeEls) {
+        const ti = treeEl.id.split('-')[1];
+        const treeRef = parseInt(document.getElementById(`tree_ref_${ti}`)?.value) || ti;
+        const prfEls = treeEl.querySelectorAll('.prf-card');
+
+        for (const prfEl of prfEls) {
+          const parts = prfEl.id.split('-');
+          const pi = parts[2];
+          const photoInput = document.getElementById(`photo_${ti}_${pi}`);
+          if (photoInput?.files?.length) {
+            const fd = new FormData();
+            fd.append('photo', photoInput.files[0]);
+            const photoRes = await fetch(
+              `${API_URL}/photos/${surveyId}/${treeRef}/${pi}`,
+              { method: 'POST', body: fd }
+            );
+            if (photoRes.ok) {
+              const { photo_path } = await photoRes.json();
+              // Inject photo_path into payload
+              const tree = payload.trees.find(t => t.tree_ref === treeRef);
+              const prf = tree?.prfs.find(p => p.prf_number === parseInt(pi));
+              if (prf) prf.photo_path = photo_path;
+            }
+          }
+        }
+      }
+
+      // Submit survey
+      const res = await fetch(`${API_URL}/survey`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || `Server error ${res.status}`);
+      }
+
+      const { survey_id } = await res.json();
+
+      // Download
+      const dlRes = await fetch(`${API_URL}/report/${survey_id}/download`);
+      if (!dlRes.ok) throw new Error('Failed to download Excel.');
+
+      const blob = await dlRes.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${siteName.replace(/\s+/g,'_')}_Aerial_Inspection.xlsm`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      successEl.innerHTML = '✓ Excel generated and downloaded successfully.';
+      successEl.style.display = 'block';
+
+    } catch (err) {
+      errorEl.textContent = `Error: ${err.message}`;
+      errorEl.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Generate Inspection Excel';
+    }
+  });
+</script>
+
+</body>
+</html>
