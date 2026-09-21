@@ -270,7 +270,7 @@
 <body>
   <div class="container">
     <h1>Premier League Home‑Win Predictions</h1>
-    <p class="updated">Last updated: 2026-09-21 19:04 BST</p>
+    <p class="updated">Last updated: 2026-09-21 20:04 BST</p>
     <p class="refresh-note">Predictions are refreshed approximately one hour before kick‑off.</p>
     <div class="top-actions">
       <div class="telegram-banner">
@@ -293,12 +293,43 @@
             <h2>Performance Tracker</h2>
             <div class="performance-summary">
                 <div class="performance-stat"><strong>Overall Accuracy:</strong> 70.3% (26/37)</div>
+                <div class="performance-stat"><strong>Rolling (last 10):</strong> 7/10 (70%)</div>
                 <div class="performance-stat"><strong>Avoid:</strong> 3 matches</div>
                 <div class="performance-stat"><strong>Edge Bets:</strong> 6 picks</div>
                 <div class="performance-stat"><strong>Edge Accuracy:</strong> 50.0% (3/6)</div>
                 <div class="performance-stat"><strong>Edge Profit:</strong> -1.18 units</div>
                 <div class="performance-stat"><strong>Fade Picks:</strong> 29 picks</div>
                 <div class="performance-stat"><strong>Fade Accuracy:</strong> 72.4% (21/29)</div>
+            </div>
+            
+            <h3 style="color:var(--accent);font-size:0.9rem;margin:1rem 0 0.6rem;">Accuracy by Category</h3>
+            <div class="table-wrapper">
+                <table class="predictions-table">
+                    <thead>
+                        <tr><th>Category</th><th>Count</th><th>Correct</th><th>Accuracy</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Back Home</td><td>8</td><td>5</td><td>62.5%</td></tr>
+                        <tr><td>Strong Fade</td><td>29</td><td>21</td><td>72.4%</td></tr>
+                        <tr><td>Avoid</td><td>3</td><td>–</td><td>–</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="performance-summary" style="margin-top:1rem;">
+                <div class="performance-stat"><strong>EDGE P&amp;L:</strong> -1.18 units</div>
+                <div class="performance-stat"><strong>Fade P&amp;L (est.):</strong> +8.80 units</div>
+            </div>
+            
+            <h3 style="color:var(--accent);font-size:0.9rem;margin:1rem 0 0.6rem;">Calibration</h3>
+            <div class="table-wrapper">
+                <table class="predictions-table">
+                    <thead>
+                        <tr><th>Probability Bucket</th><th>Count</th><th>Predicted vs Actual</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0–30% (strong fade zone)</td><td>19</td><td>Predicted 15%, Actual 26%</td></tr><tr><td>30–45% (double chance zone)</td><td>10</td><td>Predicted 37%, Actual 30%</td></tr><tr><td>45–55% (avoid zone)</td><td>3</td><td>Predicted 50%, Actual 0%</td></tr><tr><td>55–70% (back home)</td><td>3</td><td>Predicted 64%, Actual 100%</td></tr><tr><td>70%+ (strong home)</td><td>5</td><td>Predicted 85%, Actual 40%</td></tr>
+                    </tbody>
+                </table>
             </div>
             <div class="model-accuracy">Model training accuracy: 62.6% · F1: 0.576</div>
         </div>
