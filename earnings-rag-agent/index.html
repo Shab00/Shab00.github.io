@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earnings Call RAG Agent</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --panel-border: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --shadow: 0 20px 40px rgba(0,0,0,0.25);
+    }
+
+    body {
+      background: radial-gradient(circle at top, rgba(56,189,248,0.12), transparent 30%),
+                  linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    /* Nav */
+    .nav {
+      background: rgba(17,24,39,0.95);
+      border-bottom: 1px solid var(--panel-border);
+      padding: 0.875rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-title span { color: var(--accent); }
+
+    .nav a.back {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: color 0.2s;
+    }
+    .nav a.back:hover { color: var(--accent); }
+
+    /* Layout */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { order: 2; }
+      .main { order: 1; }
+    }
+
+    /* Sidebar */
+    .sidebar { display: flex; flex-direction: column; gap: 1rem; }
+
+    .sidebar-card {
+      background: rgba(17,24,39,0.9);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    .sidebar-card h3 {
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      margin: 0 0 0.875rem;
+      text-transform: uppercase;
+    }
+
+    .filter-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .filter-group:last-child { margin-bottom: 0; }
+
+    .filter-label {
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--panel-border);
+      border-radius: 6px;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.82rem;
+      padding: 0.4rem 0.75rem;
+      text-align: left;
+      transition: all 0.15s;
+      width: 100%;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+    .filter-btn.active {
+      background: rgba(56,189,248,0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .company-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    /* Main */
+    .main { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .hero { margin-bottom: 0.5rem; }
+    .hero h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0 0 0.4rem;
+    }
+    .hero p { color: var(--muted); font-size: 0.9rem; margin: 0; }
+
+    /* Example questions */
+    .examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .example-chip {
+      background: rgba(17,24,39,0.9);
+      border: 1px solid var(--panel-border);
+      border-radius: 20px;
+      color: var(--muted);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.78rem;
+      padding: 0.4rem 0.875rem;
+      transition: all 0.15s;
+    }
+    .example-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Chat area */
+    .chat-area {
+      background: rgba(17,24,39,0.9);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 500px;
+    }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .empty-state {
+      align-items: center;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      font-size: 0.9rem;
+      gap: 0.5rem;
+      justify-content: center;
+      min-height: 300px;
+      text-align: center;
+    }
+
+    .empty-state .icon { font-size: 2.5rem; opacity: 0.4; }
+
+    /* Message bubbles */
+    .msg-user {
+      align-self: flex-end;
+      background: rgba(56,189,248,0.12);
+      border: 1px solid rgba(56,189,248,0.25);
+      border-radius: 12px 12px 4px 12px;
+      color: var(--text);
+      font-size: 0.9rem;
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+    }
+
+    .msg-agent {
+      align-self: flex-start;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .msg-agent-bubble {
+      background: rgba(30,41,59,0.8);
+      border: 1px solid var(--panel-border);
+      border-radius: 4px 12px 12px 12px;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      padding: 1rem 1.25rem;
+    }
+
+    /* Sources */
+    .sources-toggle {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.78rem;
+      margin-top: 0.6rem;
+      padding: 0;
+      transition: opacity 0.15s;
+    }
+    .sources-toggle:hover { opacity: 0.8; }
+
+    .sources-list {
+      border-top: 1px solid var(--panel-border);
+      display: none;
+      gap: 0.5rem;
+      flex-direction: column;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+    }
+    .sources-list.open { display: flex; }
+
+    .source-card {
+      background: rgba(15,23,42,0.6);
+      border: 1px solid var(--panel-border);
+      border-left: 2px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      font-size: 0.78rem;
+      padding: 0.6rem 0.875rem;
+    }
+
+    .source-meta {
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .source-excerpt {
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .source-link {
+      color: var(--muted);
+      display: inline-block;
+      font-size: 0.72rem;
+      margin-top: 0.25rem;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .source-link:hover { color: var(--accent); }
+
+    /* Input area */
+    .input-area {
+      border-top: 1px solid var(--panel-border);
+      padding: 1rem 1.25rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-end;
+    }
+
+    .question-input {
+      background: #0f172a;
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      color: var(--text);
+      flex: 1;
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      resize: none;
+      transition: border-color 0.2s;
+      min-height: 44px;
+      max-height: 120px;
+    }
+    .question-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .question-input::placeholder { color: var(--muted); }
+
+    .send-btn {
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #082f49;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.75rem 1.25rem;
+      transition: background 0.2s, opacity 0.2s;
+      white-space: nowrap;
+    }
+    .send-btn:hover:not(:disabled) { background: var(--accent-hover); }
+    .send-btn:disabled { cursor: not-allowed; opacity: 0.5; }
+
+    .active-filter-badge {
+      color: var(--muted);
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .active-filter-badge span { color: var(--accent); }
+
+    /* Cold start notice */
+    .cold-notice {
+      background: rgba(17,24,39,0.9);
+      border: 1px solid var(--panel-border);
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      padding: 0.6rem 1rem;
+      text-align: center;
+    }
+    .cold-notice span { color: var(--accent); }
+
+    /* Spinner */
+    .spinner {
+      animation: spin 0.8s linear infinite;
+      border: 2px solid rgba(56,189,248,0.3);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      display: inline-block;
+      height: 14px;
+      margin-right: 0.4rem;
+      vertical-align: middle;
+      width: 14px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-msg {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-title">
+    <span>📊</span> Earnings Call RAG Agent
+  </div>
+  <a class="back" href="/">← Back to Portfolio</a>
+</nav>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <h3>Filter by Company</h3>
+      <div class="filter-group">
+        <button class="filter-btn active" data-company="" onclick="setCompany(this, '')">
+          All Companies
+        </button>
+        <button class="filter-btn" data-company="AAPL" onclick="setCompany(this, 'AAPL')">
+          <span class="company-dot" style="background:#38bdf8;"></span>Apple
+        </button>
+        <button class="filter-btn" data-company="MSFT" onclick="setCompany(this, 'MSFT')">
+          <span class="company-dot" style="background:#a78bfa;"></span>Microsoft
+        </button>
+        <button class="filter-btn" data-company="NVDA" onclick="setCompany(this, 'NVDA')">
+          <span class="company-dot" style="background:#4ade80;"></span>NVIDIA
+        </button>
+        <button class="filter-btn" data-company="TSLA" onclick="setCompany(this, 'TSLA')">
+          <span class="company-dot" style="background:#fb923c;"></span>Tesla
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Filter by Quarter</h3>
+      <div class="filter-group" id="quarterFilters">
+        <button class="filter-btn active" data-quarter="" onclick="setQuarter(this, '')">
+          All Quarters
+        </button>
+      </div>
+    </div>
+
+    <div class="sidebar-card">
+      <h3>Coverage</h3>
+      <div style="color:var(--muted);font-size:0.78rem;line-height:1.8;">
+        <div><span style="color:#38bdf8;">AAPL</span> — Q4 2025 to Q3 2026</div>
+        <div><span style="color:#a78bfa;">MSFT</span> — Q1 2026 to Q4 2026</div>
+        <div><span style="color:#4ade80;">NVDA</span> — Q3 2026 to Q2 2027</div>
+        <div><span style="color:#fb923c;">TSLA</span> — Q3 2025 to Q2 2026</div>
+        <div style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--panel-border);">
+          388 chunks · 15 transcripts
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+
+    <div class="hero">
+      <h1>Ask the Earnings Calls</h1>
+      <p>Ask anything about Apple, NVIDIA, Microsoft or Tesla earnings — 
+         answers cite the exact transcript, quarter and speaker.</p>
+    </div>
+
+    <div class="examples" id="examples">
+      <button class="example-chip" onclick="useExample(this)">
+        What did Tim Cook say about AI investment?
+      </button>
+      <button class="example-chip" onclick="useExample(this)">
+        Compare NVIDIA revenue growth across quarters
+      </button>
+      <button class="example-chip" onclick="useExample(this)">
+        What guidance did Microsoft give on Azure?
+      </button>
+      <button class="example-chip" onclick="useExample(this)">
+        How is Tesla's energy business performing?
+      </button>
+      <button class="example-chip" onclick="useExample(this)">
+        What did Jensen Huang say about data centre demand?
+      </button>
+      <button class="example-chip" onclick="useExample(this)">
+        What are Apple's gross margin trends?
+      </button>
+    </div>
+
+    <div class="cold-notice">
+      Backend hosted on Render — <span>first request may take ~30s to wake up</span>
+    </div>
+
+    <div class="chat-area">
+      <div class="messages" id="messages">
+        <div class="empty-state" id="emptyState">
+          <div class="icon">📋</div>
+          <div>Ask a question about any earnings call</div>
+          <div style="font-size:0.78rem;">Use the filters to narrow by company or quarter</div>
+        </div>
+      </div>
+      <div class="input-area">
+        <div class="input-row">
+          <textarea 
+            class="question-input" 
+            id="questionInput"
+            placeholder="Ask about earnings calls… e.g. What did Tim Cook say about AI?"
+            rows="1"
+            onkeydown="handleKey(event)"
+            oninput="autoResize(this)"
+          ></textarea>
+          <button class="send-btn" id="sendBtn" onclick="ask()">Ask →</button>
+        </div>
+        <div class="active-filter-badge" id="filterBadge" style="display:none;">
+          Filtering by: <span id="filterText"></span>
+          <button onclick="clearFilters()" 
+            style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.75rem;margin-left:0.5rem;">
+            ✕ Clear
+          </button>
+        </div>
+        <div class="error-msg" id="errorMsg" style="display:none;"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  const API_URL = 'https://earnings-rag-agent.onrender.com';
+  // Change to http://localhost:8000 for local development
+
+  let activeCompany = '';
+  let activeQuarter = '';
+
+  const QUARTERS = {
+    'AAPL': ['Q4 2025','Q1 2026','Q2 2026','Q3 2026'],
+    'MSFT': ['Q1 2026','Q2 2026','Q3 2026','Q4 2026'],
+    'NVDA': ['Q3 2026','Q4 2026','Q1 2027','Q2 2027'],
+    'TSLA': ['Q3 2025','Q4 2025','Q2 2026'],
+  };
+
+  const ALL_QUARTERS = [...new Set(Object.values(QUARTERS).flat())].sort();
+
+  function buildQuarterFilters(quarters) {
+    const container = document.getElementById('quarterFilters');
+    container.innerHTML = `
+      <button class="filter-btn active" data-quarter="" onclick="setQuarter(this, '')">
+        All Quarters
+      </button>
+    `;
+    quarters.forEach(q => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.quarter = q;
+      btn.textContent = q;
+      btn.onclick = () => setQuarter(btn, q);
+      container.appendChild(btn);
+    });
+  }
+
+  buildQuarterFilters(ALL_QUARTERS);
+
+  function setCompany(btn, ticker) {
+    activeCompany = ticker;
+    activeQuarter = '';
+    document.querySelectorAll('[data-company]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const quarters = ticker ? QUARTERS[ticker] : ALL_QUARTERS;
+    buildQuarterFilters(quarters);
+    updateFilterBadge();
+  }
+
+  function setQuarter(btn, quarter) {
+    activeQuarter = quarter;
+    document.querySelectorAll('[data-quarter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateFilterBadge();
+  }
+
+  function clearFilters() {
+    activeCompany = '';
+    activeQuarter = '';
+    document.querySelectorAll('[data-company]').forEach(b => b.classList.remove('active'));
+    document.querySelector('[data-company=""]').classList.add('active');
+    buildQuarterFilters(ALL_QUARTERS);
+    updateFilterBadge();
+  }
+
+  function updateFilterBadge() {
+    const badge = document.getElementById('filterBadge');
+    const text = document.getElementById('filterText');
+    const parts = [];
+    if (activeCompany) parts.push(activeCompany);
+    if (activeQuarter) parts.push(activeQuarter);
+    if (parts.length) {
+      badge.style.display = 'block';
+      text.textContent = parts.join(' · ');
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  function useExample(btn) {
+    document.getElementById('questionInput').value = btn.textContent.trim();
+    ask();
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      ask();
+    }
+  }
+
+  function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+  }
+
+  function addMessage(type, content) {
+    const messages = document.getElementById('messages');
+    const empty = document.getElementById('emptyState');
+    if (empty) empty.remove();
+
+    const div = document.createElement('div');
+    div.className = type === 'user' ? 'msg-user' : 'msg-agent';
+
+    if (type === 'user') {
+      div.textContent = content;
+    } else {
+      div.innerHTML = content;
+    }
+
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+
+  function buildAgentHTML(data) {
+    const sourcesId = `sources-${Date.now()}`;
+    const sourceCards = data.sources.map(s => `
+      <div class="source-card">
+        <div class="source-meta">
+          ${s.company} ${s.quarter} ${s.year} — ${s.speaker}, ${s.speaker_role}
+        </div>
+        <div class="source-excerpt">"${s.excerpt.trim()}..."</div>
+        ${s.source_url ? `<a class="source-link" href="${s.source_url}" 
+          target="_blank" rel="noopener">↗ View transcript</a>` : ''}
+      </div>
+    `).join('');
+
+    return `
+      <div class="msg-agent-bubble">
+        ${data.answer.replace(/\n/g, '<br>')}
+      </div>
+      <button class="sources-toggle" onclick="toggleSources('${sourcesId}')">
+        📄 ${data.sources.length} source${data.sources.length !== 1 ? 's' : ''} ▾
+      </button>
+      <div class="sources-list" id="${sourcesId}">
+        ${sourceCards}
+      </div>
+    `;
+  }
+
+  function toggleSources(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+    const btn = el.previousElementSibling;
+    btn.textContent = el.classList.contains('open')
+      ? btn.textContent.replace('▾', '▴')
+      : btn.textContent.replace('▴', '▾');
+  }
+
+  async function ask() {
+    const input = document.getElementById('questionInput');
+    const question = input.value.trim();
+    if (!question) return;
+
+    const btn = document.getElementById('sendBtn');
+    const errorEl = document.getElementById('errorMsg');
+    errorEl.style.display = 'none';
+
+    addMessage('user', question);
+    input.value = '';
+    input.style.height = 'auto';
+
+    const thinking = addMessage('agent', `
+      <div class="msg-agent-bubble" style="color:var(--muted);">
+        <span class="spinner"></span>Searching transcripts…
+      </div>
+    `);
+
+    btn.disabled = true;
+    btn.textContent = '…';
+
+    const filters = {};
+    if (activeCompany) filters.ticker = activeCompany;
+    if (activeQuarter) {
+      const parts = activeQuarter.split(' ');
+      if (parts.length === 2) {
+        filters.quarter = parts[0];
+        filters.year = parts[1];
+      }
+    }
+
+    try {
+      const res = await fetch(`${API_URL}/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question,
+          filters: Object.keys(filters).length ? filters : null,
+          top_k: 6
+        })
+      });
+
+      if (!res.ok) throw new Error(`Server error ${res.status}`);
+      const data = await res.json();
+
+      thinking.innerHTML = buildAgentHTML(data);
+
+    } catch (err) {
+      thinking.innerHTML = `
+        <div class="msg-agent-bubble" style="color:#ef4444;">
+          Error: ${err.message}. The server may be waking up — try again in 30 seconds.
+        </div>
+      `;
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Ask →';
+    }
+  }
+</script>
+
+</body>
+</html>
