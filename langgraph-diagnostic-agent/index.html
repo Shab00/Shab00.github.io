@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diagnostic Repair Ranking Agent | Bashaar</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <a href="../index.html" class="back-link">← Back to portfolio</a>
+
+    <section class="hero">
+      <div class="hero-row">
+        <div>
+          <p class="eyebrow">LangGraph Agent</p>
+          <h1>Diagnostic Repair Ranking Agent</h1>
+        </div>
+        <span id="status" class="status-pill unknown">checking…</span>
+      </div>
+      <p class="subtitle">
+        Submit a fault report. Two independent monitoring sources run in parallel,
+        the graph detects when they disagree, routes through a conflict-aware
+        branch, and ranks repair strategies with justification.
+      </p>
+    </section>
+
+    <!-- FORM -->
+    <section id="panel-form" class="panel">
+      <h3>Fault Report</h3>
+
+      <label for="description">Description</label>
+      <textarea id="description" rows="3"
+        placeholder="e.g. Cache hit rate collapsed. APM blames DB latency, infra blames cache."></textarea>
+      <div class="samples">
+        <span>Try:</span>
+        <button type="button" class="sample" data-fill="Cache hit rate collapsed. APM blames DB latency, infra blames cache.">Cache collapse</button>
+        <button type="button" class="sample" data-fill="Database queries slow. Both monitoring sources agree the DB is at fault.">DB slowdown</button>
+        <button type="button" class="sample" data-fill="Message queue backed up severely. Cascading slowdowns across all components.">Queue backup</button>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="severity">Severity</label>
+          <select id="severity">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high" selected>High</option>
+            <option value="critical">Critical</option>
+          </select>
+        </div>
+        <div>
+          <label for="component">Affected component</label>
+          <select id="component">
+            <option value="unknown" selected>Unknown</option>
+            <option value="api_gateway">API Gateway</option>
+            <option value="database">Database</option>
+            <option value="cache">Cache</option>
+            <option value="message_queue">Message Queue</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Scenario</label>
+      <div class="scenarios" id="scenarios">
+        <button type="button" class="scenario active" data-scenario="cache_collapse">
+          Cache Collapse
+          <span>APM and infra disagree on the culprit</span>
+        </button>
+        <button type="button" class="scenario" data-scenario="db_degradation">
+          DB Degradation
+          <span>Both flag the DB, disagree on cause</span>
+        </button>
+        <button type="button" class="scenario" data-scenario="queue_backup">
+          Queue Backup
+          <span>Cascading slowdowns across components</span>
+        </button>
+      </div>
+
+      <button class="button primary" id="submit">Run Diagnostic Agent →</button>
+      <div id="error" class="error hidden"></div>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="panel-results" class="hidden">
+      <div class="fallback-notice">
+        <strong>Fallback mode.</strong>
+        The live demo has no LLM key configured. The graph still runs end-to-end
+        and returns valid reports — the LLM is an optional dependency, not a required one.
+      </div>
+
+      <!-- Graph path visualizer -->
+      <div class="report-card">
+        <div class="card-header">
+          <h3>Graph execution</h3>
+          <span id="timing" class="timing"></span>
+        </div>
+        <p class="muted-small">
+          The agent is a LangGraph state machine. Highlighted nodes were executed
+          on this run. The branch taken depends on whether the two diagnostic
+          sources disagreed.
+        </p>
+        <div id="graph" class="graph"></div>
+        <div id="trace" class="trace"></div>
+      </div>
+
+      <!-- Conflict headline -->
+      <div id="conflict-header" class="conflict-header"></div>
+
+      <!-- Two sources -->
+      <div class="sources">
+        <div class="source">
+          <div class="source-label">APM Monitor</div>
+          <div class="source-summary" id="apm-summary"></div>
+          <div class="source-flags" id="apm-flags"></div>
+        </div>
+        <div class="source">
+          <div class="source-label">Infra Health</div>
+          <div class="source-summary" id="infra-summary"></div>
+          <div class="source-flags" id="infra-flags"></div>
+        </div>
+      </div>
+
+      <!-- Conflict detail -->
+      <div id="conflict-card" class="report-card">
+        <h3>Conflict analysis</h3>
+        <div class="claims">
+          <div><span class="claim-label">APM claims</span><span id="claim-a"></span></div>
+          <div><span class="claim-label">Infra claims</span><span id="claim-b"></span></div>
+        </div>
+        <p id="explanation"></p>
+      </div>
+
+      <!-- Strategies -->
+      <div class="report-card">
+        <h3>Ranked repair strategies</h3>
+        <div id="strategies"></div>
+      </div>
+
+      <!-- Reasoning -->
+      <div class="report-card">
+        <div class="card-header">
+          <h3>Agent reasoning</h3>
+          <button type="button" class="copy-btn" id="copy-json">Copy JSON</button>
+        </div>
+        <p id="reasoning"></p>
+        <div id="recommended" class="recommended"></div>
+      </div>
+
+      <button class="button primary" onclick="reset()">Submit New Fault</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
