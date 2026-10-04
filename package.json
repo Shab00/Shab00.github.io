@@ -1,0 +1,24 @@
+{
+  "name": "shab00.github.io",
+  "version": "1.0.0",
+  "description": "A personal portfolio site hosted on GitHub Pages, showcasing live project demos and technical work across AI engineering, machine learning, and software engineering.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shab00/Shab00.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Shab00/Shab00.github.io/issues"
+  },
+  "homepage": "https://github.com/Shab00/Shab00.github.io#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
