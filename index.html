@@ -10,6 +10,58 @@
       min-width: 160px;
       text-align: center;
     }
+
+    /* ---- Section headers ---- */
+    .section-head {
+      margin-bottom: 1.75rem;
+    }
+    .section-head h2 {
+      margin: 0 0 0.4rem;
+    }
+    .section-sub {
+      margin: 0;
+      font-size: 0.95rem;
+      opacity: 0.75;
+    }
+    .subtitle {
+        max-width: 75ch;
+        width: 100%;
+    }
+    /* ---- Project grid ---- */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+
+    /* Space between the two project sections */
+    .projects + .projects {
+      margin-top: 4.5rem;
+    }
+
+    /* Keep cards equal height and pin buttons to the bottom */
+    .project-card,
+    .project-copy {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .project-copy p {
+      flex: 1 1 auto;
+    }
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 520px) {
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -23,149 +75,171 @@
       </p>
     </section>
 
-    <section class="projects">
-      <h2>Featured Work</h2>
-      <article class="project-card">
+    <!-- ============ FEATURED WORK ============ -->
+    <section class="projects" aria-labelledby="featured-heading">
+      <div class="section-head">
+        <h2 id="featured-heading">Featured Work</h2>
+        <p class="section-sub">Machine learning pipelines and interactive builds.</p>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card">
           <div class="project-copy">
-              <h3>Diagnostic Repair Ranking Agent (LangGraph)</h3>
-              <p>
+            <h3>Premier League Home‑Win Predictions</h3>
+            <p>
+              A fully automated machine‑learning pipeline that forecasts Premier League home‑win outcomes.
+              Updated weekly with live odds and delivered via a public predictions page and Telegram channel.
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/football/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00/Over-Under2.5Goals" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-copy">
+            <h3>Chess Engine Demo</h3>
+            <p>
+              A browser-playable chess project with a custom engine running through WebAssembly.
+              It’s one of the first completed demos in this portfolio and reflects my work across low-level programming,
+              debugging, and shipping a live interactive project.
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/chess/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ AI AGENTS ============ -->
+    <section class="projects" aria-labelledby="agents-heading">
+      <div class="section-head">
+        <h2 id="agents-heading">AI Agents</h2>
+        <p class="section-sub">Production and prototype agents spanning RAG, workflow automation, and diagnostic reasoning.</p>
+      </div>
+
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-copy">
+            <h3>Diagnostic Repair Ranking Agent (LangGraph)</h3>
+            <p>
               A LangGraph state machine that ingests fault reports, runs two independent
               monitoring sources in parallel, detects when they disagree, and routes
               through a conflict-aware branch to rank repair strategies with narrative
               justification. All metrics and conflict detection are pure Python — the
               LLM only selects strategies and writes prose, and the graph completes
               end-to-end even when the LLM is unavailable.
-              </p>
-              <div class="project-links">
-                  <a class="button primary" href="/langgraph-diagnostic-agent/">Open Project</a>
-                  <a class="button secondary" href="https://github.com/Shab00/diagnostic-agent-langgraph" target="_blank" rel="noopener noreferrer">View Source</a>
-              </div>
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/langgraph-diagnostic-agent/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00/diagnostic-agent-langgraph" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
           </div>
-      </article>
-      <article class="project-card">
+        </article>
+
+        <article class="project-card">
           <div class="project-copy">
-              <h3>Earnings Call RAG Agent</h3>
-              <p>
-              A production RAG agent that answers natural language questions across 15 earnings call 
-              transcripts from Apple, NVIDIA, Microsoft and Tesla. Ask anything — "What did Jensen Huang 
-              say about data centre demand?" or "Compare Apple's margin guidance across quarters" — and 
-              the agent retrieves the most relevant transcript chunks using FAISS vector search and 
+            <h3>Earnings Call RAG Agent</h3>
+            <p>
+              A production RAG agent that answers natural language questions across 15 earnings call
+              transcripts from Apple, NVIDIA, Microsoft and Tesla. Ask anything — "What did Jensen Huang
+              say about data centre demand?" or "Compare Apple's margin guidance across quarters" — and
+              the agent retrieves the most relevant transcript chunks using FAISS vector search and
               GPT-4o-mini, citing the exact company, quarter and speaker for every claim.
-              </p>
-              <div class="project-links">
-                  <a class="button primary" href="/earnings-rag-agent/">Open Project</a>
-                  <a class="button secondary" href="https://github.com/Shab00/earnings-rag-agent" target="_blank" rel="noopener noreferrer">View Source</a>
-              </div>
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/earnings-rag-agent/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00/earnings-rag-agent" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
           </div>
-      </article>
-      <article class="project-card">
+        </article>
+
+        <article class="project-card">
           <div class="project-copy">
-              <h3>Ecological Survey Report Generator v2</h3>
-              <p>
+            <h3>Ecological Survey Report Generator v2</h3>
+            <p>
               A production AI agent built for Greenlight Ecology Ltd that replaces manual Word-template
               report writing. Surveyors submit structured field data and site photos, and the agent generates
               a fully formatted Preliminary Ecological Appraisal (.docx) matching Greenlight Ecology's real
               report template — including branded cover page, 12-section species assessment table, embedded
               appendix maps and photos, running headers and footers.
-              </p>
-              <div class="project-links">
-                  <a class="button primary" href="/greenlightDraftAgent/">Open Project</a>
-                  <a class="button secondary" href="https://github.com/Shab00/eco-report-agent-v2" target="_blank" rel="noopener noreferrer">View Source</a>
-              </div>
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/greenlightDraftAgent/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00/eco-report-agent-v2" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
           </div>
-      </article>
-      <article class="project-card">
+        </article>
+
+        <article class="project-card">
           <div class="project-copy">
-              <h3>Aerial Tree Inspection Agent</h3>
-              <p>
+            <h3>Aerial Tree Inspection Agent</h3>
+            <p>
               A production AI agent built for Greenlight Ecology Ltd that automates bat survey
               aerial inspection data capture. Surveyors submit tree and PRF (Potential Roost Feature)
               data via web form or audio field notes — the agent transcribes audio using Whisper,
               validates all data with Pydantic v2, and generates a pre-populated Excel inspection
               sheet matching Greenlight Ecology's exact template, with one sheet per tree and
               survey photos embedded.
-              </p>
-              <div class="project-links">
-                  <a class="button primary" href="/greenlightAerialAgent/">Open Project</a>
-                  <a class="button secondary" href="https://github.com/Shab00/aerial-inspection-agent" target="_blank" rel="noopener noreferrer">View Source</a>
-              </div>
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/greenlightAerialAgent/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00/aerial-inspection-agent" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
           </div>
-      </article>
-      <article class="project-card">
+        </article>
+
+        <article class="project-card">
           <div class="project-copy">
-              <h3>Diagnostic Repair Ranking Agent</h3>
-              <p>
+            <h3>Diagnostic Repair Ranking Agent</h3>
+            <p>
               An AI agent that receives a fault report from an operational system,
               gathers conflicting diagnostic data from two independent monitoring
               sources, detects the contradiction explicitly, and produces a ranked
               repair strategy report with written justification grounded in the
               specific conflict found.
-              </p>
-              <div class="project-links">
-                  <a class="button primary" href="/diagnostic-agent/">Open Project</a>
-                  <a class="button secondary" href="https://github.com/Shab00/diagnostic-repair-ranking-agent" target="_blank" rel="noopener noreferrer">View Source</a>
-              </div>
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/diagnostic-agent/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00/diagnostic-repair-ranking-agent" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
           </div>
-      </article>
-      <article class="project-card">
+        </article>
+
+        <article class="project-card">
           <div class="project-copy">
-              <h3>Ecological Surveyor Reporting Agent (Prototype)</h3>
-              <p>
+            <h3>Ecological Surveyor Reporting Agent (Prototype)</h3>
+            <p>
               A full-stack AI agent that validates ecological survey data and generates
               formal draft reports using GPT-4o-mini function calling. Surveyors fill in
               a structured form, the agent checks completeness, drafts a six-section report,
               and walks it through a review and approval workflow with a full audit trail.
-              </p>
-              <div class="project-links">
-                  <a class="button primary" href="/eco-agent/">Open Project</a>
-                  <a class="button secondary" href="https://github.com/Shab00/eco-report-agent" target="_blank" rel="noopener noreferrer">View Source</a>
-              </div>
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/eco-agent/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00/eco-report-agent" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
           </div>
-      </article>
-      <article class="project-card">
+        </article>
+
+        <article class="project-card">
           <div class="project-copy">
-              <h3>Meeting Intelligence Agent</h3>
-              <p>
+            <h3>Meeting Intelligence Agent</h3>
+            <p>
               A full-stack AI agent that transcribes meeting audio and extracts structured insights.
               Powered by a Python backend with Whisper for transcription, GPT-4o-mini for extraction,
               and Pydantic for schema validation. Supports sample recordings, file upload, and live recording.
-              </p>
-              <div class="project-links">
-                  <a class="button primary" href="/meeting/">Open Project</a>
-                  <a class="button secondary" href="https://github.com/Shab00/meeting-intelligence" target="_blank" rel="noopener noreferrer">View Source</a>
-              </div>
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/meeting/">Open Project</a>
+              <a class="button secondary" href="https://github.com/Shab00/meeting-intelligence" target="_blank" rel="noopener noreferrer">View Source</a>
+            </div>
           </div>
-      </article>
-      <article class="project-card">
-        <div class="project-copy">
-          <h3>Premier League Home‑Win Predictions</h3>
-          <p>
-            A fully automated machine‑learning pipeline that forecasts Premier League home‑win outcomes.
-            Updated weekly with live odds and delivered via a public predictions page and Telegram channel.
-          </p>
-
-          <div class="project-links">
-            <a class="button primary" href="/football/">Open Project</a>
-            <a class="button secondary" href="https://github.com/Shab00/Over-Under2.5Goals" target="_blank" rel="noopener noreferrer">View Source</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="project-card">
-        <div class="project-copy">
-          <h3>Chess Engine Demo</h3>
-          <p>
-            A browser-playable chess project with a custom engine running through WebAssembly.
-            It’s one of the first completed demos in this portfolio and reflects my work across low-level programming,
-            debugging, and shipping a live interactive project.
-          </p>
-
-          <div class="project-links">
-            <a class="button primary" href="/chess/">Open Project</a>
-            <a class="button secondary" href="https://github.com/Shab00" target="_blank" rel="noopener noreferrer">View Source</a>
-          </div>
-        </div>
-      </article>
+        </article>
+      </div>
     </section>
 
     <footer class="footer">
