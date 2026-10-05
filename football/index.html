@@ -278,6 +278,105 @@
       </div>
       <a class="back-button" href="/">← Back to Portfolio</a>
     </div>
+
+    <div class="performance-tracker">
+      <h2>Model Predictions</h2>
+      <div class="table-wrapper">
+        <table class="predictions-table">
+          <thead>
+            <tr>
+              <th>Kickoff (UK)</th>
+              <th>Home</th>
+              <th>Away</th>
+              <th class="prob-cell">P(Home Win)</th>
+              <th class="odds-cell">Best Home Odds</th>
+              <th>Model</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+  <td>Sat 10 Oct 12:30</td>
+  <td>Arsenal</td>
+  <td>Leeds</td>
+  <td class="prob-cell prob-mid">49.67%</td>
+  <td class="odds-cell">1.32</td>
+  <td><span class="avoid-text">Avoid</span></td>
+</tr>
+<tr>
+  <td>Sat 10 Oct 15:00</td>
+  <td>Aston Villa</td>
+  <td>Brentford</td>
+  <td class="prob-cell prob-low">31.76%</td>
+  <td class="odds-cell">2.71</td>
+  <td><span class="not-home-text">Not Home</span></td>
+</tr>
+<tr>
+  <td>Sat 10 Oct 15:00</td>
+  <td>Chelsea</td>
+  <td>Bournemouth</td>
+  <td class="prob-cell prob-mid">41.39%</td>
+  <td class="odds-cell">1.81</td>
+  <td><span class="not-home-text">Not Home</span></td>
+</tr>
+<tr>
+  <td>Sat 10 Oct 15:00</td>
+  <td>Ipswich Town</td>
+  <td>Fulham</td>
+  <td class="prob-cell prob-low">31.25%</td>
+  <td class="odds-cell">2.66</td>
+  <td><span class="not-home-text">Not Home</span></td>
+</tr>
+<tr>
+  <td>Sat 10 Oct 15:00</td>
+  <td>Sunderland</td>
+  <td>Brighton</td>
+  <td class="prob-cell prob-low">23.44%</td>
+  <td class="odds-cell">2.79</td>
+  <td><span class="not-home-text">Not Home</span></td>
+</tr>
+<tr>
+  <td>Sat 10 Oct 17:30</td>
+  <td>Man United</td>
+  <td>Tottenham</td>
+  <td class="prob-cell prob-mid">51.40%</td>
+  <td class="odds-cell">1.65</td>
+  <td><span class="avoid-text">Avoid</span></td>
+</tr>
+<tr>
+  <td>Sun 11 Oct 14:00</td>
+  <td>Crystal Palace</td>
+  <td>Nott'm Forest</td>
+  <td class="prob-cell prob-low">10.82%</td>
+  <td class="odds-cell">2.62</td>
+  <td><span class="not-home-text">Not Home</span></td>
+</tr>
+<tr>
+  <td>Sun 11 Oct 14:00</td>
+  <td>Hull City</td>
+  <td>Everton</td>
+  <td class="prob-cell prob-low">14.63%</td>
+  <td class="odds-cell">3.76</td>
+  <td><span class="not-home-text">Not Home</span></td>
+</tr>
+<tr>
+  <td>Sun 11 Oct 16:30</td>
+  <td>Liverpool</td>
+  <td>Man City</td>
+  <td class="prob-cell prob-low">25.00%</td>
+  <td class="odds-cell">2.99</td>
+  <td><span class="not-home-text">Not Home</span></td>
+</tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="performance-tracker" style="margin-bottom:1.5rem;">
+<h2>AI Pundit Analysis <span style="font-size:0.7rem;font-weight:600;color:var(--muted);background:rgba(148,163,184,0.15);border:1px solid var(--panel-border);border-radius:999px;padding:0.1rem 0.5rem;vertical-align:middle;">Powered by GPT-4o-mini | Not financial advice</span></h2>
+<h3 style="color:var(--accent);font-size:0.9rem;margin:0.8rem 0 0.6rem;">Pundit’s Gameweek Review</h3>
+<div style="background:rgba(17,24,39,0.4);border:1px solid var(--panel-border);border-radius:12px;padding:1rem 1.2rem;font-style:italic;color:var(--text);font-size:0.95rem;margin-bottom:1rem;">What a weekend it was in the Premier League! The model had a mixed bag of results but managed some impressive calls. It correctly predicted the draw between Fulham and Man United, and nailed the home win for Man City against Sunderland. However, I had to eat humble pie on the Leeds vs Crystal Palace match, as the model&#x27;s call for a home win was way off there. It also faltered with the Everton and Brighton games, while on the flip side, it correctly saw Liverpool and Coventry City taking away victories. Newcastle&#x27;s edge as a banker proved spot on too, so not all was lost!</div>
+<p style="color:var(--muted);margin-bottom:1rem;">⚽ Next predictions: 2026-10-10</p>
+</div>
     <div class="legend">
       <h3>Legend</h3>
       <div class="legend-items">
@@ -289,57 +388,6 @@
         <div class="legend-item"><span style="color: var(--muted);">N/A</span> – no odds available</div>
       </div>
     </div>
-    <div class="performance-tracker">
-            <h2>Performance Tracker</h2>
-            <div class="performance-summary">
-                <div class="performance-stat"><strong>Overall Accuracy:</strong> 67.4% (31/46)</div>
-                <div class="performance-stat"><strong>Rolling (last 10):</strong> 5/10 (50%)</div>
-                <div class="performance-stat"><strong>Avoid:</strong> 4 matches</div>
-                <div class="performance-stat"><strong>Edge Bets:</strong> 7 picks</div>
-                <div class="performance-stat"><strong>Edge Accuracy:</strong> 57.1% (4/7)</div>
-                <div class="performance-stat"><strong>Edge Profit:</strong> -0.57 units</div>
-                <div class="performance-stat"><strong>Fade Picks:</strong> 35 picks</div>
-                <div class="performance-stat"><strong>Fade Accuracy:</strong> 68.6% (24/35)</div>
-            </div>
-            
-            <h3 style="color:var(--accent);font-size:0.9rem;margin:1rem 0 0.6rem;">Accuracy by Category</h3>
-            <div class="table-wrapper">
-                <table class="predictions-table">
-                    <thead>
-                        <tr><th>Category</th><th>Count</th><th>Correct</th><th>Accuracy</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Back Home</td><td>11</td><td>7</td><td>63.6%</td></tr>
-                        <tr><td>Strong Fade</td><td>35</td><td>24</td><td>68.6%</td></tr>
-                        <tr><td>Avoid</td><td>4</td><td>–</td><td>–</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="performance-summary" style="margin-top:1rem;">
-                <div class="performance-stat"><strong>EDGE P&amp;L:</strong> -0.57 units</div>
-                <div class="performance-stat"><strong>Fade P&amp;L (est.):</strong> +8.20 units</div>
-            </div>
-            
-            <h3 style="color:var(--accent);font-size:0.9rem;margin:1rem 0 0.6rem;">Calibration</h3>
-            <div class="table-wrapper">
-                <table class="predictions-table">
-                    <thead>
-                        <tr><th>Probability Bucket</th><th>Count</th><th>Predicted vs Actual</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>0–30% (strong fade zone)</td><td>25</td><td>Predicted 15%, Actual 32%</td></tr><tr><td>30–45% (double chance zone)</td><td>10</td><td>Predicted 37%, Actual 30%</td></tr><tr><td>45–55% (avoid zone)</td><td>4</td><td>Predicted 49%, Actual 0%</td></tr><tr><td>55–70% (back home)</td><td>5</td><td>Predicted 61%, Actual 80%</td></tr><tr><td>70%+ (strong home)</td><td>6</td><td>Predicted 83%, Actual 50%</td></tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <h3 style="color:var(--accent);font-size:0.9rem;margin:1rem 0 0.6rem;">Team Analysis</h3>
-            <p style="color: var(--muted);">
-                Tracking model performance by club. Minimum 5 predictions per team
-                required for meaningful insight — this section will populate from GW8 onwards.<br>
-                Currently tracking: 46 predictions across 20 teams.
-            </p>
-            <div class="model-accuracy">Model training accuracy: 62.6% · F1: 0.576</div>
-        </div>
     
         <div class="performance-tracker">
             <h2>Recent Results</h2>
@@ -453,103 +501,58 @@
                 </table>
             </div>
         </div>
-    <div class="performance-tracker" style="margin-top: 1.5rem;">
-      <h2 style="color:var(--accent);font-size:1.2rem;margin-bottom:1rem;">Model Predictions</h2>
-      <div class="table-wrapper">
-        <table class="predictions-table">
-          <thead>
-            <tr>
-              <th>Kickoff (UK)</th>
-              <th>Home</th>
-              <th>Away</th>
-              <th class="prob-cell">P(Home Win)</th>
-              <th class="odds-cell">Best Home Odds</th>
-              <th>Model</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-  <td>Sat 10 Oct 12:30</td>
-  <td>Arsenal</td>
-  <td>Leeds</td>
-  <td class="prob-cell prob-mid">49.67%</td>
-  <td class="odds-cell">1.32</td>
-  <td><span class="avoid-text">Avoid</span></td>
-</tr>
-<tr>
-  <td>Sat 10 Oct 15:00</td>
-  <td>Aston Villa</td>
-  <td>Brentford</td>
-  <td class="prob-cell prob-low">31.76%</td>
-  <td class="odds-cell">2.71</td>
-  <td><span class="not-home-text">Not Home</span></td>
-</tr>
-<tr>
-  <td>Sat 10 Oct 15:00</td>
-  <td>Chelsea</td>
-  <td>Bournemouth</td>
-  <td class="prob-cell prob-mid">41.39%</td>
-  <td class="odds-cell">1.81</td>
-  <td><span class="not-home-text">Not Home</span></td>
-</tr>
-<tr>
-  <td>Sat 10 Oct 15:00</td>
-  <td>Ipswich Town</td>
-  <td>Fulham</td>
-  <td class="prob-cell prob-low">31.25%</td>
-  <td class="odds-cell">2.66</td>
-  <td><span class="not-home-text">Not Home</span></td>
-</tr>
-<tr>
-  <td>Sat 10 Oct 15:00</td>
-  <td>Sunderland</td>
-  <td>Brighton</td>
-  <td class="prob-cell prob-low">23.44%</td>
-  <td class="odds-cell">2.79</td>
-  <td><span class="not-home-text">Not Home</span></td>
-</tr>
-<tr>
-  <td>Sat 10 Oct 17:30</td>
-  <td>Man United</td>
-  <td>Tottenham</td>
-  <td class="prob-cell prob-mid">51.40%</td>
-  <td class="odds-cell">1.65</td>
-  <td><span class="avoid-text">Avoid</span></td>
-</tr>
-<tr>
-  <td>Sun 11 Oct 14:00</td>
-  <td>Crystal Palace</td>
-  <td>Nott'm Forest</td>
-  <td class="prob-cell prob-low">10.82%</td>
-  <td class="odds-cell">2.62</td>
-  <td><span class="not-home-text">Not Home</span></td>
-</tr>
-<tr>
-  <td>Sun 11 Oct 14:00</td>
-  <td>Hull City</td>
-  <td>Everton</td>
-  <td class="prob-cell prob-low">14.63%</td>
-  <td class="odds-cell">3.76</td>
-  <td><span class="not-home-text">Not Home</span></td>
-</tr>
-<tr>
-  <td>Sun 11 Oct 16:30</td>
-  <td>Liverpool</td>
-  <td>Man City</td>
-  <td class="prob-cell prob-low">25.00%</td>
-  <td class="odds-cell">2.99</td>
-  <td><span class="not-home-text">Not Home</span></td>
-</tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="performance-tracker" style="margin-bottom:1.5rem;">
-<h2>AI Pundit Analysis <span style="font-size:0.7rem;font-weight:600;color:var(--muted);background:rgba(148,163,184,0.15);border:1px solid var(--panel-border);border-radius:999px;padding:0.1rem 0.5rem;vertical-align:middle;">Powered by GPT-4o-mini | Not financial advice</span></h2>
-<h3 style="color:var(--accent);font-size:0.9rem;margin:0.8rem 0 0.6rem;">Pundit’s Gameweek Review</h3>
-<div style="background:rgba(17,24,39,0.4);border:1px solid var(--panel-border);border-radius:12px;padding:1rem 1.2rem;font-style:italic;color:var(--text);font-size:0.95rem;margin-bottom:1rem;">What a weekend it was in the Premier League! The model had a mixed bag of results but managed some impressive calls. It correctly predicted the draw between Fulham and Man United, and nailed the home win for Man City against Sunderland. However, I had to eat humble pie on the Leeds vs Crystal Palace match, as the model&#x27;s call for a home win was way off there. It also faltered with the Everton and Brighton games, while on the flip side, it correctly saw Liverpool and Coventry City taking away victories. Newcastle&#x27;s edge as a banker proved spot on too, so not all was lost!</div>
-<p style="color:var(--muted);margin-bottom:1rem;">⚽ Next predictions: 2026-10-10</p>
-</div>
+    <div class="performance-tracker">
+            <h2>Performance Tracker</h2>
+            <div class="performance-summary">
+                <div class="performance-stat"><strong>Overall Accuracy:</strong> 67.4% (31/46)</div>
+                <div class="performance-stat"><strong>Rolling (last 10):</strong> 5/10 (50%)</div>
+                <div class="performance-stat"><strong>Avoid:</strong> 4 matches</div>
+                <div class="performance-stat"><strong>Edge Bets:</strong> 7 picks</div>
+                <div class="performance-stat"><strong>Edge Accuracy:</strong> 57.1% (4/7)</div>
+                <div class="performance-stat"><strong>Edge Profit:</strong> -0.57 units</div>
+                <div class="performance-stat"><strong>Fade Picks:</strong> 35 picks</div>
+                <div class="performance-stat"><strong>Fade Accuracy:</strong> 68.6% (24/35)</div>
+            </div>
+            
+            <h3 style="color:var(--accent);font-size:0.9rem;margin:1rem 0 0.6rem;">Accuracy by Category</h3>
+            <div class="table-wrapper">
+                <table class="predictions-table">
+                    <thead>
+                        <tr><th>Category</th><th>Count</th><th>Correct</th><th>Accuracy</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Back Home</td><td>11</td><td>7</td><td>63.6%</td></tr>
+                        <tr><td>Strong Fade</td><td>35</td><td>24</td><td>68.6%</td></tr>
+                        <tr><td>Avoid</td><td>4</td><td>–</td><td>–</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="performance-summary" style="margin-top:1rem;">
+                <div class="performance-stat"><strong>EDGE P&amp;L:</strong> -0.57 units</div>
+                <div class="performance-stat"><strong>Fade P&amp;L (est.):</strong> +8.20 units</div>
+            </div>
+            
+            <h3 style="color:var(--accent);font-size:0.9rem;margin:1rem 0 0.6rem;">Calibration</h3>
+            <div class="table-wrapper">
+                <table class="predictions-table">
+                    <thead>
+                        <tr><th>Probability Bucket</th><th>Count</th><th>Predicted vs Actual</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>0–30% (strong fade zone)</td><td>25</td><td>Predicted 15%, Actual 32%</td></tr><tr><td>30–45% (double chance zone)</td><td>10</td><td>Predicted 37%, Actual 30%</td></tr><tr><td>45–55% (avoid zone)</td><td>4</td><td>Predicted 49%, Actual 0%</td></tr><tr><td>55–70% (back home)</td><td>5</td><td>Predicted 61%, Actual 80%</td></tr><tr><td>70%+ (strong home)</td><td>6</td><td>Predicted 83%, Actual 50%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3 style="color:var(--accent);font-size:0.9rem;margin:1rem 0 0.6rem;">Team Analysis</h3>
+            <p style="color: var(--muted);">
+                Tracking model performance by club. Minimum 5 predictions per team
+                required for meaningful insight — this section will populate from GW8 onwards.<br>
+                Currently tracking: 46 predictions across 20 teams.
+            </p>
+            <div class="model-accuracy">Model training accuracy: 62.6% · F1: 0.576</div>
+        </div>
+
     <div class="footer">
       <p>Generated by an automated ML pipeline. <a href="https://github.com/Shab00">View source</a></p>
     </div>
