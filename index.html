@@ -124,6 +124,25 @@
       <div class="project-grid">
         <article class="project-card">
           <div class="project-copy">
+            <h3>Three-Agent Meeting Platform (A2A)</h3>
+            <p>
+              A distributed system of three agents on three different frameworks —
+              OpenAI Agents SDK, Google ADK + LiteLLM, and LangGraph + Postgres —
+              communicating through the A2A protocol. A user pastes a transcript;
+              the chat agent discovers the processor via its agent card and
+              delegates analysis over JSON-RPC. The extracted action items are
+              handed to a LangGraph workflow that drafts follow-up messages with
+              durable state. Semantic search over past meetings runs on pgvector.
+              Deployed on Render, backed by Supabase.
+            </p>
+            <div class="project-links">
+              <a class="button primary" href="/agent-platform/">Open System</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-copy">
             <h3>Diagnostic Repair Ranking Agent (LangGraph)</h3>
             <p>
               A LangGraph state machine that ingests fault reports, runs two independent

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three-Agent Meeting Platform | Bashaar</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="platform.css" />
+</head>
+<body>
+  <main class="container">
+
+    <nav class="back-link">
+      <a href="/">← Back to portfolio</a>
+    </nav>
+
+    <section class="hero">
+      <p class="eyebrow">Distributed Agent System</p>
+      <h1>Three agents. Three frameworks. One protocol.</h1>
+      <p class="subtitle">
+        A user pastes a meeting transcript. One agent discovers another through the
+        A2A protocol, delegates the analysis, and the structured output flows into a
+        third agent that drafts follow-ups. Each service runs on a different agent
+        framework. They share no code — only a JSON-RPC contract and an agent card
+        published at a well-known URL.
+      </p>
+    </section>
+
+    <!-- ============ FLOW DIAGRAM ============ -->
+    <section class="section-head">
+      <h2>How it fits together</h2>
+      <p class="section-sub">One round-trip, three services, two protocols.</p>
+    </section>
+
+    <div class="platform-flow" aria-label="System flow">
+      <div class="flow-node flow-user">
+        <span class="flow-label">User</span>
+        <span class="flow-sub">pastes a transcript</span>
+      </div>
+      <div class="flow-arrow" aria-hidden="true">
+        <span class="arrow-tag">HTTPS</span>→
+      </div>
+      <div class="flow-node flow-chat">
+        <span class="flow-label">meeting-chat</span>
+        <span class="flow-sub">Google ADK · LiteLLM</span>
+      </div>
+      <div class="flow-arrow flow-arrow-a2a" aria-hidden="true">
+        <span class="arrow-tag">A2A</span>⇄
+      </div>
+      <div class="flow-node flow-processor">
+        <span class="flow-label">meeting-processor</span>
+        <span class="flow-sub">OpenAI Agents SDK</span>
+      </div>
+      <div class="flow-arrow" aria-hidden="true">
+        <span class="arrow-tag">HTTP</span>→
+      </div>
+      <div class="flow-node flow-followup">
+        <span class="flow-label">meeting-followup</span>
+        <span class="flow-sub">LangGraph · Postgres</span>
+      </div>
+    </div>
+    <p class="flow-caption">
+      The chat agent fetches <code>/.well-known/agent-card.json</code> to discover the
+      processor, then sends tasks over JSON-RPC 1.0. Structured output (action items,
+      owners, due dates, source quotes) feeds directly into the LangGraph workflow.
+    </p>
+
+    <!-- ============ LIVE DEMO ============ -->
+    <section class="section-head">
+      <h2>Try it live</h2>
+      <p class="section-sub">
+        Paste a meeting transcript. The response comes back from the full three-service
+        stack — you're watching the A2A protocol in action.
+      </p>
+    </section>
+
+    <div class="demo-panel">
+      <textarea
+        id="demo-input"
+        class="demo-textarea"
+        rows="6"
+        spellcheck="false"
+      >Alice: We need to decide the Q4 budget.
+Bob: I think we should increase marketing spend by 20 percent.
+Alice: Agreed. We also need to hire two engineers by December.
+Carol: I will review runway and report back by Friday.
+Bob: Risk is we cannot afford both if revenue dips in November.</textarea>
+
+      <div class="demo-actions">
+        <button id="demo-run" class="button primary" type="button">Analyse meeting</button>
+        <span id="demo-status" class="demo-status" aria-live="polite"></span>
+      </div>
+
+      <div id="demo-output" class="demo-output" hidden></div>
+    </div>
+
+    <!-- ============ TRACE ============ -->
+    <section class="section-head">
+      <h2>Under the hood</h2>
+      <p class="section-sub">The same request, as it appears in the logs.</p>
+    </section>
+
+    <div class="platform-trace">
+      <ol class="trace-list">
+        <li>
+          <span class="trace-step">1</span>
+          <code class="trace-line">GET /.well-known/agent-card.json → 200</code>
+          <span class="trace-note">chat discovers the processor</span>
+        </li>
+        <li>
+          <span class="trace-step">2</span>
+          <code class="trace-line">POST / (SendMessage) → 202</code>
+          <span class="trace-note">transcript delegated over A2A</span>
+        </li>
+        <li>
+          <span class="trace-step">3</span>
+          <code class="trace-line">POST / (task completed) → 200</code>
+          <span class="trace-note">MeetingAnalysis returned</span>
+        </li>
+        <li>
+          <span class="trace-step">4</span>
+          <code class="trace-line">[tool] analyse_meeting_a2a(N chars)</code>
+          <span class="trace-note">chat formats the response</span>
+        </li>
+      </ol>
+    </div>
+
+    <!-- ============ RAG PROOF ============ -->
+    <section class="section-head">
+      <h2>Semantic retrieval, not keyword matching</h2>
+      <p class="section-sub">The query and the stored content share no keywords.</p>
+    </section>
+
+    <div class="platform-rag">
+      <div class="rag-row">
+        <span class="rag-label">Query</span>
+        <span class="rag-value">"What did we decide about ad spend?"</span>
+      </div>
+      <div class="rag-row">
+        <span class="rag-label">Stored</span>
+        <span class="rag-value">"…increase marketing spend by 20 percent…"</span>
+      </div>
+      <p class="rag-caption">
+        <strong>Zero shared keywords.</strong> Retrieval is via pgvector cosine similarity
+        against text-embedding-3-small vectors. The agent returned the correct decision,
+        the owner, the due date, and the source quote.
+      </p>
+    </div>
+
+    <!-- ============ LIMITATIONS ============ -->
+    <section class="section-head">
+      <h2>Honest limits</h2>
+      <p class="section-sub">What's shipped, and what isn't.</p>
+    </section>
+
+    <ul class="platform-limits">
+      <li><strong>Cold start</strong> — the free tier sleeps after 15 minutes idle. The first demo request may take ~60 seconds. The demo shows a "waking backend" state during this.</li>
+      <li><strong>In-memory A2A task store</strong> — the processor uses <code>InMemoryTaskStore</code>, so task state is lost on restart. A <code>DatabaseTaskStore</code> is the follow-up.</li>
+      <li><strong>Followup wiring</strong> — the A2A tool exists inside a LangGraph ToolNode but is not yet on the default workflow path. It needs an async checkpointer migration (<code>AsyncPostgresSaver</code>) before it can call the processor inline.</li>
+      <li><strong>Decision over-extraction</strong> — measured precision 0.17–0.35 across 5 hand-labelled transcripts. Documented rather than tuned away; the eval harness lives in <code>meeting-processor/evals/</code>.</li>
+    </ul>
+
+    <footer class="footer">
+      <p>Bashaar · <a href="/">Portfolio</a> · <a href="https://github.com/Shab00" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+    </footer>
+  </main>
+
+  <script>
+    // Live demo
+    const ENDPOINT = "https://meeting-chat-dxde.onrender.com/chat";
+    const input    = document.getElementById("demo-input");
+    const button   = document.getElementById("demo-run");
+    const status   = document.getElementById("demo-status");
+    const output   = document.getElementById("demo-output");
+
+    // One session per page load — keeps the demo deterministic
+    const sessionId = "portfolio-" + Math.random().toString(36).slice(2, 10);
+
+    let wakeTimer = null;
+
+    function setStatus(text) {
+      status.textContent = text;
+    }
+
+    function renderResponse(text) {
+      // The chat agent returns markdown-ish text.
+      // Extract the four labelled blocks if present; otherwise show as-is.
+      const sections = { summary: "", actions: "", decisions: "", risks: "" };
+      const lines = text.split("\n");
+      let current = null;
+
+      for (const raw of lines) {
+        const line = raw.trim();
+        const lower = line.toLowerCase();
+
+        if (lower.startsWith("### summary") || lower.startsWith("**summary")) current = "summary";
+        else if (lower.startsWith("### action") || lower.startsWith("**action")) current = "actions";
+        else if (lower.startsWith("### decision") || lower.startsWith("**decision")) current = "decisions";
+        else if (lower.startsWith("### risk") || lower.startsWith("**risk")) current = "risks";
+        else if (current && line) sections[current] += line + "\n";
+        else if (!current && line) sections.summary += line + "\n";
+      }
+
+      const labels = { summary: "Summary", actions: "Action items", decisions: "Decisions", risks: "Risks" };
+
+      output.innerHTML = "";
+      for (const [key, label] of Object.entries(labels)) {
+        const body = sections[key].trim();
+        if (!body) continue;
+        const card = document.createElement("article");
+        card.className = "demo-section";
+        card.innerHTML = `<h4>${label}</h4><pre>${body.replace(/</g, "&lt;")}</pre>`;
+        output.appendChild(card);
+      }
+
+      if (!output.children.length) {
+        // Fallback: show raw response
+        const card = document.createElement("article");
+        card.className = "demo-section";
+        card.innerHTML = `<h4>Response</h4><pre>${text.replace(/</g, "&lt;")}</pre>`;
+        output.appendChild(card);
+      }
+
+      output.hidden = false;
+    }
+
+    button.addEventListener("click", async () => {
+      const message = input.value.trim();
+      if (!message) return;
+
+      button.disabled = true;
+      output.hidden = true;
+      setStatus("Sending…");
+
+      // After 3s, tell the user a cold start is happening.
+      wakeTimer = setTimeout(() => {
+        setStatus("Waking backend (free tier) — first request can take ~60s…");
+      }, 3000);
+
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 120000);
+
+      try {
+        const res = await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_id: sessionId, message }),
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          setStatus(`Request failed (${res.status})`);
+          return;
+        }
+
+        const data = await res.json();
+        renderResponse(data.response || "(empty response)");
+        setStatus(`Done in ${((performance.now() - startTime) / 1000).toFixed(1)}s`);
+      } catch (err) {
+        setStatus(err.name === "AbortError"
+          ? "Timed out after 120s. The backend may still be waking — try again."
+          : "Network error. The service may be asleep — try again.");
+      } finally {
+        clearTimeout(wakeTimer);
+        clearTimeout(timeout);
+        button.disabled = false;
+      }
+    });
+
+    // Capture start time at click
+    let startTime = 0;
+    button.addEventListener("click", () => { startTime = performance.now(); }, { capture: true });
+  </script>
+</body>
+</html>
