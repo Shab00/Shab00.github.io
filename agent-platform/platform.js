@@ -141,7 +141,7 @@
   // Parsers
   // ---------------------------------------------------------
 
-  // Extract action items from the chat agent's response.
+  // Extract action items from the Action Items section only.
   //
   // The LLM produces two shapes in practice:
   //
@@ -161,6 +161,11 @@
   // the items as a contiguous list with no blank lines between them;
   // after the top-level blank-line split, all items arrive in one
   // block, and only matchAll() with ^/$ per line will collect them.
+  //
+  // Called with the Action Items section only (see onAnalyse). This
+  // is deliberate: Decisions and Risks use the same bold-name format
+  // but have no owner, so parsing them yields drafts addressed to
+  // task descriptions rather than people.
   function parseActionItems(text) {
     if (!text) return [];
 
@@ -381,7 +386,13 @@
       const text = data.response || "";
       renderAnalysis(text);
 
-      lastActionItems = parseActionItems(text);
+      // Parse action items from the Action Items section ONLY.
+      // Decisions and Risks have no owner field, so sweeping the whole
+      // response produces drafts addressed to task descriptions rather
+      // than people ("Draft Increase marketing spend by 20 percent").
+      const sections = splitSections(text);
+      lastActionItems = parseActionItems(sections["action items"] || "");
+
       const elapsed = ((performance.now() - started) / 1000).toFixed(1);
       setStatus(
         "Analysis done in " + elapsed + "s · " +
