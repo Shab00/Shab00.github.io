@@ -137,6 +137,19 @@
       .replace(/>/g, "&gt;");
   }
 
+  // Is this string plausibly a person's name? 1-3 words, each
+  // capitalised, no digits, no multi-word descriptions. Used to
+  // filter out bold labels that leak in from Decisions/Risks
+  // sections ('High Severity', 'Increase marketing spend by 20
+  // percent', 'Q4 Budget Decision').
+  function looksLikeName(s) {
+    if (!s) return false;
+    if (/\d/.test(s)) return false;
+    if (s.length > 30) return false;
+    // 1-3 capitalised tokens, allowing apostrophes, hyphens, periods
+    return /^[A-Z][a-zA-Z'.\-]*(?:\s+[A-Z][a-zA-Z'.\-]*){0,2}$/.test(s);
+  }
+
   // ---------------------------------------------------------
   // Parsers
   // ---------------------------------------------------------
@@ -162,10 +175,11 @@
   // after the top-level blank-line split, all items arrive in one
   // block, and only matchAll() with ^/$ per line will collect them.
   //
-  // Called with the Action Items section only (see onAnalyse). This
-  // is deliberate: Decisions and Risks use the same bold-name format
-  // but have no owner, so parsing them yields drafts addressed to
-  // task descriptions rather than people.
+  // Inline items additionally pass through looksLikeName() — the LLM
+  // sometimes leaks bold labels from Decisions/Risks ('High Severity',
+  // 'Increase marketing spend by 20 percent') into the action-item
+  // list. Those aren't owners, so they're filtered out rather than
+  // producing draft cards addressed to non-people.
   function parseActionItems(text) {
     if (!text) return [];
 
@@ -202,14 +216,15 @@
       for (const m of inlineMatches) {
         const name = cleanLine(m[1]);
         const t    = cleanLine(m[2]);
-        if (name && t) {
-          items.push({
-            owner:        name,
-            task:         t,
-            due_date:     null,
-            source_quote: `${name}: ${t}`,
-          });
-        }
+        if (!t) continue;
+        if (!looksLikeName(name)) continue;   // reject non-name "owners"
+
+        items.push({
+          owner:        name,
+          task:         t,
+          due_date:     null,
+          source_quote: `${name}: ${t}`,
+        });
       }
     }
 
