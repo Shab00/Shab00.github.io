@@ -291,3 +291,38 @@
   .trace-list li { grid-template-columns: 1.5rem 1fr; }
   .trace-note { grid-column: 2; text-align: left; margin-top: 0.2rem; }
 }
+
+/* System status indicator (warm-up feedback) */
+.system-status {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  margin: 0 0 1rem;
+  background: rgba(17, 24, 39, 0.6);
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  width: fit-content;
+}
+
+.status-dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: #fbbf24;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+.status-dot.ready {
+  background: #34d399;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.2);
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1;   }
+  50%      { opacity: 0.4; }
+}

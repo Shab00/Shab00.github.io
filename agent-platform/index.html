@@ -19,7 +19,7 @@
       <h1>Three agents. Three frameworks. One protocol.</h1>
       <p class="subtitle">
         A user pastes a meeting transcript. One agent discovers another through the
-        A2A protocol, delegates the analysis, and the structured output flows into a
+        A2A protocol, delegates the analysis, and the structured output is handed to a
         third agent that drafts follow-ups. Each service runs on a different agent
         framework. They share no code — only a JSON-RPC contract and an agent card
         published at a well-known URL.
@@ -29,7 +29,7 @@
     <!-- ============ FLOW DIAGRAM ============ -->
     <section class="section-head">
       <h2>How it fits together</h2>
-      <p class="section-sub">One round-trip, three services, two protocols.</p>
+      <p class="section-sub">One round-trip, three services, two protocols, two hops.</p>
     </section>
 
     <div class="platform-flow" aria-label="System flow">
@@ -52,7 +52,7 @@
         <span class="flow-sub">OpenAI Agents SDK</span>
       </div>
       <div class="flow-arrow" aria-hidden="true">
-        <span class="arrow-tag">HTTP</span>→
+        <span class="arrow-tag">REST</span>→
       </div>
       <div class="flow-node flow-followup">
         <span class="flow-label">meeting-followup</span>
@@ -62,19 +62,27 @@
     <p class="flow-caption">
       The chat agent fetches <code>/.well-known/agent-card.json</code> to discover the
       processor, then sends tasks over JSON-RPC 1.0. Structured output (action items,
-      owners, due dates, source quotes) feeds directly into the LangGraph workflow.
+      owners, due dates, source quotes) is returned to the caller, which passes it to
+      <code>POST /workflows</code> on the followup service — the LangGraph engine
+      drafts a follow-up message per action item and returns the drafts for approval.
     </p>
 
     <!-- ============ LIVE DEMO ============ -->
     <section class="section-head">
       <h2>Try it live</h2>
       <p class="section-sub">
-        Paste a meeting transcript. The response comes back from the full three-service
-        stack — you're watching the A2A protocol in action.
+        Step 1 analyses the transcript via A2A. Step 2 hands the extracted action items
+        to the LangGraph workflow. Both services are live on Render.
       </p>
     </section>
 
+    <div id="system-status" class="system-status" aria-live="polite">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span id="status-text">Waking agents…</span>
+    </div>
+
     <div class="demo-panel">
+      <label class="demo-label" for="demo-input">Meeting transcript</label>
       <textarea
         id="demo-input"
         class="demo-textarea"
@@ -87,17 +95,23 @@ Carol: I will review runway and report back by Friday.
 Bob: Risk is we cannot afford both if revenue dips in November.</textarea>
 
       <div class="demo-actions">
-        <button id="demo-run" class="button primary" type="button">Analyse meeting</button>
+        <button id="demo-analyse" class="button primary" type="button">
+          Step 1 · Analyse via A2A
+        </button>
+        <button id="demo-draft" class="button secondary" type="button" hidden>
+          Step 2 · Draft follow-ups
+        </button>
         <span id="demo-status" class="demo-status" aria-live="polite"></span>
       </div>
 
-      <div id="demo-output" class="demo-output" hidden></div>
+      <div id="demo-analysis" class="demo-output" hidden></div>
+      <div id="demo-followups" class="demo-output" hidden></div>
     </div>
 
     <!-- ============ TRACE ============ -->
     <section class="section-head">
       <h2>Under the hood</h2>
-      <p class="section-sub">The same request, as it appears in the logs.</p>
+      <p class="section-sub">The A2A round-trip, as it appears in the logs.</p>
     </section>
 
     <div class="platform-trace">
@@ -121,6 +135,11 @@ Bob: Risk is we cannot afford both if revenue dips in November.</textarea>
           <span class="trace-step">4</span>
           <code class="trace-line">[tool] analyse_meeting_a2a(N chars)</code>
           <span class="trace-note">chat formats the response</span>
+        </li>
+        <li>
+          <span class="trace-step">5</span>
+          <code class="trace-line">POST /workflows (action items) → 200</code>
+          <span class="trace-note">LangGraph drafts follow-ups</span>
         </li>
       </ol>
     </div>
@@ -150,13 +169,13 @@ Bob: Risk is we cannot afford both if revenue dips in November.</textarea>
     <!-- ============ LIMITATIONS ============ -->
     <section class="section-head">
       <h2>Honest limits</h2>
-      <p class="section-sub">What's shipped, and what isn't.</p>
+      <p class="section-sub">What's shipped, and what's deferred.</p>
     </section>
 
     <ul class="platform-limits">
-      <li><strong>Cold start</strong> — the free tier sleeps after 15 minutes idle. The first demo request may take ~60 seconds. The demo shows a "waking backend" state during this.</li>
+      <li><strong>Cold start</strong> — the free tier sleeps after 15 minutes idle. The page warms all three services in parallel on load and shows a status pill; the first request may still take ~60s if the pill hasn't turned green.</li>
+      <li><strong>Two-step flow</strong> — Step 1 (analysis) and Step 2 (drafting) are separate API calls. The two hops are a deliberate service interface, not an inline chain. Full chaining requires an async checkpointer migration in <code>meeting-followup</code>.</li>
       <li><strong>In-memory A2A task store</strong> — the processor uses <code>InMemoryTaskStore</code>, so task state is lost on restart. A <code>DatabaseTaskStore</code> is the follow-up.</li>
-      <li><strong>Followup wiring</strong> — the A2A tool exists inside a LangGraph ToolNode but is not yet on the default workflow path. It needs an async checkpointer migration (<code>AsyncPostgresSaver</code>) before it can call the processor inline.</li>
       <li><strong>Decision over-extraction</strong> — measured precision 0.17–0.35 across 5 hand-labelled transcripts. Documented rather than tuned away; the eval harness lives in <code>meeting-processor/evals/</code>.</li>
     </ul>
 
@@ -165,111 +184,6 @@ Bob: Risk is we cannot afford both if revenue dips in November.</textarea>
     </footer>
   </main>
 
-  <script>
-    // Live demo
-    const ENDPOINT = "https://meeting-chat-dxde.onrender.com/chat";
-    const input    = document.getElementById("demo-input");
-    const button   = document.getElementById("demo-run");
-    const status   = document.getElementById("demo-status");
-    const output   = document.getElementById("demo-output");
-
-    // One session per page load — keeps the demo deterministic
-    const sessionId = "portfolio-" + Math.random().toString(36).slice(2, 10);
-
-    let wakeTimer = null;
-
-    function setStatus(text) {
-      status.textContent = text;
-    }
-
-    function renderResponse(text) {
-      // The chat agent returns markdown-ish text.
-      // Extract the four labelled blocks if present; otherwise show as-is.
-      const sections = { summary: "", actions: "", decisions: "", risks: "" };
-      const lines = text.split("\n");
-      let current = null;
-
-      for (const raw of lines) {
-        const line = raw.trim();
-        const lower = line.toLowerCase();
-
-        if (lower.startsWith("### summary") || lower.startsWith("**summary")) current = "summary";
-        else if (lower.startsWith("### action") || lower.startsWith("**action")) current = "actions";
-        else if (lower.startsWith("### decision") || lower.startsWith("**decision")) current = "decisions";
-        else if (lower.startsWith("### risk") || lower.startsWith("**risk")) current = "risks";
-        else if (current && line) sections[current] += line + "\n";
-        else if (!current && line) sections.summary += line + "\n";
-      }
-
-      const labels = { summary: "Summary", actions: "Action items", decisions: "Decisions", risks: "Risks" };
-
-      output.innerHTML = "";
-      for (const [key, label] of Object.entries(labels)) {
-        const body = sections[key].trim();
-        if (!body) continue;
-        const card = document.createElement("article");
-        card.className = "demo-section";
-        card.innerHTML = `<h4>${label}</h4><pre>${body.replace(/</g, "&lt;")}</pre>`;
-        output.appendChild(card);
-      }
-
-      if (!output.children.length) {
-        // Fallback: show raw response
-        const card = document.createElement("article");
-        card.className = "demo-section";
-        card.innerHTML = `<h4>Response</h4><pre>${text.replace(/</g, "&lt;")}</pre>`;
-        output.appendChild(card);
-      }
-
-      output.hidden = false;
-    }
-
-    button.addEventListener("click", async () => {
-      const message = input.value.trim();
-      if (!message) return;
-
-      button.disabled = true;
-      output.hidden = true;
-      setStatus("Sending…");
-
-      // After 3s, tell the user a cold start is happening.
-      wakeTimer = setTimeout(() => {
-        setStatus("Waking backend (free tier) — first request can take ~60s…");
-      }, 3000);
-
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 120000);
-
-      try {
-        const res = await fetch(ENDPOINT, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ session_id: sessionId, message }),
-          signal: controller.signal,
-        });
-
-        if (!res.ok) {
-          setStatus(`Request failed (${res.status})`);
-          return;
-        }
-
-        const data = await res.json();
-        renderResponse(data.response || "(empty response)");
-        setStatus(`Done in ${((performance.now() - startTime) / 1000).toFixed(1)}s`);
-      } catch (err) {
-        setStatus(err.name === "AbortError"
-          ? "Timed out after 120s. The backend may still be waking — try again."
-          : "Network error. The service may be asleep — try again.");
-      } finally {
-        clearTimeout(wakeTimer);
-        clearTimeout(timeout);
-        button.disabled = false;
-      }
-    });
-
-    // Capture start time at click
-    let startTime = 0;
-    button.addEventListener("click", () => { startTime = performance.now(); }, { capture: true });
-  </script>
+  <script src="platform.js"></script>
 </body>
 </html>
