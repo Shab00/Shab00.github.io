@@ -21,5 +21,4 @@ jobs:
       - uses: actions/deploy-pages@v4
         id: deployment
         with:
-            timeout: 600000
-            error_on_bad_status: false
+          timeout: 600000
