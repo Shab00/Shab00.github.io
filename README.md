@@ -12,5 +12,3 @@ https://shab00.github.io/
 - **Meeting Intelligence Agent** — https://shab00.github.io/meeting/
 - **Premier League Predictions** — https://shab00.github.io/football/
 - **Chess Engine Demo** — https://shab00.github.io/chess/
-
-test 
